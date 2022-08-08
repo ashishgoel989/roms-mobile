@@ -4,14 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
+import '../../../controller/auth_controller.dart';
 import '../../../provider/provider/theme_provider.dart';
 import '../../../utils/helper/primary_button.dart';
 import '../../../utils/helper/theme_manager.dart';
 import '../../../utils/helper/validation_utils.dart';
 import '../../../utils/localization/language_constrants.dart';
+import '../../../utils/utils.dart';
 import '../forgot_password/forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,7 +31,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController _emailTextEditingController =
       TextEditingController();
+  final TextEditingController _passwordTextField = TextEditingController();
   final textFieldFocusNode = FocusNode();
+  final AuthController _authController = Get.put(AuthController());
   bool _obscured = true;
 
   bool validEmail = false;
@@ -146,6 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: TextFormField(
+                                controller: _passwordTextField,
                                 keyboardType: TextInputType.visiblePassword,
                                 obscureText: _obscured,
                                 obscuringCharacter: '●',
@@ -262,6 +269,31 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void onRegistrationSubmit() {
+    if (_emailTextEditingController.text.toString().isEmpty) {
+      Utils.showErrorMessage(context, 'Please Enter Username');
+    }
+    /*else if (!ValidationUtils.isValidEmail(
+        _emailTextEditingController.text.toString())) {
+      Utils.showErrorMessage(context, 'Please Enter Valid Email');
+    }*/
+    else if (_passwordTextField.text.toString().isEmpty) {
+      Utils.showErrorMessage(context, 'Please Enter Password');
+    } else {
+      var data = {"name": "", "email": "", "password": ""};
+      _authController.login(data, callback);
+    }
+  }
+
+  callback(bool status, Map data) async {
+    if (status == true) {
+      // ToastUtils.setToast(data['message']);
+
+    } else {
+      //  ToastUtils.setToast(data['message']);
+    }
   }
 
   void _validateEmailAddress() {

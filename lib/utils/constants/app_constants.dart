@@ -4,7 +4,7 @@ import '../localization/language_model.dart';
 
 class AppConstants {
   static String base_url = '';
-  static String registration = base_url + '/api/v2.0/user/signup';
+  static String registration = base_url + 'authenticate';
 
   //Pref Constant
   static String fcmToken = '';

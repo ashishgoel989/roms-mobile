@@ -30,7 +30,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   late double screenHeight;
   late double screenWidth;
 
-  void _onIntroEnd(context) {}
+  void _onIntroEnd(context) {
+
+  }
 
   @override
   Widget build(BuildContext context) {
