@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rtl/utils/helper/pref_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../utils/constants/app_constants.dart';
@@ -16,12 +17,6 @@ class AuthController extends GetxController {
 
   get isLoading => _isLoading;
 
-  get _driverscount => driverscount;
-
-  get _vehiclecount => vehiclecount;
-
-  get _ordercount => ordercount;
-
   Future login(data, callback) async {
     _isLoading = true;
     update();
@@ -33,6 +28,7 @@ class AuthController extends GetxController {
       if (map['token'] !='') {
         callback(true, map);
         _isLoading = false;
+        PrefUtils.setUserToken(map['token']);
         update();
       } else {
         _isLoading = false;

@@ -28,3 +28,13 @@ class LanguageConstants {
         languageCode: 'hi'),
   ];
 }
+
+class SharedPrefsKeys {
+  static const TOKEN = 'TOKEN';
+  static const USER_LOGGED_IN = 'USER_LOGGED_IN';
+  static const USER_TOKEN = 'USER_TOKEN';
+  static const firebasetoken = 'firebasetoken';
+  static const FIRST_TIME_LAUNCH = 'first_time_launch';
+  static const USER_DATA = "user_data";
+  static const USER_LANGUAGE = 'user_language';
+}

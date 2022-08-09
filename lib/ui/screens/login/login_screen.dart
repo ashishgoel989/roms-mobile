@@ -16,6 +16,7 @@ import '../../../utils/helper/theme_manager.dart';
 import '../../../utils/helper/validation_utils.dart';
 import '../../../utils/localization/language_constrants.dart';
 import '../../../utils/utils.dart';
+import '../dashboard/dashboard_screen.dart';
 import '../forgot_password/forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -214,15 +215,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         PrimaryButton(
                             buttonText: 'LOGIN',
                             onButtonPressed: () {
-                              /*   Navigator.push(
+                              //onRegistrationSubmit();
+                              Navigator.pushAndRemoveUntil(
                                   context,
-                                  PageTransition(
-                                      child: QuestionnaireScreen(),
-                                      type: PageTransitionType.fade,
-                                      duration:
-                                          const Duration(milliseconds: 900),
-                                      reverseDuration:
-                                          (const Duration(milliseconds: 900))));*/
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DashboardScreen()),
+                                      (Route<dynamic> route) => false);
                             }),
                         SizedBox(
                           height: size.height * 0.04,

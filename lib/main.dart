@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rtl/provider/provider/theme_provider.dart';
 import 'package:rtl/ui/screens/splash_screen.dart';
+import 'package:rtl/utils/helper/shared_preferences.dart';
 import 'package:rtl/utils/helper/theme_manager.dart';
 import 'package:rtl/utils/localization/app_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,12 @@ class _RTLAppState extends State<RTLApp> {
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+
+  Future<void> init() async {
+    await Prefs.init();
   }
 
   @override
