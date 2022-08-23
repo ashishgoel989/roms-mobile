@@ -42,8 +42,8 @@ class DataHistory {
   String? id;
   String? createDate;
   CreateBy? createBy;
-  dynamic? lastUpdateDate;
-  dynamic? updateBy;
+  String? lastUpdateDate;
+  CreateBy? updateBy;
   LeaveType? leaveType;
   String? applyDate;
   int? leaveStatus;
@@ -52,11 +52,12 @@ class DataHistory {
   dynamic? strStartDateTime;
   dynamic? strEndDateTime;
   dynamic? totalHour;
+  dynamic? totalDay;
   String? leaveReason;
-  dynamic? reviewerRemark;
-  dynamic? dateOfApproval;
+  String? reviewerRemark;
+  String? dateOfApproval;
   EmployeId? employe;
-  dynamic? approver;
+  EmployeId? approver;
 
   DataHistory(
       {this.id,
@@ -72,6 +73,7 @@ class DataHistory {
         this.strStartDateTime,
         this.strEndDateTime,
         this.totalHour,
+        this.totalDay,
         this.leaveReason,
         this.reviewerRemark,
         this.dateOfApproval,
@@ -85,7 +87,9 @@ class DataHistory {
         ? new CreateBy.fromJson(json['createBy'])
         : null;
     lastUpdateDate = json['lastUpdateDate'];
-    updateBy = json['updateBy'];
+    updateBy = json['updateBy'] != null
+        ? new CreateBy.fromJson(json['updateBy'])
+        : null;
     leaveType = json['leaveType'] != null
         ? new LeaveType.fromJson(json['leaveType'])
         : null;
@@ -96,13 +100,16 @@ class DataHistory {
     strStartDateTime = json['strStartDateTime'];
     strEndDateTime = json['strEndDateTime'];
     totalHour = json['totalHour'];
+    totalDay = json['totalDay'];
     leaveReason = json['leaveReason'];
     reviewerRemark = json['reviewerRemark'];
     dateOfApproval = json['dateOfApproval'];
     employe = json['employe'] != null
         ? new EmployeId.fromJson(json['employe'])
         : null;
-    approver = json['approver'];
+    approver = json['approver'] != null
+        ? new EmployeId.fromJson(json['approver'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -113,7 +120,9 @@ class DataHistory {
       data['createBy'] = this.createBy!.toJson();
     }
     data['lastUpdateDate'] = this.lastUpdateDate;
-    data['updateBy'] = this.updateBy;
+    if (this.updateBy != null) {
+      data['updateBy'] = this.updateBy!.toJson();
+    }
     if (this.leaveType != null) {
       data['leaveType'] = this.leaveType!.toJson();
     }
@@ -124,13 +133,16 @@ class DataHistory {
     data['strStartDateTime'] = this.strStartDateTime;
     data['strEndDateTime'] = this.strEndDateTime;
     data['totalHour'] = this.totalHour;
+    data['totalDay'] = this.totalDay;
     data['leaveReason'] = this.leaveReason;
     data['reviewerRemark'] = this.reviewerRemark;
     data['dateOfApproval'] = this.dateOfApproval;
     if (this.employe != null) {
       data['employe'] = this.employe!.toJson();
     }
-    data['approver'] = this.approver;
+    if (this.approver != null) {
+      data['approver'] = this.approver!.toJson();
+    }
     return data;
   }
 }
@@ -150,11 +162,11 @@ class CreateBy {
   bool? passwordExpiryFlag;
   dynamic? role;
   bool? enabled;
+  String? username;
   bool? accountNonExpired;
   bool? credentialsNonExpired;
   bool? accountNonLocked;
   String? password;
-  String? username;
   dynamic? authorities;
 
   CreateBy(
@@ -172,11 +184,11 @@ class CreateBy {
         this.passwordExpiryFlag,
         this.role,
         this.enabled,
+        this.username,
         this.accountNonExpired,
         this.credentialsNonExpired,
         this.accountNonLocked,
         this.password,
-        this.username,
         this.authorities});
 
   CreateBy.fromJson(Map<String, dynamic> json) {
@@ -198,11 +210,11 @@ class CreateBy {
     passwordExpiryFlag = json['passwordExpiryFlag'];
     role = json['role'];
     enabled = json['enabled'];
+    username = json['username'];
     accountNonExpired = json['accountNonExpired'];
     credentialsNonExpired = json['credentialsNonExpired'];
     accountNonLocked = json['accountNonLocked'];
     password = json['password'];
-    username = json['username'];
     authorities = json['authorities'];
   }
 
@@ -226,11 +238,11 @@ class CreateBy {
     data['passwordExpiryFlag'] = this.passwordExpiryFlag;
     data['role'] = this.role;
     data['enabled'] = this.enabled;
+    data['username'] = this.username;
     data['accountNonExpired'] = this.accountNonExpired;
     data['credentialsNonExpired'] = this.credentialsNonExpired;
     data['accountNonLocked'] = this.accountNonLocked;
     data['password'] = this.password;
-    data['username'] = this.username;
     data['authorities'] = this.authorities;
     return data;
   }
@@ -251,11 +263,11 @@ class CreateBy1 {
   bool? passwordExpiryFlag;
   dynamic? role;
   bool? enabled;
+  String? username;
   bool? accountNonExpired;
   bool? credentialsNonExpired;
   bool? accountNonLocked;
   String? password;
-  String? username;
   dynamic? authorities;
 
   CreateBy1(
@@ -273,11 +285,11 @@ class CreateBy1 {
         this.passwordExpiryFlag,
         this.role,
         this.enabled,
+        this.username,
         this.accountNonExpired,
         this.credentialsNonExpired,
         this.accountNonLocked,
         this.password,
-        this.username,
         this.authorities});
 
   CreateBy1.fromJson(Map<String, dynamic> json) {
@@ -297,11 +309,11 @@ class CreateBy1 {
     passwordExpiryFlag = json['passwordExpiryFlag'];
     role = json['role'];
     enabled = json['enabled'];
+    username = json['username'];
     accountNonExpired = json['accountNonExpired'];
     credentialsNonExpired = json['credentialsNonExpired'];
     accountNonLocked = json['accountNonLocked'];
     password = json['password'];
-    username = json['username'];
     authorities = json['authorities'];
   }
 
@@ -323,11 +335,11 @@ class CreateBy1 {
     data['passwordExpiryFlag'] = this.passwordExpiryFlag;
     data['role'] = this.role;
     data['enabled'] = this.enabled;
+    data['username'] = this.username;
     data['accountNonExpired'] = this.accountNonExpired;
     data['credentialsNonExpired'] = this.credentialsNonExpired;
     data['accountNonLocked'] = this.accountNonLocked;
     data['password'] = this.password;
-    data['username'] = this.username;
     data['authorities'] = this.authorities;
     return data;
   }

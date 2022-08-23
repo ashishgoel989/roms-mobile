@@ -272,130 +272,129 @@ class StateHomeScreen extends State<HomeScreen> {
                               height: 40,
                               margin:
                                   EdgeInsets.only(left: 20, right: 20, top: 10),
-                              padding: EdgeInsets.only(top: 10,left: 15),
+                              padding: EdgeInsets.only(top: 10, left: 15),
                               decoration: BoxDecoration(
-                                color: ThemeManager.colorWhite,
+                                color: Color(0xffFEF5F4),
                                 border: Border.all(
                                     color: Colors.blue.withOpacity(0.1),
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                                boxShadow: [
+                                /*boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
-                                ],
+                                ],*/
                               ),
                               child: Text(
                                   'Welcome to the RTL digital transformation',
                                   textAlign: TextAlign.start,
                                   textScaleFactor: 1.0,
                                   style: const TextStyle(
-                                      color: Colors.blue,
+                                      color: Color(0xff000000),
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
+                                      fontWeight: FontWeight.w400))),
                           Container(
                               width: double.infinity,
                               height: 40,
                               margin:
                                   EdgeInsets.only(left: 20, right: 20, top: 15),
-                              padding: EdgeInsets.only(top: 10,left: 15),
+                              padding: EdgeInsets.only(top: 10, left: 15),
                               decoration: BoxDecoration(
-                                color: ThemeManager.colorWhite,
+                                color: Color(0xffFEF5F4),
                                 border: Border.all(
                                     color: Colors.blue.withOpacity(0.1),
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                                boxShadow: [
+                              /*  boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
-                                ],
+                                ],*/
                               ),
                               child: Text('Taking care of plants and people',
                                   textAlign: TextAlign.start,
                                   textScaleFactor: 1.0,
                                   style: const TextStyle(
-                                      color: Colors.black,
+                                      color: Color(0xff000000),
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
+                                      fontWeight: FontWeight.w400))),
                           Container(
                               width: double.infinity,
                               height: 40,
                               margin:
                                   EdgeInsets.only(left: 20, right: 20, top: 15),
-                              padding: EdgeInsets.only(top: 10,left: 15),
+                              padding: EdgeInsets.only(top: 10, left: 15),
                               decoration: BoxDecoration(
-                                color: ThemeManager.colorWhite,
+                                color: Color(0xffFEF5F4),
                                 border: Border.all(
                                     color: Colors.blue.withOpacity(0.1),
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                                boxShadow: [
+                               /* boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
-                                ],
+                                ],*/
                               ),
                               child: Text(
                                   'RTL is committed to the local community',
                                   textAlign: TextAlign.start,
                                   textScaleFactor: 1.0,
                                   style: const TextStyle(
-                                      color: Colors.black,
+                                      color: Color(0xff000000),
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
+                                      fontWeight: FontWeight.w400))),
                           Container(
                               width: double.infinity,
                               height: 40,
                               margin:
                                   EdgeInsets.only(left: 20, right: 20, top: 15),
-                              padding: EdgeInsets.only(top: 10,left: 15),
+                              padding: EdgeInsets.only(top: 10, left: 15),
                               decoration: BoxDecoration(
-                                color: ThemeManager.colorWhite,
+                                color: Color(0xffFEF5F4),
                                 border: Border.all(
                                     color: Colors.blue.withOpacity(0.1),
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                                boxShadow: [
+                               /* boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
-                                ],
+                                ],*/
                               ),
                               child: Text(
                                   'RTL aims for zero loss time injuries',
                                   textAlign: TextAlign.start,
                                   textScaleFactor: 1.0,
                                   style: const TextStyle(
-                                      color: Colors.black,
+                                      color: Color(0xff000000),
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
+                                      fontWeight: FontWeight.w400))),
                           Container(
                               width: double.infinity,
                               height: 40,
                               margin:
                                   EdgeInsets.only(left: 20, right: 20, top: 15),
-                              padding: EdgeInsets.only(top: 10,left: 15),
+                              padding: EdgeInsets.only(top: 10, left: 15),
                               decoration: BoxDecoration(
-                                color: ThemeManager.colorWhite,
+                                color: Color(0xffFEF5F4),
                                 border: Border.all(
                                     color: Colors.blue.withOpacity(0.1),
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                                boxShadow: [
+                               /* boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
-                                ],
+                                ],*/
                               ),
-                              child: Text(
-                                  'RTL is based in the Latrobe Valley',
+                              child: Text('RTL is based in the Latrobe Valley',
                                   textAlign: TextAlign.start,
                                   textScaleFactor: 1.0,
                                   style: const TextStyle(
-                                      color: Colors.black,
+                                      color: Color(0xff000000),
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
+                                      fontWeight: FontWeight.w400))),
                         ],
                       )),
                 ),
@@ -453,26 +452,25 @@ class StateHomeScreen extends State<HomeScreen> {
               Spacer(),
               Bounce(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      PageTransition(
-                          child: TeamLeaveScreen(),
-                          type: PageTransitionType.fade,
-                          duration: const Duration(
-                              milliseconds: 900),
-                          reverseDuration: (const Duration(
-                              milliseconds: 900))));
-
-               /*   Navigator.push(
-                      context,
-                      PageTransition(
-                          child: LeaveScreen(0),
-                          type: PageTransitionType.fade,
-                          duration: const Duration(
-                              milliseconds: 900),
-                          reverseDuration: (const Duration(
-                              milliseconds: 900))));*/
-
+                  if (PrefUtils.getRole() == 'ROLE_EMPLOYEE') {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: LeaveScreen(1),
+                            type: PageTransitionType.fade,
+                            duration: const Duration(milliseconds: 900),
+                            reverseDuration:
+                                (const Duration(milliseconds: 900))));
+                  } else {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: TeamLeaveScreen(),
+                            type: PageTransitionType.fade,
+                            duration: const Duration(milliseconds: 900),
+                            reverseDuration:
+                                (const Duration(milliseconds: 900))));
+                  }
                 },
                 duration: Duration(milliseconds: 110),
                 child: Container(
@@ -484,14 +482,19 @@ class StateHomeScreen extends State<HomeScreen> {
                     padding: const EdgeInsets.only(
                         left: 18, right: 18, top: 8, bottom: 8),
                     child: Text(
-                      'Review Requests',
-                      style: TextStyle(color: Colors.black, fontSize: 12,fontWeight: FontWeight.w700),
+                      PrefUtils.getRole() == 'ROLE_EMPLOYEE'
+                          ? 'History'
+                          : ' Review Requests',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),
               ),
               Spacer(),
-           /*   Padding(
+              /*   Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Align(
                   alignment: Alignment.topLeft,

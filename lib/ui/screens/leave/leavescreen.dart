@@ -15,6 +15,7 @@ import '../../../utils/utils.dart';
 
 class LeaveScreen extends StatefulWidget {
   int tabindex;
+
   LeaveScreen(this.tabindex);
 
   @override
@@ -88,15 +89,16 @@ class _LeaveScreenState extends State<LeaveScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this,initialIndex: widget.tabindex);
+    _tabController =
+        TabController(length: 2, vsync: this, initialIndex: widget.tabindex);
     super.initState();
     _leaveController.GetLeaveType(leaveTypecallback);
     _leaveController.GetLeaveHistory(leaveHistorycallback);
-    currentDate = DateFormat('dd/MM/yyyy')
+    currentDate = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().add(Duration(days: selectDay - 1)));
     convertdate = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().add(Duration(days: selectDay - 1)));
-    endDate = DateFormat('dd/MM/yyyy')
+    endDate = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().add(Duration(days: selectDay - 1)));
   }
 
@@ -268,7 +270,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                         onPressed: () {
                                                           showDatePicker(
                                                             fieldHintText:
-                                                                'dd/mm/yyyy',
+                                                                'dd-mm-yyyy',
                                                             builder: (context,
                                                                 child) {
                                                               return Theme(
@@ -316,8 +318,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             context: context,
                                                             initialDate:
                                                                 DateTime.now(),
-                                                            firstDate:
-                                                                DateTime.now(),
+                                                            firstDate: DateTime
+                                                                    .now(),
                                                             lastDate: DateTime(
                                                                 2030, 1),
                                                           ).then((value) => {
@@ -325,7 +327,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                     8473657834,
                                                                 currentDate =
                                                                     DateFormat(
-                                                                            'dd/MM/yyyy')
+                                                                            'yyyy-MM-dd')
                                                                         .format(
                                                                             value!),
                                                                 convertdate =
@@ -362,7 +364,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                           onPressed: () {
                                                             showDatePicker(
                                                               fieldHintText:
-                                                                  'dd/mm/yyyy',
+                                                                  'dd-mm-yyyy',
                                                               builder: (context,
                                                                   child) {
                                                                 return Theme(
@@ -410,8 +412,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                               initialDate:
                                                                   DateTime
                                                                       .now(),
-                                                              firstDate:
-                                                                  DateTime
+                                                              firstDate: DateTime
                                                                       .now(),
                                                               lastDate:
                                                                   DateTime(
@@ -440,7 +441,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                     'Please select valid date');
                                                               } else {
                                                                 endDate = DateFormat(
-                                                                        'dd/MM/yyyy')
+                                                                        'yyyy-MM-dd')
                                                                     .format(
                                                                         value);
                                                               }
@@ -506,7 +507,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                   top: 20,
                                                   bottom: 10),
                                               child: Text(
-                                                'Duration (Optional)',
+                                                'Hours',
                                                 style: TextStyle(
                                                     color: ThemeManager
                                                         .colorBlack),
@@ -537,11 +538,11 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                           selectedHours =
                                                               hourlist[index];
                                                           starttime = DateFormat(
-                                                                  'kk:mm')
+                                                                  'kk:mm:ss')
                                                               .format(DateTime
                                                                   .now());
                                                           endtime = DateFormat(
-                                                                  'kk:mm')
+                                                                  'kk:mm:ss')
                                                               .format(DateTime
                                                                       .now()
                                                                   .add(Duration(
@@ -990,11 +991,12 @@ class _LeaveScreenState extends State<LeaveScreen>
           children: [
             SizedBox(height: 5),
             Container(
+              width: 50,
               padding: EdgeInsets.only(left: 5, right: 5),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(2)),
               child: Text(
-                'Personal',
+                index==0 || index == 2 ? 'Personal' : '',
                 style: TextStyle(color: colorlist[index], fontSize: 8),
               ),
             ),
@@ -1039,7 +1041,15 @@ class _LeaveScreenState extends State<LeaveScreen>
         margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         padding: EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
-            color: colorlist[index].withOpacity(0.2),
+            color: _leaveController.leavehistoryList[index].leaveStatus
+                        .toString() ==
+                    "1"
+                ? Colors.grey.withOpacity(0.2)
+                : _leaveController.leavehistoryList[index].leaveStatus
+                            .toString() ==
+                        "2"
+                    ? Colors.green.withOpacity(0.2)
+                    : Colors.red.withOpacity(0.2),
             borderRadius: BorderRadius.circular(5)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1050,12 +1060,12 @@ class _LeaveScreenState extends State<LeaveScreen>
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Apply Date : ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.leavehistoryList[index].applyDate.toString()))}',
+                  '${DateFormat('dd MMM yyyy').format(DateTime.parse(_leaveController.leavehistoryList[index].applyDate.toString()))}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.black45,
                       fontSize: 10,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w400),
                 ),
               ),
             ),
@@ -1070,40 +1080,38 @@ class _LeaveScreenState extends State<LeaveScreen>
                         .leavehistoryList[index].leaveType!.leaveDescription!,
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                        color: selectType == index
+                        color: /*selectType == index
                             ? Colors.white
-                            : colorlist[index],
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    _leaveController.leavehistoryList[index].leaveStatus
-                                .toString() ==
-                            "1"
-                        ? 'Pending'
-                        : _leaveController.leavehistoryList[index].leaveStatus
-                                    .toString() ==
-                                "2"
-                            ? "Approved"
-                            : "Rejected",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        color: selectType == index
-                            ? Colors.white
-                            : colorlist[index],
+                            : colorlist[index]*/Colors.black,
                         fontSize: 10,
                         fontWeight: FontWeight.w700),
                   ),
                 ),
                 Text(
-                  'Approved By',
-                  textAlign: TextAlign.center,
+                  _leaveController.leavehistoryList[index].leaveStatus
+                              .toString() ==
+                          "1"
+                      ? _leaveController.leavehistoryList[index].approver !=
+                              null
+                          ? 'Pending with ${_leaveController.leavehistoryList[index].approver!.firstName}'
+                          : 'Pending'
+                      : _leaveController.leavehistoryList[index].leaveStatus
+                                  .toString() ==
+                              "2"
+                          ? _leaveController.leavehistoryList[index].approver !=
+                                  null
+                              ? 'Approved by ${_leaveController.leavehistoryList[index].approver!.firstName}'
+                              : "Approved"
+                          : _leaveController.leavehistoryList[index].approver !=
+                                  null
+                              ? 'Rejected by ${_leaveController.leavehistoryList[index].approver!.firstName}'
+                              : "Rejected",
+                  textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Colors.black,
+                      color:
+                          /*selectType == index ? Colors.white : colorlist[index]*/Colors.black,
                       fontSize: 10,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
                   width: 10,
@@ -1120,19 +1128,19 @@ class _LeaveScreenState extends State<LeaveScreen>
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color:
-                          selectType == index ? Colors.white : colorlist[index],
+                      Colors.black  /* selectType == index ? Colors.white : colorlist[index]*/,
                       fontSize: 10,
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(width: 15),
                 Expanded(
                   child: Text(
-                    day +
+                    _leaveController.leavehistoryList[index].totalDay.toString() +
                         ' Days,   ' +
-                        '${DateFormat('HH:mm a').format(DateTime.parse(_leaveController.leavehistoryList[index].startDateTime.toString()))} to ${DateFormat('HH:mm a').format(DateTime.parse(_leaveController.leavehistoryList[index].endDateTime.toString()))},     ' +
+                        '${DateFormat('HH:mm a').format(DateTime.parse(_leaveController.leavehistoryList[index].startDateTime.toString())).toLowerCase()} to ${DateFormat('HH:mm a').format(DateTime.parse(_leaveController.leavehistoryList[index].endDateTime.toString())).toLowerCase()},     ' +
                         _leaveController.leavehistoryList[index].totalHour
                             .toString() +
-                        ' Hr',
+                        ' hr',
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         color: Colors.black,
@@ -1204,7 +1212,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Leave request sent\nto manager',
+                            'Leave request sent\nto the manager',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: ThemeManager.primaryColor,

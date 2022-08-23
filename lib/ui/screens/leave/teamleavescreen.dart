@@ -533,7 +533,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10)),
-                        height: 200,
+                        height: 220,
                         child: Column(
                           children: [
                             Align(
@@ -620,25 +620,28 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                           color: Colors.black, fontSize: 12),
                                     ),
                                   ),
-                                  Container(
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                              color: ThemeManager.colorGrey)),
-                                      child: Center(
-                                        child: Text(
-                                          _leaveController
-                                              .teamLeaveRequestList[index]
-                                              .leaveReason!,
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      )),
+
                                   SizedBox(width: 20),
                                 ],
                               ),
                             ),
+                            SizedBox(height: 10),
+                            Container(
+                                padding: EdgeInsets.all(5),
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: ThemeManager.colorGrey)),
+                                child: Center(
+                                  child: Text(
+                                    _leaveController
+                                        .teamLeaveRequestList[index]
+                                        .leaveReason!,
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                )),
                             SizedBox(height: 20),
                             Padding(
                               padding:

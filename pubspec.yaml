@@ -97,6 +97,8 @@ flutter:
           weight: 600
         - asset: assets/fonts/Poppins-Light.ttf
           weight: 500
+        - asset: assets/fonts/Poppins-ExtraLight.ttf
+          weight: 400
 
   # To add assets to your application, add an assets section, like this:
   # assets:

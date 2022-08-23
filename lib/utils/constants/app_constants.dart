@@ -41,6 +41,7 @@ class SharedPrefsKeys {
   static const TOKEN = 'TOKEN';
   static const USER_LOGGED_IN = 'USER_LOGGED_IN';
   static const USER_TOKEN = 'USER_TOKEN';
+  static const role = 'role';
   static const firebasetoken = 'firebasetoken';
   static const firstname = 'firstname';
   static const userId = 'userId';

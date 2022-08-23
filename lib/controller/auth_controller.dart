@@ -39,6 +39,7 @@ class AuthController extends GetxController {
         callback(true, map);
         _isLoading = false;
         PrefUtils.setUserToken(map['token']);
+        PrefUtils.setRole(map['role']);
         PrefUtils.setFirstName(map['userDetail']['firstName']);
         PrefUtils.setUserID(map['userDetail']['id']);
         update();

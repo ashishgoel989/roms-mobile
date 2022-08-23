@@ -11,6 +11,15 @@ class PrefUtils {
     final String? value = Prefs.prefs!.getString(SharedPrefsKeys.USER_TOKEN);
     return value ?? '';
   }
+
+  static String? setRole(String role) {
+    Prefs.prefs!.setString(SharedPrefsKeys.role, role);
+  }
+
+  static String getRole() {
+    final String? value = Prefs.prefs!.getString(SharedPrefsKeys.role);
+    return value ?? '';
+  }
   static String? setFirebaseToken(String firebasetoken) {
     Prefs.prefs!.setString(SharedPrefsKeys.firebasetoken, firebasetoken);
   }
