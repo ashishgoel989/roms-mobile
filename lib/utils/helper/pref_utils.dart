@@ -20,6 +20,24 @@ class PrefUtils {
     return value ?? '';
   }
 
+  static String? setFirstName(String firstname) {
+    Prefs.prefs!.setString(SharedPrefsKeys.firstname, firstname);
+  }
+
+  static String getFirstName() {
+    final String? value = Prefs.prefs!.getString(SharedPrefsKeys.firstname);
+    return value ?? '';
+  }
+
+  static String? setUserID(String userId) {
+    Prefs.prefs!.setString(SharedPrefsKeys.userId, userId);
+  }
+
+  static String getuserID() {
+    final String? value = Prefs.prefs!.getString(SharedPrefsKeys.userId);
+    return value ?? '';
+  }
+
 
   static String? logout() {
     Prefs.prefs!.clear();

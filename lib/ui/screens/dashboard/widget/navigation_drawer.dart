@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:rtl/utils/helper/pref_utils.dart';
 
 import '../../../../utils/helper/primary_button.dart';
 import '../../../../utils/helper/theme_manager.dart';
+import '../../login/login_screen.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -41,349 +43,275 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     screenWidth = MediaQuery.of(context).size.width;
     return Theme(
         data: Theme.of(context).copyWith(
-          // Set the transparency here
-          canvasColor: Colors
-              .white, //or any other color you want. e.g Colors.blue.withOpacity(0.5)
+          canvasColor: Color(0xffFFF8E3), //or any other color you want. e.g Colors.blue.withOpacity(0.5)
         ),
         child: Drawer(
-            child: Container(
-                decoration: BoxDecoration(
-                  image: new DecorationImage(
-                    image: AssetImage("assets/images/home_bg.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Column(
-                  children: AnimationConfiguration.toStaggeredList(
-                      duration: const Duration(milliseconds: 375),
-                      childAnimationBuilder: (widget) => SlideAnimation(
-                            horizontalOffset: 50.0,
-                            child: SlideAnimation(
-                              child: widget,
+            child: Column(
+              children: AnimationConfiguration.toStaggeredList(
+                  duration: const Duration(milliseconds: 375),
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                        horizontalOffset: 50.0,
+                        child: SlideAnimation(
+                          child: widget,
+                        ),
+                      ),
+                  // Important: Remove any padding from the ListView.
+                  children: <Widget>[
+                    SizedBox(height: size.height * 0.045),
+                    ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: ThemeManager.primaryText,
+                                    width: 2)),
+                            child: Image.asset(
+                              'assets/images/aboutus.png',
+                              color: ThemeManager.primaryText,
+                              width: 15,
                             ),
                           ),
-                      // Important: Remove any padding from the ListView.
-                      children: <Widget>[
-                        SizedBox(height: size.height * 0.045),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/aboutus.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'About Us',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            selected: _selectedDestination == 0,
-                            onTap: () {
-                              Navigator.pop(context);
-                             /* Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: AboutusScreen(),
-                                      type: PageTransitionType.fade,
-                                      duration:
-                                          const Duration(milliseconds: 900),
-                                      reverseDuration:
-                                          (const Duration(milliseconds: 900))));*/
-                            }),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/privacypolicy.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'Privacy Policies',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            selected: _selectedDestination == 1,
-                            onTap: () {
-                              Navigator.pop(context);
-                           /*   Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: PrivacyPolicyScreen(),
-                                      type: PageTransitionType.fade,
-                                      duration:
-                                          const Duration(milliseconds: 900),
-                                      reverseDuration:
-                                          (const Duration(milliseconds: 900))));*/
-                            }),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/tnc.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'Terms & Conditions',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            selected: _selectedDestination == 2,
-                            onTap: () {
-                              Navigator.pop(context);
-                             /* Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: TermsConditionsScreen(),
-                                      type: PageTransitionType.fade,
-                                      duration:
-                                          const Duration(milliseconds: 900),
-                                      reverseDuration:
-                                          (const Duration(milliseconds: 900))));*/
-                            }),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/notifications.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'Notifications',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            selected: _selectedDestination == 3,
-                            onTap: () {
-                              Navigator.pop(context);
-                     /*         Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: NotificationScreen(),
-                                      type: PageTransitionType.fade,
-                                      duration:
-                                          const Duration(milliseconds: 900),
-                                      reverseDuration:
-                                          (const Duration(milliseconds: 900))));*/
-                            }),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/support.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'Support',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            selected: _selectedDestination == 4,
-                            onTap: () {
-                              Navigator.pop(context);
-                              /*Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: SupportScreen(),
-                                      type: PageTransitionType.fade,
-                                      duration:
+                        ),
+                        title: Text(
+                          'About Us',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                        selected: _selectedDestination == 0,
+                        onTap: () {
+                          Navigator.pop(context);
+                         /* Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: AboutusScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration:
                                       const Duration(milliseconds: 900),
-                                      reverseDuration:
+                                  reverseDuration:
                                       (const Duration(milliseconds: 900))));*/
+                        }),
+                    ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: ThemeManager.primaryText,
+                                    width: 2)),
+                            child: Image.asset(
+                              'assets/images/privacypolicy.png',
+                              color: ThemeManager.primaryText,
+                              width: 15,
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          'Privacy Policies',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                        selected: _selectedDestination == 1,
+                        onTap: () {
+                          Navigator.pop(context);
+                       /*   Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: PrivacyPolicyScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration:
+                                      const Duration(milliseconds: 900),
+                                  reverseDuration:
+                                      (const Duration(milliseconds: 900))));*/
+                        }),
+                    ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: ThemeManager.primaryText,
+                                    width: 2)),
+                            child: Image.asset(
+                              'assets/images/tnc.png',
+                              color: ThemeManager.primaryText,
+                              width: 15,
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          'Terms & Conditions',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                        selected: _selectedDestination == 2,
+                        onTap: () {
+                          Navigator.pop(context);
+                         /* Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: TermsConditionsScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration:
+                                      const Duration(milliseconds: 900),
+                                  reverseDuration:
+                                      (const Duration(milliseconds: 900))));*/
+                        }),
+                    ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: ThemeManager.primaryText,
+                                    width: 2)),
+                            child: Image.asset(
+                              'assets/images/notifications.png',
+                              color: ThemeManager.primaryText,
+                              width: 15,
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          'Notifications',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                        selected: _selectedDestination == 3,
+                        onTap: () {
+                          Navigator.pop(context);
+                 /*         Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: NotificationScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration:
+                                      const Duration(milliseconds: 900),
+                                  reverseDuration:
+                                      (const Duration(milliseconds: 900))));*/
+                        }),
+                    ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: ThemeManager.primaryText,
+                                    width: 2)),
+                            child: Image.asset(
+                              'assets/images/support.png',
+                              color: ThemeManager.primaryText,
+                              width: 15,
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          'Support',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                        selected: _selectedDestination == 4,
+                        onTap: () {
+                          Navigator.pop(context);
+                          /*Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: SupportScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration:
+                                  const Duration(milliseconds: 900),
+                                  reverseDuration:
+                                  (const Duration(milliseconds: 900))));*/
 
-                            }),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/invitefriend.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
+                        }),
+                    ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: ThemeManager.primaryText,
+                                    width: 2)),
+                            child: Image.asset(
+                              'assets/images/changepassword.png',
+                              color: ThemeManager.primaryText,
+                              width: 15,
                             ),
-                            title: Text(
-                              'Invite Friends',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
+                          ),
+                        ),
+                        title: Text(
+                          'Change Password',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                        selected: _selectedDestination == 7,
+                        onTap: () {
+                          Navigator.pop(context);
+                       /*   Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: ChangePasswordScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration:
+                                      const Duration(milliseconds: 900),
+                                  reverseDuration:
+                                      (const Duration(milliseconds: 900))));*/
+                        }),
+                    ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: ThemeManager.primaryText,
+                                    width: 2)),
+                            child: Image.asset(
+                              'assets/images/logout.png',
+                              color: ThemeManager.primaryText,
+                              width: 15,
                             ),
-                            selected: _selectedDestination == 5,
-                            onTap: () {
-                              Navigator.pop(context);
-                             /* Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: InviteFriendScreen(),
-                                      type: PageTransitionType.fade,
-                                      duration:
-                                          const Duration(milliseconds: 900),
-                                      reverseDuration:
-                                          (const Duration(milliseconds: 900))));*/
-                            }),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/socialmedia.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'Social Media',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            selected: _selectedDestination == 6,
-                            onTap: () {
-                              Navigator.pop(context);
-                            }),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/changepassword.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'Change Password',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            selected: _selectedDestination == 7,
-                            onTap: () {
-                              Navigator.pop(context);
-                           /*   Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: ChangePasswordScreen(),
-                                      type: PageTransitionType.fade,
-                                      duration:
-                                          const Duration(milliseconds: 900),
-                                      reverseDuration:
-                                          (const Duration(milliseconds: 900))));*/
-                            }),
-                        ListTile(
-                            leading: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: ThemeManager.primaryText,
-                                        width: 2)),
-                                child: Image.asset(
-                                  'assets/images/logout.png',
-                                  color: ThemeManager.primaryText,
-                                  width: 15,
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              'Logout',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            selected: _selectedDestination == 8,
-                            onTap: () {
-                              Navigator.pop(context);
-                              _showLogountDialog();
-                            }),
-                      ]),
-                ))));
+                          ),
+                        ),
+                        title: Text(
+                          'Logout',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                        selected: _selectedDestination == 8,
+                        onTap: () {
+                          Navigator.pop(context);
+                          _showLogountDialog();
+                        }),
+                  ]),
+            )));
   }
 
   Future<void> _showLogountDialog() async {
@@ -404,7 +332,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     fontWeight: FontWeight.w900,
                     color: ThemeManager.primaryText)),
           ),
-          content: Text('Are you sure you want to log out from \nTOBY?',
+          content: Text('Are you sure you want to log out from \nROMS?',
               textScaleFactor: 1.0,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -447,14 +375,15 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   fontWeight: FontWeight.w900,
                                   color: ThemeManager.primaryText)),
                           onPressed: () {
-                          /*  Navigator.pushAndRemoveUntil(
+                            PrefUtils.logout();
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 PageTransition(
                                     child: LoginScreen(),
                                     type: PageTransitionType.fade,
                                     duration: const Duration(milliseconds: 900),
                                     reverseDuration: (const Duration(milliseconds: 900))),
-                                    (Route<dynamic> route) => false);*/
+                                    (Route<dynamic> route) => false);
                           },
                         ),
                       ],

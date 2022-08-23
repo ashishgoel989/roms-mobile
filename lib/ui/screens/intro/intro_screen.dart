@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../../utils/helper/primary_button.dart';
 import '../../../utils/helper/theme_manager.dart';
 import '../login/login_screen.dart';
 
@@ -30,9 +31,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   late double screenHeight;
   late double screenWidth;
 
-  void _onIntroEnd(context) {
-
-  }
+  void _onIntroEnd(context) {}
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +53,41 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           PageViewModel(
             title: '',
             body: '',
-            image: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/intro_one.png"),
-                  fit: BoxFit.cover,
+            image: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: screenHeight*0.15),
+                Image.asset(
+                  "assets/images/intro_one.png",
+                  fit: BoxFit.fill,
+                  height: 250,
                 ),
-              ),
-              child: null /* add child content here */,
+                SizedBox(height: screenHeight*0.05),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Increase \neffectiveness\nthe work',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 35),
+                  ),
+                ),
+                SizedBox(height: screenHeight*0.05),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: PrimaryButton(
+                      buttonText: 'Login to your workspace',
+                      onButtonPressed: () {
+                        //onRegistrationSubmit();
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                            (Route<dynamic> route) => false);
+                      }),
+                ),
+              ],
             ),
             decoration: pageDecoration.copyWith(
                 contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -72,32 +98,41 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           PageViewModel(
             title: '',
             body: '',
-            image: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/intro_two.png"),
-                  fit: BoxFit.cover,
+            image:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: screenHeight*0.15),
+                Image.asset(
+                  "assets/images/intro_two.png",
+                  fit: BoxFit.fill,
+                  height: 250,
                 ),
-              ),
-              child: null /* add child content here */,
-            ),
-            decoration: pageDecoration.copyWith(
-                contentMargin: const EdgeInsets.symmetric(horizontal: 16),
-                fullScreen: true,
-                imageFlex: 1,
-                pageColor: Colors.transparent),
-          ),
-          PageViewModel(
-            title: '',
-            body: '',
-            image: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/intro_three.png"),
-                  fit: BoxFit.cover,
+                SizedBox(height: screenHeight*0.05),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Adding \nvalue to\nwork',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 35),
+                  ),
                 ),
-              ),
-              child: null /* add child content here */,
+                SizedBox(height: screenHeight*0.05),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: PrimaryButton(
+                      buttonText: 'Login to your workspace',
+                      onButtonPressed: () {
+                        //onRegistrationSubmit();
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                                (Route<dynamic> route) => false);
+                      }),
+                ),
+              ],
             ),
             decoration: pageDecoration.copyWith(
                 contentMargin: const EdgeInsets.symmetric(horizontal: 16),

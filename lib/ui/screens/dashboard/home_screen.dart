@@ -6,9 +6,11 @@ import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rtl/ui/screens/dashboard/widget/navigation_drawer.dart';
 import 'package:rtl/ui/screens/leave/leavescreen.dart';
+import 'package:rtl/utils/helper/pref_utils.dart';
 
 import '../../../utils/helper/primary_button.dart';
 import '../../../utils/helper/theme_manager.dart';
+import '../leave/teamleavescreen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -54,10 +56,8 @@ class StateHomeScreen extends State<HomeScreen> {
     'assets/images/j4.png',
     'assets/images/j5.png',
   ];
-
   var _selectedDestination = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   late Size size;
 
   @override
@@ -87,7 +87,6 @@ class StateHomeScreen extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 5.0, left: 15),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Bounce(
                       onPressed: () {
@@ -121,11 +120,14 @@ class StateHomeScreen extends State<HomeScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(width: 10),
                     Expanded(
-                      child: Image.asset(
-                        "assets/images/logo.png",
-                        height: 30,
-                      ),
+                      child: Text('Hello, ${PrefUtils.getFirstName()}!',
+                          style: TextStyle(
+                              letterSpacing: 1,
+                              color: ThemeManager.colorBlack,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 20)),
                     ),
                     IconButton(
                       icon: Image.asset(
@@ -155,7 +157,7 @@ class StateHomeScreen extends State<HomeScreen> {
                           ),
                         ),
                         children: [
-                          SizedBox(height: 30),
+                          /*  SizedBox(height: 30),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
@@ -176,8 +178,8 @@ class StateHomeScreen extends State<HomeScreen> {
                                     color: ThemeManager.colorBlack,
                                     fontWeight: FontWeight.normal,
                                     fontSize: 14)),
-                          ),
-                          SizedBox(height: 40),
+                          ),*/
+                          SizedBox(height: 20),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
@@ -196,7 +198,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                 scrollDirection: Axis.horizontal,
                                 physics: BouncingScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: imagelist.length,
+                                itemCount: 1,
                                 itemBuilder: (BuildContext, index) {
                                   return rowMyFavouriteView(index);
                                 },
@@ -215,7 +217,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                         letterSpacing: 1,
                                         color: Colors.black,
                                         fontSize: 20,
-                                        fontWeight: FontWeight.w900),
+                                        fontWeight: FontWeight.w700),
                                   ),
                                 ),
                                 Bounce(
@@ -223,7 +225,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                     Navigator.push(
                                         context,
                                         PageTransition(
-                                            child: LeaveScreen(),
+                                            child: LeaveScreen(0),
                                             type: PageTransitionType.fade,
                                             duration: const Duration(
                                                 milliseconds: 900),
@@ -253,7 +255,147 @@ class StateHomeScreen extends State<HomeScreen> {
                                 ),
                               ],
                             ),
-                          )
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Text(
+                              'Announcements',
+                              style: TextStyle(
+                                  letterSpacing: 1,
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                          Container(
+                              width: double.infinity,
+                              height: 40,
+                              margin:
+                                  EdgeInsets.only(left: 20, right: 20, top: 10),
+                              padding: EdgeInsets.only(top: 10,left: 15),
+                              decoration: BoxDecoration(
+                                color: ThemeManager.colorWhite,
+                                border: Border.all(
+                                    color: Colors.blue.withOpacity(0.1),
+                                    width: 0.5),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 5.0, color: Colors.blue),
+                                ],
+                              ),
+                              child: Text(
+                                  'Welcome to the RTL digital transformation',
+                                  textAlign: TextAlign.start,
+                                  textScaleFactor: 1.0,
+                                  style: const TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600))),
+                          Container(
+                              width: double.infinity,
+                              height: 40,
+                              margin:
+                                  EdgeInsets.only(left: 20, right: 20, top: 15),
+                              padding: EdgeInsets.only(top: 10,left: 15),
+                              decoration: BoxDecoration(
+                                color: ThemeManager.colorWhite,
+                                border: Border.all(
+                                    color: Colors.blue.withOpacity(0.1),
+                                    width: 0.5),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 5.0, color: Colors.blue),
+                                ],
+                              ),
+                              child: Text('Taking care of plants and people',
+                                  textAlign: TextAlign.start,
+                                  textScaleFactor: 1.0,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600))),
+                          Container(
+                              width: double.infinity,
+                              height: 40,
+                              margin:
+                                  EdgeInsets.only(left: 20, right: 20, top: 15),
+                              padding: EdgeInsets.only(top: 10,left: 15),
+                              decoration: BoxDecoration(
+                                color: ThemeManager.colorWhite,
+                                border: Border.all(
+                                    color: Colors.blue.withOpacity(0.1),
+                                    width: 0.5),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 5.0, color: Colors.blue),
+                                ],
+                              ),
+                              child: Text(
+                                  'RTL is committed to the local community',
+                                  textAlign: TextAlign.start,
+                                  textScaleFactor: 1.0,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600))),
+                          Container(
+                              width: double.infinity,
+                              height: 40,
+                              margin:
+                                  EdgeInsets.only(left: 20, right: 20, top: 15),
+                              padding: EdgeInsets.only(top: 10,left: 15),
+                              decoration: BoxDecoration(
+                                color: ThemeManager.colorWhite,
+                                border: Border.all(
+                                    color: Colors.blue.withOpacity(0.1),
+                                    width: 0.5),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 5.0, color: Colors.blue),
+                                ],
+                              ),
+                              child: Text(
+                                  'RTL aims for zero loss time injuries',
+                                  textAlign: TextAlign.start,
+                                  textScaleFactor: 1.0,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600))),
+                          Container(
+                              width: double.infinity,
+                              height: 40,
+                              margin:
+                                  EdgeInsets.only(left: 20, right: 20, top: 15),
+                              padding: EdgeInsets.only(top: 10,left: 15),
+                              decoration: BoxDecoration(
+                                color: ThemeManager.colorWhite,
+                                border: Border.all(
+                                    color: Colors.blue.withOpacity(0.1),
+                                    width: 0.5),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 5.0, color: Colors.blue),
+                                ],
+                              ),
+                              child: Text(
+                                  'RTL is based in the Latrobe Valley',
+                                  textAlign: TextAlign.start,
+                                  textScaleFactor: 1.0,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600))),
                         ],
                       )),
                 ),
@@ -279,7 +421,7 @@ class StateHomeScreen extends State<HomeScreen> {
       },
       child: Container(
           height: 200,
-          width: 200,
+          width: 160,
           margin: EdgeInsets.only(left: 5, top: 5),
           decoration: BoxDecoration(
               image: DecorationImage(
@@ -292,14 +434,15 @@ class StateHomeScreen extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 20),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/images/task.png', height: 25),
-                  SizedBox(width: 5),
+                  SizedBox(width: 15),
                   Text(
-                    'Pre Start',
+                    'Leave',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -307,23 +450,48 @@ class StateHomeScreen extends State<HomeScreen> {
                   )
                 ],
               ),
-              SizedBox(height: 25),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 18, right: 18, top: 8, bottom: 8),
-                  child: Text(
-                    'Coming Soon',
-                    style: TextStyle(color: Colors.black, fontSize: 12),
+              Spacer(),
+              Bounce(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          child: TeamLeaveScreen(),
+                          type: PageTransitionType.fade,
+                          duration: const Duration(
+                              milliseconds: 900),
+                          reverseDuration: (const Duration(
+                              milliseconds: 900))));
+
+               /*   Navigator.push(
+                      context,
+                      PageTransition(
+                          child: LeaveScreen(0),
+                          type: PageTransitionType.fade,
+                          duration: const Duration(
+                              milliseconds: 900),
+                          reverseDuration: (const Duration(
+                              milliseconds: 900))));*/
+
+                },
+                duration: Duration(milliseconds: 110),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 18, right: 18, top: 8, bottom: 8),
+                    child: Text(
+                      'Review Requests',
+                      style: TextStyle(color: Colors.black, fontSize: 12,fontWeight: FontWeight.w700),
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 25),
-              Padding(
+              Spacer(),
+           /*   Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -338,7 +506,7 @@ class StateHomeScreen extends State<HomeScreen> {
               ),
               SizedBox(height: 5),
               LinearPercentIndicator(
-                width: 190.0,
+                width: 150.0,
                 lineHeight: 5.0,
                 percent: 0.5,
                 backgroundColor: Colors.indigo,
@@ -357,7 +525,8 @@ class StateHomeScreen extends State<HomeScreen> {
                         fontSize: 14),
                   ),
                 ),
-              ),
+              ),*/
+              SizedBox(height: 20),
             ],
           ) /*Align(
           alignment: Alignment.bottomLeft,
@@ -409,7 +578,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5))),
                             child: Image.asset(
-                              'assets/images/logo.png',
+                              'assets/images/logo.jpg',
                               height: size.height * 0.1,
                             ),
                           ),

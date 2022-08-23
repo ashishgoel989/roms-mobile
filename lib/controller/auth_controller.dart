@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
+import 'package:rtl/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../utils/constants/app_constants.dart';
@@ -21,14 +21,26 @@ class AuthController extends GetxController {
     _isLoading = true;
     update();
     print(data);
-    http.Response response = await http.post(Uri.parse(AppConstants.registration), body: jsonEncode(data));
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "content-type": "application/json",
+    };
+
+    http.Response response = await http.post(
+        Uri.parse(AppConstants.registration),
+        body: jsonEncode(data),
+        headers: headers);
+    print(response.body.toString());
+    Map? map;
     if (response != null && response.statusCode == 200) {
-      Map map = jsonDecode(response.body);
+      map = jsonDecode(response.body);
       print(response.body);
-      if (map['token'] !='') {
+      if (map!['token'] != '') {
         callback(true, map);
         _isLoading = false;
         PrefUtils.setUserToken(map['token']);
+        PrefUtils.setFirstName(map['userDetail']['firstName']);
+        PrefUtils.setUserID(map['userDetail']['id']);
         update();
       } else {
         _isLoading = false;
@@ -39,6 +51,7 @@ class AuthController extends GetxController {
         update();
       }
     } else {
+      callback(false,'');
       _isLoading = false;
       update();
     }

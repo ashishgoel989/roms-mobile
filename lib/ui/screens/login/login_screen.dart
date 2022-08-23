@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: size.height * 0.15),
                         Center(
                           child: Image.asset(
-                            'assets/images/logo.png',
+                            'assets/images/logo.jpg',
                             height: size.height * 0.10,
                           ),
                         ),
@@ -215,13 +215,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         PrimaryButton(
                             buttonText: 'LOGIN',
                             onButtonPressed: () {
-                              //onRegistrationSubmit();
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DashboardScreen()),
-                                      (Route<dynamic> route) => false);
+                              onRegistrationSubmit();
+                        /*     */
                             }),
                         SizedBox(
                           height: size.height * 0.04,
@@ -281,16 +276,21 @@ class _LoginScreenState extends State<LoginScreen> {
     else if (_passwordTextField.text.toString().isEmpty) {
       Utils.showErrorMessage(context, 'Please Enter Password');
     } else {
-      var data = {"name": "", "email": "", "password": ""};
+      var data = {"username": _emailTextEditingController.text.toString(), "password": _passwordTextField.text.toString(), "orgId": "ab905406-79a3-4e54-8244-d79fc0e60937"};
       _authController.login(data, callback);
     }
   }
 
-  callback(bool status, Map data) async {
+  callback(bool status, dynamic data) async {
     if (status == true) {
-      // ToastUtils.setToast(data['message']);
-
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  DashboardScreen()),
+              (Route<dynamic> route) => false);
     } else {
+      Utils.showErrorMessage(context, 'Not Authorised');
       //  ToastUtils.setToast(data['message']);
     }
   }

@@ -72,7 +72,7 @@ class ThemeManager {
       backgroundColor: ThemeManager.primaryColor,
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: ThemeManager.primaryColor, // Status bar
+        statusBarColor: Color(0xffFFF8E3), // Status bar
         statusBarBrightness: Brightness.light,//status bar brigtness
         statusBarIconBrightness: Brightness.dark, //status barIcon Brightness
       ),
