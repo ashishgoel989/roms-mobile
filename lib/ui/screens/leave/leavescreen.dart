@@ -80,7 +80,7 @@ class _LeaveScreenState extends State<LeaveScreen>
   String endDate = '--/--/--';
   LeaveController _leaveController = Get.find<LeaveController>();
 
-  int daycount = 0;
+  int daycount = 1;
 
   String TypeID = '';
 
@@ -318,8 +318,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             context: context,
                                                             initialDate:
                                                                 DateTime.now(),
-                                                            firstDate: DateTime
-                                                                    .now(),
+                                                            firstDate:
+                                                                DateTime.now(),
                                                             lastDate: DateTime(
                                                                 2030, 1),
                                                           ).then((value) => {
@@ -412,7 +412,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                               initialDate:
                                                                   DateTime
                                                                       .now(),
-                                                              firstDate: DateTime
+                                                              firstDate:
+                                                                  DateTime
                                                                       .now(),
                                                               lastDate:
                                                                   DateTime(
@@ -427,6 +428,11 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                   .difference(
                                                                       tempdate)
                                                                   .inDays;
+
+                                                              if (daycount ==
+                                                                  0) {
+                                                                daycount = 1;
+                                                              }
                                                               print(value
                                                                   .difference(
                                                                       tempdate)
@@ -496,7 +502,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                       ],
                                     ),
                                   ),
-                                  daycount < 1
+                                  daycount < 2
                                       ? Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -549,6 +555,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                       hours: int
                                                                           .parse(
                                                                               hourlist[index]))));
+                                                          daycount = 0;
                                                           _leaveController
                                                               .update();
                                                         },
@@ -631,6 +638,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                               'HH:mm:ss')
                                                                           .format(
                                                                               date);
+                                                                      daycount =
+                                                                          0;
                                                                       _leaveController
                                                                           .update();
                                                                       // _endTimeController.text = DateFormat.jm().format(date);
@@ -684,13 +693,15 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                               .difference(format.parse(starttime))
                                                                               .inHours
                                                                               .toString();
+                                                                          daycount =
+                                                                              0;
 
                                                                           if (int.parse(selectedHours) >
                                                                               8) {
                                                                             endtime =
                                                                                 '';
                                                                             Utils.showErrorToast(context,
-                                                                                'Durations should be less than 8 Hrs');
+                                                                                'Durations should be less than 8 hrs');
                                                                           } else {
                                                                             endtime =
                                                                                 temp;
@@ -996,7 +1007,7 @@ class _LeaveScreenState extends State<LeaveScreen>
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(2)),
               child: Text(
-                index==0 || index == 2 ? 'Personal' : '',
+                index == 0 || index == 2 ? 'Personal' : '',
                 style: TextStyle(color: colorlist[index], fontSize: 8),
               ),
             ),
@@ -1082,7 +1093,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                     style: TextStyle(
                         color: /*selectType == index
                             ? Colors.white
-                            : colorlist[index]*/Colors.black,
+                            : colorlist[index]*/
+                            Colors.black,
                         fontSize: 10,
                         fontWeight: FontWeight.w700),
                   ),
@@ -1109,7 +1121,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color:
-                          /*selectType == index ? Colors.white : colorlist[index]*/Colors.black,
+                          /*selectType == index ? Colors.white : colorlist[index]*/ Colors
+                              .black,
                       fontSize: 10,
                       fontWeight: FontWeight.w700),
                 ),
@@ -1127,15 +1140,16 @@ class _LeaveScreenState extends State<LeaveScreen>
                   '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.leavehistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.leavehistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color:
-                      Colors.black  /* selectType == index ? Colors.white : colorlist[index]*/,
+                      color: Colors
+                          .black /* selectType == index ? Colors.white : colorlist[index]*/,
                       fontSize: 10,
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(width: 15),
                 Expanded(
                   child: Text(
-                    _leaveController.leavehistoryList[index].totalDay.toString() +
+                    _leaveController.leavehistoryList[index].totalDay
+                            .toString() +
                         ' Days,   ' +
                         '${DateFormat('HH:mm a').format(DateTime.parse(_leaveController.leavehistoryList[index].startDateTime.toString())).toLowerCase()} to ${DateFormat('HH:mm a').format(DateTime.parse(_leaveController.leavehistoryList[index].endDateTime.toString())).toLowerCase()},     ' +
                         _leaveController.leavehistoryList[index].totalHour

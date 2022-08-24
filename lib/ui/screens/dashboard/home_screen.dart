@@ -6,11 +6,14 @@ import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rtl/ui/screens/dashboard/widget/navigation_drawer.dart';
 import 'package:rtl/ui/screens/leave/leavescreen.dart';
+import 'package:rtl/ui/screens/transfer_form/transfer_form_screen.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
 
 import '../../../utils/helper/primary_button.dart';
 import '../../../utils/helper/theme_manager.dart';
 import '../leave/teamleavescreen.dart';
+import '../profile/profile_screen.dart';
+import '../resignation_advice/resignation_advice_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -90,10 +93,20 @@ class StateHomeScreen extends State<HomeScreen> {
                   children: [
                     Bounce(
                       onPressed: () {
-                        /* Navigator.push(
+                        Navigator.push(
                             context,
                             PageTransition(
                                 child: ProfileScreen(),
+                                type: PageTransitionType.fade,
+                                duration: const Duration(milliseconds: 900),
+                                reverseDuration:
+                                    (const Duration(milliseconds: 900))));
+
+
+                        /* Navigator.push(
+                            context,
+                            PageTransition(
+                                child: TransferFormScreen(),
                                 type: PageTransitionType.fade,
                                 duration: const Duration(milliseconds: 900),
                                 reverseDuration:
@@ -306,7 +319,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                              /*  boxShadow: [
+                                /*  boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
                                 ],*/
@@ -331,7 +344,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                               /* boxShadow: [
+                                /* boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
                                 ],*/
@@ -357,7 +370,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                               /* boxShadow: [
+                                /* boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
                                 ],*/
@@ -383,7 +396,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                     width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                               /* boxShadow: [
+                                /* boxShadow: [
                                   BoxShadow(
                                       blurRadius: 5.0, color: Colors.blue),
                                 ],*/
