@@ -103,14 +103,7 @@ class StateHomeScreen extends State<HomeScreen> {
                                     (const Duration(milliseconds: 900))));
 
 
-                        /* Navigator.push(
-                            context,
-                            PageTransition(
-                                child: TransferFormScreen(),
-                                type: PageTransitionType.fade,
-                                duration: const Duration(milliseconds: 900),
-                                reverseDuration:
-                                    (const Duration(milliseconds: 900))));*/
+                        /**/
                       },
                       duration: Duration(microseconds: 110),
                       child: Hero(
@@ -301,10 +294,9 @@ class StateHomeScreen extends State<HomeScreen> {
                               child: Text(
                                   'Welcome to the RTL digital transformation',
                                   textAlign: TextAlign.start,
-                                  textScaleFactor: 1.0,
                                   style: const TextStyle(
                                       color: Color(0xff000000),
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w400))),
                           Container(
                               width: double.infinity,
@@ -326,10 +318,9 @@ class StateHomeScreen extends State<HomeScreen> {
                               ),
                               child: Text('Taking care of plants and people',
                                   textAlign: TextAlign.start,
-                                  textScaleFactor: 1.0,
                                   style: const TextStyle(
                                       color: Color(0xff000000),
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w400))),
                           Container(
                               width: double.infinity,
@@ -352,10 +343,9 @@ class StateHomeScreen extends State<HomeScreen> {
                               child: Text(
                                   'RTL is committed to the local community',
                                   textAlign: TextAlign.start,
-                                  textScaleFactor: 1.0,
                                   style: const TextStyle(
                                       color: Color(0xff000000),
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w400))),
                           Container(
                               width: double.infinity,
@@ -378,10 +368,9 @@ class StateHomeScreen extends State<HomeScreen> {
                               child: Text(
                                   'RTL aims for zero loss time injuries',
                                   textAlign: TextAlign.start,
-                                  textScaleFactor: 1.0,
                                   style: const TextStyle(
                                       color: Color(0xff000000),
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w400))),
                           Container(
                               width: double.infinity,
@@ -403,10 +392,9 @@ class StateHomeScreen extends State<HomeScreen> {
                               ),
                               child: Text('RTL is based in the Latrobe Valley',
                                   textAlign: TextAlign.start,
-                                  textScaleFactor: 1.0,
                                   style: const TextStyle(
                                       color: Color(0xff000000),
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w400))),
                         ],
                       )),
@@ -501,7 +489,7 @@ class StateHomeScreen extends State<HomeScreen> {
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),

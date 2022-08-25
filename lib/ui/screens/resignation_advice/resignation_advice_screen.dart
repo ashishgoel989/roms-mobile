@@ -167,14 +167,14 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                               child: Text('Name',
                                   style: TextStyle(
                                       color: Colors.black54,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14))),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12))),
                           Expanded(
                               child: Text('Matthew Mcconaughey',
                                   style: TextStyle(
                                       color: Colors.black54,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14)))
+                                      fontSize: 12)))
                         ],
                       ),
                       Row(
@@ -183,14 +183,14 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                               child: Text('Employee number',
                                   style: TextStyle(
                                       color: Colors.black54,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14))),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12))),
                           Expanded(
                               child: Text('RTL1199',
                                   style: TextStyle(
                                       color: Colors.black54,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14)))
+                                      fontSize: 12)))
                         ],
                       ),
                       SizedBox(height: 5),
@@ -284,7 +284,7 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Resign',
+                            Text('RESIGN',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,

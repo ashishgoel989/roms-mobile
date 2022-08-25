@@ -66,10 +66,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    'Increase \neffectiveness\nthe work',
+                    'Manage \nOperation\nin real time',
                     style: TextStyle(
                         color: Colors.black,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                         fontSize: 35),
                   ),
                 ),
@@ -111,10 +111,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    'Adding \nvalue to\nwork',
+                    'All employee \nservices\nin your hand',
                     style: TextStyle(
                         color: Colors.black,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                         fontSize: 35),
                   ),
                 ),
@@ -144,7 +144,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         onDone: () => _onIntroEnd(context),
         onSkip: () => _onIntroEnd(context),
         // You can override onSkip callback
-        showSkipButton: true,
+        showSkipButton: false,
         globalBackgroundColor: Colors.white,
         skip: GestureDetector(
           onTap: () {

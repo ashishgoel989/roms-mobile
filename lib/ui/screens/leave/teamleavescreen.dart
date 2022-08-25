@@ -226,7 +226,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
         .toString();
 
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: EdgeInsets.symmetric(vertical: 8),
       child: Column(
         children: [
           Container(
@@ -266,13 +266,17 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                 ),
                 Container(
                   height: 50,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  width: 100,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   color: Colors.deepPurpleAccent.withOpacity(0.2),
                   child: Center(
                       child: Text(
                     _leaveController.teamLeaveRequestList[index].leaveType!
                         .leaveDescription!,
-                    style: TextStyle(color: Colors.deepPurpleAccent),
+                    textAlign: TextAlign.center,
+                        maxLines: 2,
+                        style:
+                        TextStyle(color: Colors.deepPurpleAccent, fontSize: 10),
                   )),
                 )
               ],
@@ -284,7 +288,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
             child: Row(
               children: [
                 Text(
-                  '${DateFormat('dd-MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd-MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    $day Day  ${_leaveController.teamLeaveRequestList[index].totalHour} Hrs',
+                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveRequestList[index].totalHour} Hrs',
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 )
               ],
@@ -375,7 +379,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
         .toString();
 
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: EdgeInsets.symmetric(vertical: 8),
       child: Column(
         children: [
           Container(
@@ -416,14 +420,18 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                 ),
                 Container(
                   height: 50,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  width: 100,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   color: Colors.deepPurpleAccent.withOpacity(0.2),
                   child: Center(
                       child: Text(
                     _leaveController
                         .teamLeaveHistoryList[index].leaveType!.leaveDescription
                         .toString(),
-                    style: TextStyle(color: Colors.deepPurpleAccent),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        style:
+                        TextStyle(color: Colors.deepPurpleAccent, fontSize: 10),
                   )),
                 )
               ],
@@ -435,7 +443,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
             child: Row(
               children: [
                 Text(
-                  '${DateFormat('dd-MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd-MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    $day Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
+                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 )
               ],
@@ -591,6 +599,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                   ),
                                   Container(
                                     height: 50,
+                                    width: 100,
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 20),
                                     color: Colors.deepPurpleAccent
@@ -601,8 +610,10 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                           .teamLeaveRequestList[index]
                                           .leaveType!
                                           .leaveDescription!,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
                                       style: TextStyle(
-                                          color: Colors.deepPurpleAccent),
+                                          color: Colors.deepPurpleAccent,fontSize: 10),
                                     )),
                                   )
                                 ],
@@ -615,12 +626,11 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      '${DateFormat('dd-MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd-MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    $day Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
+                                      '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12),
                                     ),
                                   ),
-
                                   SizedBox(width: 20),
                                 ],
                               ),
@@ -630,16 +640,15 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                 padding: EdgeInsets.all(5),
                                 margin: EdgeInsets.symmetric(horizontal: 20),
                                 decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
                                         color: ThemeManager.colorGrey)),
                                 child: Center(
                                   child: Text(
-                                    _leaveController
-                                        .teamLeaveRequestList[index]
+                                    _leaveController.teamLeaveRequestList[index]
                                         .leaveReason!,
-                                    style: TextStyle(color: Colors.black),
+                                    maxLines: 2,
+                                    style: TextStyle(color: Colors.black,fontSize: 10),
                                   ),
                                 )),
                             SizedBox(height: 20),

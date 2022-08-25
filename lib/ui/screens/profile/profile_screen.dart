@@ -39,6 +39,20 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   String starttime = '--:--:--';
   String endtime = '--:--:--';
+  List<Color> colorlist = [
+    Color(0xff764AF1),
+    Color(0xff947EC3),
+    Color(0xffF56D91),
+    Color(0xff764AF1),
+    Color(0xff947EC3),
+    Color(0xffF56D91),
+    Color(0xff764AF1),
+    Color(0xff947EC3),
+    Color(0xffF56D91),
+    Color(0xff764AF1),
+    Color(0xff947EC3),
+    Color(0xffF56D91),
+  ];
 
   @override
   void initState() {
@@ -72,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -116,6 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Image.asset(
                               'assets/images/profile_image.png',
                               fit: BoxFit.fill,
+                              height: 80,
                             ),
                           )
                         ],
@@ -203,13 +218,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Container(
                               height: 40,
                               decoration: BoxDecoration(
+                                color: colorlist[0],
                                   border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(15)),
                               child: Center(
                                 child: Text(
                                   'Service 1',
                                   style: TextStyle(
-                                      color: Colors.black54,
+                                      color: Colors.white,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -221,13 +237,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Container(
                               height: 40,
                               decoration: BoxDecoration(
+                                  color: colorlist[1],
                                   border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(15)),
                               child: Center(
                                 child: Text(
                                   'Service 2',
                                   style: TextStyle(
-                                      color: Colors.black54,
+                                      color: Colors.white,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -243,13 +260,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Container(
                               height: 40,
                               decoration: BoxDecoration(
+                                  color: colorlist[2],
                                   border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(15)),
                               child: Center(
                                 child: Text(
                                   'Service 3',
                                   style: TextStyle(
-                                      color: Colors.black54,
+                                      color: Colors.white,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -274,14 +292,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                               child: Container(
                                 height: 40,
                                 decoration: BoxDecoration(
-                                    color: Colors.blueAccent.shade100,
+                                    color: Colors.deepPurple.shade300,
                                     border: Border.all(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(15)),
                                 child: Center(
                                   child: Text(
-                                    'Apply Resign',
+                                    'Resign',
                                     style: TextStyle(
-                                        color: Colors.black54,
+                                        color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -298,7 +316,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       SizedBox(height: 10),
                       Row(
                         children: [
-                          Switch(value: true, onChanged: (value) {}),
+                          Switch(value: true,activeColor: Colors.blue, onChanged: (value) {}),
                           Flexible(
                             child: Text(
                               'I wish to receive my payslip in my E-mail stated above.',

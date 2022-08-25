@@ -161,7 +161,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   FilteringTextInputFormatter.deny(
                                       RegExp(regexToRemoveEmoji))
                                 ],
-                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (value) {
+                                  onRegistrationSubmit();
+                                },
+                                textInputAction: TextInputAction.done,
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -216,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             buttonText: 'LOGIN',
                             onButtonPressed: () {
                               onRegistrationSubmit();
-                        /*     */
+                              /*     */
                             }),
                         SizedBox(
                           height: size.height * 0.04,
@@ -276,7 +279,11 @@ class _LoginScreenState extends State<LoginScreen> {
     else if (_passwordTextField.text.toString().isEmpty) {
       Utils.showErrorMessage(context, 'Please Enter Password');
     } else {
-      var data = {"username": _emailTextEditingController.text.toString(), "password": _passwordTextField.text.toString(), "orgId": "ab905406-79a3-4e54-8244-d79fc0e60937"};
+      var data = {
+        "username": _emailTextEditingController.text.toString(),
+        "password": _passwordTextField.text.toString(),
+        "orgId": "ab905406-79a3-4e54-8244-d79fc0e60937"
+      };
       _authController.login(data, callback);
     }
   }
@@ -285,10 +292,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (status == true) {
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  DashboardScreen()),
-              (Route<dynamic> route) => false);
+          MaterialPageRoute(builder: (context) => DashboardScreen()),
+          (Route<dynamic> route) => false);
     } else {
       Utils.showErrorMessage(context, 'Not Authorised');
       //  ToastUtils.setToast(data['message']);

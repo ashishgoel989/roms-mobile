@@ -23,7 +23,6 @@ class TransferFormScreen extends StatefulWidget {
 class _TransferFormScreenState extends State<TransferFormScreen>
     with SingleTickerProviderStateMixin {
   List<String> daylist = [
-    'Yesterday',
     'Today',
     'Tomorrow',
     'Day After',
@@ -76,7 +75,7 @@ class _TransferFormScreenState extends State<TransferFormScreen>
   ];
 
   var selectDay = 1;
-  var selectType = 0;
+  var selectType = true;
   var selectedHours = '0';
   var selectDuration;
 
@@ -163,39 +162,57 @@ class _TransferFormScreenState extends State<TransferFormScreen>
                     Row(
                       children: [
                         Expanded(
-                          child: Container(
+                          child: Bounce(
+                            duration: Duration(milliseconds: 110),
+                            onPressed: () {
+                              selectType = true;
+                              setState(() {});
+                            },
+                            child: Container(
+                                height: 40,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 5),
+                                margin: EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
+                                  color: selectType
+                                      ? ThemeManager.primaryColor
+                                      : Color(0xffFFDDCE),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Permanent Transfer',
+                                    style: TextStyle(
+                                        fontSize: 10, color: Colors.black),
+                                  ),
+                                )),
+                          ),
+                        ),
+                        Expanded(
+                          child: Bounce(
+                            duration: Duration(milliseconds: 110),
+                            onPressed: () {
+                              selectType = false;
+                              setState(() {});
+                            },
+                            child: Container(
                               height: 40,
+                              margin: EdgeInsets.only(left: 10),
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
-                              margin: EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
-                                color: Color(0xffFFDDCE),
+                                color: selectType
+                                    ? Color(0xffFFDDCE)
+                                    : ThemeManager.primaryColor,
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Center(
-                                child: Text(
-                                  'Permanent Transfer',
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.black),
-                                ),
+                                  child: Text(
+                                'Temporary Transfer',
+                                style: TextStyle(
+                                    fontSize: 10, color: Colors.black),
                               )),
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: 40,
-                            margin: EdgeInsets.only(left: 10),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: Color(0xffFFDDCE),
-                              borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Center(
-                                child: Text(
-                              'Temporary Transfer',
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.black),
-                            )),
                           ),
                         ),
                       ],
@@ -291,7 +308,7 @@ class _TransferFormScreenState extends State<TransferFormScreen>
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Employee Number         RTL1199',
+                      'Employee Number - ',
                       style: TextStyle(color: Colors.black54),
                     ),
                     SizedBox(height: 15),
@@ -565,11 +582,13 @@ class _TransferFormScreenState extends State<TransferFormScreen>
                                                       DateFormat('yyyy-MM-dd')
                                                           .format(value);
                                                 }
-                                                _leaveController.update();
+                                                setState(() {});
+                                                // _leaveController.update();
                                               });
                                             },
                                             child: Text(
-                                              endDate,
+                                              DateFormat('dd/MM/yyyy').format(
+                                                  DateTime.parse(endDate)),
                                               textScaleFactor: 1.0,
                                               style: TextStyle(
                                                   color: Colors.black45,
@@ -626,11 +645,12 @@ class _TransferFormScreenState extends State<TransferFormScreen>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Request Supervisor',
+                          Text('REQUEST SUPERVISOR',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700)),
+                          SizedBox(width: 15),
                           Icon(
                             Icons.arrow_forward,
                             color: Colors.white,
@@ -639,7 +659,6 @@ class _TransferFormScreenState extends State<TransferFormScreen>
                       ),
                     ),
                     SizedBox(height: 20),
-
                   ],
                 ),
               ),
@@ -650,7 +669,38 @@ class _TransferFormScreenState extends State<TransferFormScreen>
     return Bounce(
       onPressed: () {
         selectDay = index;
-        _leaveController.update();
+        if (index == 3) {
+          var friday = 5;
+          var now = new DateTime.now();
+
+          while (now.weekday != friday) {
+            now = now.add(new Duration(days: 1));
+          }
+          print('Recent monday $now');
+          currentDate = DateFormat('yyyy-MM-dd').format(now);
+          print(currentDate);
+          endDate = currentDate;
+          print(endDate);
+        } else if (index == 4) {
+          var monday = 1;
+          var now = new DateTime.now();
+          while (now.weekday != monday) {
+            now = now.add(new Duration(days: 1));
+          }
+          print('Recent monday $now');
+          currentDate = DateFormat('yyyy-MM-dd').format(now);
+          print(currentDate);
+          endDate = currentDate;
+          print(endDate);
+        } else {
+          currentDate = DateFormat('yyyy-MM-dd')
+              .format(DateTime.now().add(Duration(days: selectDay - 1)));
+          print(currentDate);
+          endDate = currentDate;
+          print(endDate);
+        }
+        setState(() {});
+        //_leaveController.update();
       },
       duration: Duration(milliseconds: 110),
       child: Container(
@@ -659,7 +709,7 @@ class _TransferFormScreenState extends State<TransferFormScreen>
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         decoration: BoxDecoration(
             color: selectDay == index
-                ? Color(0xffA760FF)
+                ? colorlist[index]
                 : colorlist[index].withOpacity(0.2),
             borderRadius: BorderRadius.circular(5)),
         child: Center(

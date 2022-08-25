@@ -318,8 +318,10 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             context: context,
                                                             initialDate:
                                                                 DateTime.now(),
-                                                            firstDate:
-                                                                DateTime.now(),
+                                                            firstDate: DateTime
+                                                                    .now()
+                                                                .add(Duration(
+                                                                    days: -30)),
                                                             lastDate: DateTime(
                                                                 2030, 1),
                                                           ).then((value) => {
@@ -342,7 +344,11 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                               });
                                                         },
                                                         child: Text(
-                                                          currentDate,
+                                                          DateFormat(
+                                                                  'dd/MM/yyyy')
+                                                              .format(DateTime
+                                                                  .parse(
+                                                                      currentDate)),
                                                           textScaleFactor: 1.0,
                                                           style: TextStyle(
                                                               color: Colors
@@ -412,9 +418,11 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                               initialDate:
                                                                   DateTime
                                                                       .now(),
-                                                              firstDate:
-                                                                  DateTime
-                                                                      .now(),
+                                                              firstDate: DateTime
+                                                                      .now()
+                                                                  .add(Duration(
+                                                                      days:
+                                                                          -30)),
                                                               lastDate:
                                                                   DateTime(
                                                                       2030, 1),
@@ -456,7 +464,11 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             });
                                                           },
                                                           child: Text(
-                                                            endDate,
+                                                            DateFormat(
+                                                                    'dd/MM/yyyy')
+                                                                .format(DateTime
+                                                                    .parse(
+                                                                        endDate)),
                                                             textScaleFactor:
                                                                 1.0,
                                                             style: TextStyle(
@@ -902,7 +914,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                             'Please Select Leave Type');
                                       } else {
                                         var data =
-                                            '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${currentDate} ${starttime == '--:--:--' ? '00:00:00' : starttime}","strEndDateTime": "${endDate} ${endtime == '--:--:--' ? '00:00:00' : endtime}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
+                                            '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${currentDate} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(starttime).add(Duration(hours: 4, minutes: 30)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${endDate} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(endtime).add(Duration(hours: 4, minutes: 30)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
+                                        print(data);
                                         _leaveController.requestLeave(
                                             data, callback);
                                       }
@@ -949,12 +962,48 @@ class _LeaveScreenState extends State<LeaveScreen>
   Widget dayrowView(int index) {
     return Bounce(
       onPressed: () {
-        selectDay = index;
-        currentDate = DateFormat('dd-MM-yyyy')
-            .format(DateTime.now().add(Duration(days: selectDay - 1)));
-        print(currentDate);
-        endDate = currentDate;
-        print(endDate);
+
+        if(index==4) {
+          var friday = 5;
+          var now = new DateTime.now();
+
+          while (now.weekday != friday) {
+            now = now.add(new Duration(days: 1));
+          }
+
+          print('Recent monday $now');
+          selectDay = index;
+          currentDate = DateFormat('yyyy-MM-dd')
+              .format(now);
+          print(currentDate);
+          endDate = currentDate;
+          print(endDate);
+        }else if(index==5){
+          var monday = 1;
+          var now = new DateTime.now();
+
+          while (now.weekday != monday) {
+            now = now.add(new Duration(days: 1));
+          }
+
+          print('Recent monday $now');
+          selectDay = index;
+          currentDate = DateFormat('yyyy-MM-dd')
+              .format(now);
+          print(currentDate);
+          endDate = currentDate;
+          print(endDate);
+        }else {
+          selectDay = index;
+          currentDate = DateFormat('yyyy-MM-dd')
+              .format(DateTime.now().add(Duration(days: selectDay - 1)));
+          print(currentDate);
+          endDate = currentDate;
+          print(endDate);
+        }
+
+
+
         _leaveController.update();
       },
       duration: Duration(milliseconds: 110),
@@ -964,7 +1013,7 @@ class _LeaveScreenState extends State<LeaveScreen>
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         decoration: BoxDecoration(
             color: selectDay == index
-                ? Color(0xffA760FF)
+                ? colorlist[index]
                 : colorlist[index].withOpacity(0.2),
             borderRadius: BorderRadius.circular(5)),
         child: Center(
@@ -1007,7 +1056,7 @@ class _LeaveScreenState extends State<LeaveScreen>
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(2)),
               child: Text(
-                index == 0 || index == 2 ? 'Personal' : '',
+                index == 0 || index == 2 ? '' : '',
                 style: TextStyle(color: colorlist[index], fontSize: 8),
               ),
             ),
@@ -1067,7 +1116,7 @@ class _LeaveScreenState extends State<LeaveScreen>
           children: [
             SizedBox(height: 5),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 5),
+              padding: const EdgeInsets.only(left: 5.0, top: 5),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -1084,7 +1133,7 @@ class _LeaveScreenState extends State<LeaveScreen>
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(width: 15),
+                SizedBox(width: 5),
                 Expanded(
                   child: Text(
                     _leaveController
@@ -1135,7 +1184,7 @@ class _LeaveScreenState extends State<LeaveScreen>
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(width: 15),
+                SizedBox(width: 5),
                 Text(
                   '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.leavehistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.leavehistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}',
                   textAlign: TextAlign.start,

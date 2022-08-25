@@ -7,10 +7,10 @@ class TeamLeaveRequestResponser {
 
   TeamLeaveRequestResponser(
       {this.totalElement,
-        this.numberOfelement,
-        this.data,
-        this.currentPageNmber,
-        this.totalPage});
+      this.numberOfelement,
+      this.data,
+      this.currentPageNmber,
+      this.totalPage});
 
   TeamLeaveRequestResponser.fromJson(Map<String, dynamic> json) {
     totalElement = json['totalElement'];
@@ -50,6 +50,7 @@ class DataTeamRequest {
   String? startDateTime;
   String? endDateTime;
   dynamic? strStartDateTime;
+  dynamic totalDay;
   dynamic? strEndDateTime;
   dynamic? totalHour;
   String? leaveReason;
@@ -60,23 +61,24 @@ class DataTeamRequest {
 
   DataTeamRequest(
       {this.id,
-        this.createDate,
-        this.createBy,
-        this.lastUpdateDate,
-        this.updateBy,
-        this.leaveType,
-        this.applyDate,
-        this.leaveStatus,
-        this.startDateTime,
-        this.endDateTime,
-        this.strStartDateTime,
-        this.strEndDateTime,
-        this.totalHour,
-        this.leaveReason,
-        this.reviewerRemark,
-        this.dateOfApproval,
-        this.employe,
-        this.approver});
+      this.createDate,
+      this.createBy,
+      this.lastUpdateDate,
+      this.updateBy,
+      this.leaveType,
+      this.applyDate,
+      this.leaveStatus,
+      this.startDateTime,
+      this.endDateTime,
+      this.strStartDateTime,
+      this.strEndDateTime,
+      this.totalHour,
+      this.totalDay,
+      this.leaveReason,
+      this.reviewerRemark,
+      this.dateOfApproval,
+      this.employe,
+      this.approver});
 
   DataTeamRequest.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -96,6 +98,7 @@ class DataTeamRequest {
     strStartDateTime = json['strStartDateTime'];
     strEndDateTime = json['strEndDateTime'];
     totalHour = json['totalHour'];
+    totalDay = json['totalDay'];
     leaveReason = json['leaveReason'];
     reviewerRemark = json['reviewerRemark'];
     dateOfApproval = json['dateOfApproval'];
@@ -126,6 +129,7 @@ class DataTeamRequest {
     data['strStartDateTime'] = this.strStartDateTime;
     data['strEndDateTime'] = this.strEndDateTime;
     data['totalHour'] = this.totalHour;
+    data['totalDay'] = this.totalDay;
     data['leaveReason'] = this.leaveReason;
     data['reviewerRemark'] = this.reviewerRemark;
     data['dateOfApproval'] = this.dateOfApproval;
@@ -163,25 +167,25 @@ class CreateBy {
 
   CreateBy(
       {this.id,
-        this.createDate,
-        this.createBy,
-        this.lastUpdateDate,
-        this.updateBy,
-        this.userId,
-        this.authenticatonType,
-        this.apppassword,
-        this.employeId,
-        this.disableFlag,
-        this.endDate,
-        this.passwordExpiryFlag,
-        this.role,
-        this.enabled,
-        this.authorities,
-        this.accountNonExpired,
-        this.credentialsNonExpired,
-        this.accountNonLocked,
-        this.username,
-        this.password});
+      this.createDate,
+      this.createBy,
+      this.lastUpdateDate,
+      this.updateBy,
+      this.userId,
+      this.authenticatonType,
+      this.apppassword,
+      this.employeId,
+      this.disableFlag,
+      this.endDate,
+      this.passwordExpiryFlag,
+      this.role,
+      this.enabled,
+      this.authorities,
+      this.accountNonExpired,
+      this.credentialsNonExpired,
+      this.accountNonLocked,
+      this.username,
+      this.password});
 
   CreateBy.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -264,25 +268,25 @@ class CreateBy1 {
 
   CreateBy1(
       {this.id,
-        this.createDate,
-        this.createBy,
-        this.lastUpdateDate,
-        this.updateBy,
-        this.userId,
-        this.authenticatonType,
-        this.apppassword,
-        this.employeId,
-        this.disableFlag,
-        this.endDate,
-        this.passwordExpiryFlag,
-        this.role,
-        this.enabled,
-        this.authorities,
-        this.accountNonExpired,
-        this.credentialsNonExpired,
-        this.accountNonLocked,
-        this.username,
-        this.password});
+      this.createDate,
+      this.createBy,
+      this.lastUpdateDate,
+      this.updateBy,
+      this.userId,
+      this.authenticatonType,
+      this.apppassword,
+      this.employeId,
+      this.disableFlag,
+      this.endDate,
+      this.passwordExpiryFlag,
+      this.role,
+      this.enabled,
+      this.authorities,
+      this.accountNonExpired,
+      this.credentialsNonExpired,
+      this.accountNonLocked,
+      this.username,
+      this.password});
 
   CreateBy1.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -363,27 +367,27 @@ class EmployeId {
 
   EmployeId(
       {this.id,
-        this.createDate,
-        this.createBy,
-        this.lastUpdateDate,
-        this.updateBy,
-        this.firstName,
-        this.middleName,
-        this.lastName,
-        this.nickName,
-        this.phoneticName,
-        this.jobTitle,
-        this.pronoun,
-        this.phone,
-        this.email,
-        this.birthdate,
-        this.gender,
-        this.startDate,
-        this.endDate,
-        this.indigenousFlag,
-        this.employeType,
-        this.departmentIdx,
-        this.profileImage});
+      this.createDate,
+      this.createBy,
+      this.lastUpdateDate,
+      this.updateBy,
+      this.firstName,
+      this.middleName,
+      this.lastName,
+      this.nickName,
+      this.phoneticName,
+      this.jobTitle,
+      this.pronoun,
+      this.phone,
+      this.email,
+      this.birthdate,
+      this.gender,
+      this.startDate,
+      this.endDate,
+      this.indigenousFlag,
+      this.employeType,
+      this.departmentIdx,
+      this.profileImage});
 
   EmployeId.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -452,11 +456,11 @@ class EmployeType {
 
   EmployeType(
       {this.id,
-        this.createDate,
-        this.createBy,
-        this.lastUpdateDate,
-        this.updateBy,
-        this.name});
+      this.createDate,
+      this.createBy,
+      this.lastUpdateDate,
+      this.updateBy,
+      this.name});
 
   EmployeType.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -505,27 +509,27 @@ class EmployeId1 {
 
   EmployeId1(
       {this.id,
-        this.createDate,
-        this.createBy,
-        this.lastUpdateDate,
-        this.updateBy,
-        this.firstName,
-        this.middleName,
-        this.lastName,
-        this.nickName,
-        this.phoneticName,
-        this.jobTitle,
-        this.pronoun,
-        this.phone,
-        this.email,
-        this.birthdate,
-        this.gender,
-        this.startDate,
-        this.endDate,
-        this.indigenousFlag,
-        this.employeType,
-        this.departmentIdx,
-        this.profileImage});
+      this.createDate,
+      this.createBy,
+      this.lastUpdateDate,
+      this.updateBy,
+      this.firstName,
+      this.middleName,
+      this.lastName,
+      this.nickName,
+      this.phoneticName,
+      this.jobTitle,
+      this.pronoun,
+      this.phone,
+      this.email,
+      this.birthdate,
+      this.gender,
+      this.startDate,
+      this.endDate,
+      this.indigenousFlag,
+      this.employeType,
+      this.departmentIdx,
+      this.profileImage});
 
   EmployeId1.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -600,13 +604,13 @@ class LeaveType {
 
   LeaveType(
       {this.id,
-        this.createDate,
-        this.createBy,
-        this.lastUpdateDate,
-        this.updateBy,
-        this.name,
-        this.leaveDescription,
-        this.numberDaysAllowed});
+      this.createDate,
+      this.createBy,
+      this.lastUpdateDate,
+      this.updateBy,
+      this.name,
+      this.leaveDescription,
+      this.numberDaysAllowed});
 
   LeaveType.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -632,4 +636,3 @@ class LeaveType {
     return data;
   }
 }
-

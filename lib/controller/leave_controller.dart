@@ -107,25 +107,22 @@ class LeaveController extends GetxController {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
     print(headers);
-    http.Response response =
-        await http.get(Uri.parse(AppConstants.team_leave_request), headers: headers);
+    http.Response response = await http
+        .get(Uri.parse(AppConstants.team_leave_request), headers: headers);
     print('response : ' + response.body.toString());
     if (response != null && response.statusCode == 200) {
       Map map = jsonDecode(response.body);
       print(response.body);
       if (map['token'] != '') {
         TeamLeaveRequestResponser teamLeaveRequestResponser =
-        TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
+            TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _teamleaveRequestList = teamLeaveRequestResponser.data!;
         _isLoading = false;
         update();
       } else {
         _isLoading = false;
-        callback(
-          false,
-          map,
-        );
+        callback(false, map);
         update();
       }
     } else {
@@ -141,15 +138,15 @@ class LeaveController extends GetxController {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
     print(headers);
-    http.Response response =
-        await http.get(Uri.parse(AppConstants.team_leave_history), headers: headers);
+    http.Response response = await http
+        .get(Uri.parse(AppConstants.team_leave_history), headers: headers);
     print('response : ' + response.body.toString());
     if (response != null && response.statusCode == 200) {
       Map map = jsonDecode(response.body);
       print(response.body);
       if (map['token'] != '') {
         TeamLeaveRequestResponser teamLeaveRequestResponser =
-        TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
+            TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _teamleaveHistoryList = teamLeaveRequestResponser.data!;
         _isLoading = false;
@@ -203,6 +200,7 @@ class LeaveController extends GetxController {
       update();
     }
   }
+
   Future ApproveRequest(data, callback) async {
     _isLoading = true;
     Map<String, String> headers = {
@@ -236,6 +234,7 @@ class LeaveController extends GetxController {
       update();
     }
   }
+
   Future DeclineRequest(data, callback) async {
     _isLoading = true;
     Map<String, String> headers = {

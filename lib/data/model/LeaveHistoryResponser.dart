@@ -52,7 +52,7 @@ class DataHistory {
   dynamic? strStartDateTime;
   dynamic? strEndDateTime;
   dynamic? totalHour;
-  dynamic? totalDay;
+  dynamic totalDay;
   String? leaveReason;
   String? reviewerRemark;
   String? dateOfApproval;

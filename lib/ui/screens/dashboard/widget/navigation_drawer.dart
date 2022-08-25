@@ -7,6 +7,7 @@ import 'package:rtl/utils/helper/pref_utils.dart';
 import '../../../../utils/helper/primary_button.dart';
 import '../../../../utils/helper/theme_manager.dart';
 import '../../login/login_screen.dart';
+import '../../transfer_form/transfer_form_screen.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -76,7 +77,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           ),
                         ),
                         title: Text(
-                          'About Us',
+                          'Transfer Form',
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w700,
@@ -85,15 +86,14 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         selected: _selectedDestination == 0,
                         onTap: () {
                           Navigator.pop(context);
-                         /* Navigator.push(
+                          Navigator.push(
                               context,
                               PageTransition(
-                                  child: AboutusScreen(),
+                                  child: TransferFormScreen(),
                                   type: PageTransitionType.fade,
-                                  duration:
-                                      const Duration(milliseconds: 900),
+                                  duration: const Duration(milliseconds: 900),
                                   reverseDuration:
-                                      (const Duration(milliseconds: 900))));*/
+                                  (const Duration(milliseconds: 900))));
                         }),
                     ListTile(
                         leading: Padding(
