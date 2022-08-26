@@ -55,213 +55,226 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: AnimationLimiter(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: AnimationConfiguration.toStaggeredList(
-                      duration: const Duration(milliseconds: 400),
-                      childAnimationBuilder: (widget) => SlideAnimation(
-                        child: SlideAnimation(
-                          child: widget,
-                        ),
-                      ),
-                      children: [
-                        SizedBox(height: size.height * 0.15),
-                        Center(
-                          child: Image.asset(
-                            'assets/images/logo.jpg',
-                            height: size.height * 0.10,
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.05,
-                        ),
-                        Text(
-                          'Log In',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.05,
-                        ),
-                        Text(
-                          'Username',
-                          style: TextStyle(color: Colors.black, fontSize: 14),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: Colors.grey.withOpacity(0.3))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: TextFormField(
-                                controller: _emailTextEditingController,
-                                keyboardType: TextInputType.emailAddress,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.deny(
-                                      RegExp(regexToRemoveEmoji))
-                                ],
-                                textInputAction: TextInputAction.next,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                decoration: InputDecoration(
-                                    /*  suffixIcon: Icon(
-                                      validEmail
-                                          ? Icons.check_circle
-                                          : Icons.check_circle_outline,
-                                      size: 22,
-                                      color: validEmail
-                                          ? ThemeManager.primaryText
-                                          : Colors.grey,
-                                    ),*/
-                                    hintText: 'Username',
-                                    hintStyle: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                    border: InputBorder.none)),
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.02,
-                        ),
-                        Text(
-                          'Password',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 5),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: Colors.grey.withOpacity(0.3))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: TextFormField(
-                                controller: _passwordTextField,
-                                keyboardType: TextInputType.visiblePassword,
-                                obscureText: _obscured,
-                                obscuringCharacter: '●',
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.deny(
-                                      RegExp(regexToRemoveEmoji))
-                                ],
-                                onFieldSubmitted: (value) {
-                                  onRegistrationSubmit();
-                                },
-                                textInputAction: TextInputAction.done,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                decoration: InputDecoration(
-                                    suffixIcon: GestureDetector(
-                                      onTap: _toggleObscured,
-                                      child: Icon(
-                                        _obscured
-                                            ? Icons.visibility_rounded
-                                            : Icons.visibility_off_rounded,
-                                        size: 24,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    hintText: 'Password',
-                                    hintStyle: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                    border: InputBorder.none)),
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                        Bounce(
-                          duration: Duration(milliseconds: 110),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: ForgotPasswordScreen(),
-                                    type: PageTransitionType.fade,
-                                    duration: const Duration(milliseconds: 900),
-                                    reverseDuration:
-                                        (const Duration(milliseconds: 900))));
-                          },
-                          child: Align(
-                              alignment: Alignment.topRight,
-                              child: Text('Forgot Password',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: ThemeManager.colorBlack,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600))),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.04,
-                        ),
-                        PrimaryButton(
-                            buttonText: 'LOGIN',
-                            onButtonPressed: () {
-                              onRegistrationSubmit();
-                              /*     */
-                            }),
-                        SizedBox(
-                          height: size.height * 0.04,
-                        ),
-                        /* Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Don\'t have an account? ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                  color: Colors.black),
-                            ),
-                            Bounce(
-                              duration: Duration(milliseconds: 110),
-                              onPressed: () {
-                               /* Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        child: RegistrationScreen(),
-                                        type: PageTransitionType.fade,
-                                        duration:
-                                            const Duration(milliseconds: 900),
-                                        reverseDuration: (const Duration(
-                                            milliseconds: 900))));*/
-                              },
-                              child: Text(
-                                'Register Now',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 16,
-                                    color: ThemeManager.primaryText),
+          body: Obx(
+            () => !_authController.isLoading.value
+                ? SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: AnimationLimiter(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: AnimationConfiguration.toStaggeredList(
+                              duration: const Duration(milliseconds: 400),
+                              childAnimationBuilder: (widget) => SlideAnimation(
+                                child: SlideAnimation(
+                                  child: widget,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: size.height * 0.1,
-                        ),*/
-                      ],
-                    ))),
+                              children: [
+                                SizedBox(height: size.height * 0.15),
+                                Center(
+                                  child: Image.asset(
+                                    'assets/images/logo.jpg',
+                                    height: size.height * 0.10,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.05,
+                                ),
+                                Text(
+                                  'Log In',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.05,
+                                ),
+                                Text(
+                                  'Username',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 14),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Colors.grey.withOpacity(0.3))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: TextFormField(
+                                        controller: _emailTextEditingController,
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.deny(
+                                              RegExp(regexToRemoveEmoji))
+                                        ],
+                                        textInputAction: TextInputAction.next,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        decoration: InputDecoration(
+                                            /*  suffixIcon: Icon(
+                                        validEmail
+                                            ? Icons.check_circle
+                                            : Icons.check_circle_outline,
+                                        size: 22,
+                                        color: validEmail
+                                            ? ThemeManager.primaryText
+                                            : Colors.grey,
+                                      ),*/
+                                            hintText: 'Username',
+                                            hintStyle: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                            border: InputBorder.none)),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.02,
+                                ),
+                                Text(
+                                  'Password',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                const SizedBox(height: 5),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Colors.grey.withOpacity(0.3))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: TextFormField(
+                                        controller: _passwordTextField,
+                                        keyboardType:
+                                            TextInputType.visiblePassword,
+                                        obscureText: _obscured,
+                                        obscuringCharacter: '●',
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.deny(
+                                              RegExp(regexToRemoveEmoji))
+                                        ],
+                                        onFieldSubmitted: (value) {
+                                          onRegistrationSubmit();
+                                        },
+                                        textInputAction: TextInputAction.done,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        decoration: InputDecoration(
+                                            suffixIcon: GestureDetector(
+                                              onTap: _toggleObscured,
+                                              child: Icon(
+                                                _obscured
+                                                    ? Icons.visibility_rounded
+                                                    : Icons
+                                                        .visibility_off_rounded,
+                                                size: 24,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            hintText: 'Password',
+                                            hintStyle: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                            border: InputBorder.none)),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.01,
+                                ),
+                                Bounce(
+                                  duration: Duration(milliseconds: 110),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        PageTransition(
+                                            child: ForgotPasswordScreen(),
+                                            type: PageTransitionType.fade,
+                                            duration: const Duration(
+                                                milliseconds: 900),
+                                            reverseDuration: (const Duration(
+                                                milliseconds: 900))));
+                                  },
+                                  child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text('Forgot Password',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: ThemeManager.colorBlack,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600))),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.04,
+                                ),
+                                PrimaryButton(
+                                    buttonText: 'LOGIN',
+                                    onButtonPressed: () {
+                                      onRegistrationSubmit();
+                                      /*     */
+                                    }),
+                                SizedBox(
+                                  height: size.height * 0.04,
+                                ),
+                                /* Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Don\'t have an account? ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: Colors.black),
+                              ),
+                              Bounce(
+                                duration: Duration(milliseconds: 110),
+                                onPressed: () {
+                                 /* Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          child: RegistrationScreen(),
+                                          type: PageTransitionType.fade,
+                                          duration:
+                                              const Duration(milliseconds: 900),
+                                          reverseDuration: (const Duration(
+                                              milliseconds: 900))));*/
+                                },
+                                child: Text(
+                                  'Register Now',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 16,
+                                      color: ThemeManager.primaryText),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: size.height * 0.1,
+                          ),*/
+                              ],
+                            ))),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(
+                        color: ThemeManager.primaryColor)),
           ),
         ),
       ),

@@ -14,7 +14,7 @@ import '../data/model/LeaveHistoryResponser.dart';
 import '../utils/constants/app_constants.dart';
 
 class LeaveController extends GetxController {
-  bool _isLoading = false;
+  final _isLoading = false.obs;
 
   get isLoading => _isLoading;
   List<Data> _leavetypeList = [];
@@ -34,7 +34,7 @@ class LeaveController extends GetxController {
   List<DataTeamRequest> get teamLeaveHistoryList => _teamleaveHistoryList;
 
   Future GetLeaveType(callback) async {
-    _isLoading = true;
+    _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
@@ -50,10 +50,10 @@ class LeaveController extends GetxController {
             LeaveTypeResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _leavetypeList = leaveTypeResponser.data!;
-        _isLoading = false;
+        _isLoading.value = false;
         update();
       } else {
-        _isLoading = false;
+        _isLoading.value = false;
         callback(
           false,
           map,
@@ -61,14 +61,14 @@ class LeaveController extends GetxController {
         update();
       }
     } else {
-      _isLoading = false;
+      _isLoading.value = false;
       Get.off(LoginScreen());
       update();
     }
   }
 
   Future GetLeaveHistory(callback) async {
-    _isLoading = true;
+    _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
@@ -84,10 +84,10 @@ class LeaveController extends GetxController {
             LeaveHistoryResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _leavehistoryList = leaveHistoryResponser.data!;
-        _isLoading = false;
+        _isLoading.value = false;
         update();
       } else {
-        _isLoading = false;
+        _isLoading.value = false;
         callback(
           false,
           map,
@@ -95,14 +95,14 @@ class LeaveController extends GetxController {
         update();
       }
     } else {
-      _isLoading = false;
+      _isLoading.value = false;
       Get.off(LoginScreen());
       update();
     }
   }
 
   Future GetTeamLeaveRequest(callback) async {
-    _isLoading = true;
+    _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
@@ -118,22 +118,22 @@ class LeaveController extends GetxController {
             TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _teamleaveRequestList = teamLeaveRequestResponser.data!;
-        _isLoading = false;
+        _isLoading.value = false;
         update();
       } else {
-        _isLoading = false;
+        _isLoading.value = false;
         callback(false, map);
         update();
       }
     } else {
-      _isLoading = false;
+      _isLoading.value = false;
       Get.off(LoginScreen());
       update();
     }
   }
 
   Future GetTeamLeaveHistory(callback) async {
-    _isLoading = true;
+    _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
@@ -149,10 +149,10 @@ class LeaveController extends GetxController {
             TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _teamleaveHistoryList = teamLeaveRequestResponser.data!;
-        _isLoading = false;
+        _isLoading.value = false;
         update();
       } else {
-        _isLoading = false;
+        _isLoading.value = false;
         callback(
           false,
           map,
@@ -160,14 +160,14 @@ class LeaveController extends GetxController {
         update();
       }
     } else {
-      _isLoading = false;
+      _isLoading.value = false;
       Get.off(LoginScreen());
       update();
     }
   }
 
   Future requestLeave(data, callback) async {
-    _isLoading = true;
+    _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
       "content-type": "application/json",
@@ -185,10 +185,10 @@ class LeaveController extends GetxController {
       print(response.body);
       if (map['token'] != '') {
         callback(true, map);
-        _isLoading = false;
+        _isLoading.value = false;
         update();
       } else {
-        _isLoading = false;
+        _isLoading.value = false;
         callback(
           false,
           map,
@@ -196,13 +196,13 @@ class LeaveController extends GetxController {
         update();
       }
     } else {
-      _isLoading = false;
+      _isLoading.value = false;
       update();
     }
   }
 
   Future ApproveRequest(data, callback) async {
-    _isLoading = true;
+    _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
       "content-type": "application/json",
@@ -219,10 +219,10 @@ class LeaveController extends GetxController {
       print(response.body);
       if (map['token'] != '') {
         callback(true, map);
-        _isLoading = false;
+        _isLoading.value = false;
         update();
       } else {
-        _isLoading = false;
+        _isLoading.value = false;
         callback(
           false,
           map,
@@ -230,13 +230,13 @@ class LeaveController extends GetxController {
         update();
       }
     } else {
-      _isLoading = false;
+      _isLoading.value = false;
       update();
     }
   }
 
   Future DeclineRequest(data, callback) async {
-    _isLoading = true;
+    _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
       "content-type": "application/json",
@@ -253,10 +253,10 @@ class LeaveController extends GetxController {
       print(response.body);
       if (map['token'] != '') {
         callback(true, map);
-        _isLoading = false;
+        _isLoading.value = false;
         update();
       } else {
-        _isLoading = false;
+        _isLoading.value = false;
         callback(
           false,
           map,
@@ -264,7 +264,7 @@ class LeaveController extends GetxController {
         update();
       }
     } else {
-      _isLoading = false;
+      _isLoading.value = false;
       update();
     }
   }

@@ -239,22 +239,25 @@ class StateHomeScreen extends State<HomeScreen> {
                                                 milliseconds: 900))));
                                   },
                                   duration: Duration(milliseconds: 110),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: ThemeManager.primaryColor,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 28,
-                                          right: 28,
-                                          top: 8,
-                                          bottom: 8),
-                                      child: Text(
-                                        'Apply',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700),
+                                  child: Hero(
+                                    tag: 'button',
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: ThemeManager.primaryColor,
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 28,
+                                            right: 28,
+                                            top: 8,
+                                            bottom: 8),
+                                        child: Text(
+                                          'Apply',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
                                     ),
                                   ),

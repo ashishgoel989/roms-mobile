@@ -126,11 +126,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ],
                             ),
                           ),
-                          ClipOval(
-                            child: Image.asset(
-                              'assets/images/profile_image.png',
-                              fit: BoxFit.fill,
-                              height: 80,
+                          Hero(
+                            tag: 'profile',
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/profile_image.png',
+                                fit: BoxFit.fill,
+                                height: 80,
+                              ),
                             ),
                           )
                         ],

@@ -47,8 +47,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
     '6',
     '8',
   ];
-  final TextEditingController _commentTextEditingController =
-      TextEditingController();
+
 
   List<Color> colorlist = [
     Color(0xff764AF1),
@@ -147,70 +146,76 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
           body: GetBuilder<LeaveController>(
               init: _leaveController,
               builder: (_orderController) {
-                return Column(
-                  children: [
-                    // give the tab bar a height [can change hheight to preferred height]
-                    Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Color(0xffFFF8E3),
-                      ),
-                      child: TabBar(
-                        controller: _tabController,
-                        // give the indicator a decoration (color and border radius)
-                        indicatorColor: ThemeManager.primaryColor,
-                        indicatorWeight: 3,
-                        labelColor: ThemeManager.primaryColor,
-                        unselectedLabelColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.w800, fontSize: 18),
-                        tabs: [
-                          Tab(
-                            text: 'Leave Requests',
-                          ),
-                          Tab(
-                            text: 'History',
-                          ),
-                        ],
-                      ),
-                    ),
-                    // tab bar view here
-                    Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          // first tab bar view widget
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:
-                                  _leaveController.teamLeaveRequestList.length,
-                              itemBuilder: (BuildContext, index) {
-                                return RequestRowView(index);
-                              },
+                return Obx(
+                  () => !_leaveController.isLoading.value
+                      ? Column(
+                          children: [
+                            // give the tab bar a height [can change hheight to preferred height]
+                            Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                color: Color(0xffFFF8E3),
+                              ),
+                              child: TabBar(
+                                controller: _tabController,
+                                // give the indicator a decoration (color and border radius)
+                                indicatorColor: ThemeManager.primaryColor,
+                                indicatorWeight: 3,
+                                labelColor: ThemeManager.primaryColor,
+                                unselectedLabelColor: Colors.black,
+                                labelStyle: TextStyle(
+                                    fontWeight: FontWeight.w800, fontSize: 18),
+                                tabs: [
+                                  Tab(
+                                    text: 'Leave Requests',
+                                  ),
+                                  Tab(
+                                    text: 'History',
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                            // tab bar view here
+                            Expanded(
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  // first tab bar view widget
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: _leaveController
+                                          .teamLeaveRequestList.length,
+                                      itemBuilder: (BuildContext, index) {
+                                        return RequestRowView(index);
+                                      },
+                                    ),
+                                  ),
 
-                          // second tab bar view widget
+                                  // second tab bar view widget
 
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:
-                                  _leaveController.teamLeaveHistoryList.length,
-                              itemBuilder: (BuildContext, index) {
-                                return HistoryRowView(index);
-                              },
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: _leaveController
+                                          .teamLeaveHistoryList.length,
+                                      itemBuilder: (BuildContext, index) {
+                                        return HistoryRowView(index);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                          ],
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(
+                              color: ThemeManager.primaryColor)),
                 );
               })),
     );
@@ -274,8 +279,8 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                     _leaveController.teamLeaveRequestList[index].leaveType!
                         .leaveDescription!,
                     textAlign: TextAlign.center,
-                        maxLines: 2,
-                        style:
+                    maxLines: 2,
+                    style:
                         TextStyle(color: Colors.deepPurpleAccent, fontSize: 10),
                   )),
                 )
@@ -428,9 +433,9 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                     _leaveController
                         .teamLeaveHistoryList[index].leaveType!.leaveDescription
                         .toString(),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        style:
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    style:
                         TextStyle(color: Colors.deepPurpleAccent, fontSize: 10),
                   )),
                 )
@@ -613,7 +618,8 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
                                       style: TextStyle(
-                                          color: Colors.deepPurpleAccent,fontSize: 10),
+                                          color: Colors.deepPurpleAccent,
+                                          fontSize: 10),
                                     )),
                                   )
                                 ],
@@ -648,7 +654,8 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                     _leaveController.teamLeaveRequestList[index]
                                         .leaveReason!,
                                     maxLines: 2,
-                                    style: TextStyle(color: Colors.black,fontSize: 10),
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 10),
                                   ),
                                 )),
                             SizedBox(height: 20),
@@ -689,7 +696,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                     child: Bounce(
                                       onPressed: () {
                                         var data =
-                                            '{"id":"${_leaveController.teamLeaveRequestList[index].id}","reviewerRemark":"all team member are on leave"}';
+                                            '{"id":"${_leaveController.teamLeaveRequestList[index].id}","reviewerRemark":""}';
                                         _leaveController.ApproveRequest(
                                             data, Approvecallback);
                                         /*  Navigator.push(

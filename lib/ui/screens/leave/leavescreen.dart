@@ -150,392 +150,80 @@ class _LeaveScreenState extends State<LeaveScreen>
           body: GetBuilder<LeaveController>(
               init: _leaveController,
               builder: (_orderController) {
-                return Column(
-                  children: [
-                    // give the tab bar a height [can change height to preferred height]
-                    Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Color(0xffFFF8E3),
-                      ),
-                      child: TabBar(
-                        controller: _tabController,
-                        // give the indicator a decoration (color and border radius)
-                        indicatorColor: ThemeManager.primaryColor,
-                        indicatorWeight: 3,
-                        labelColor: ThemeManager.primaryColor,
-                        unselectedLabelColor: Colors.black,
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.w800, fontSize: 18),
-                        tabs: [
-                          Tab(
-                            text: 'Apply Leave',
-                          ),
-                          Tab(
-                            text: 'History',
-                          ),
-                        ],
-                      ),
-                    ),
-                    // tab bar view here
-                    Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          // first tab bar view widget
-                          SingleChildScrollView(
-                            physics: BouncingScrollPhysics(),
-                            child: Container(
-                              color: Color(0xffF8F8F8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                return /*Obx(
+                  () => !_leaveController.isLoading.value
+                      ? */Column(
+                          children: [
+                            // give the tab bar a height [can change height to preferred height]
+                            Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                color: Color(0xffFFF8E3),
+                              ),
+                              child: TabBar(
+                                controller: _tabController,
+                                // give the indicator a decoration (color and border radius)
+                                indicatorColor: ThemeManager.primaryColor,
+                                indicatorWeight: 3,
+                                labelColor: ThemeManager.primaryColor,
+                                unselectedLabelColor: Colors.black,
+                                labelStyle: TextStyle(
+                                    fontWeight: FontWeight.w800, fontSize: 18),
+                                tabs: [
+                                  Tab(
+                                    text: 'Apply Leave',
+                                  ),
+                                  Tab(
+                                    text: 'History',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // tab bar view here
+                            Expanded(
+                              child: TabBarView(
+                                controller: _tabController,
                                 children: [
-                                  SizedBox(height: 15),
-                                  Container(
-                                    height: 40,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(width: 12),
-                                        Image.asset(
-                                          'assets/images/calender.png',
-                                          height: 20,
-                                          color: Colors.black,
-                                        ),
-                                        SizedBox(width: 12),
-                                        Text(
-                                          'Day',
-                                          style: TextStyle(
-                                              letterSpacing: 1,
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(0.0),
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 10, top: 10),
-                                      child: SizedBox(
-                                        height: 80,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 20),
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            physics: BouncingScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: daylist.length,
-                                            itemBuilder: (BuildContext, index) {
-                                              return dayrowView(index);
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0, top: 0, bottom: 10),
-                                    child: Text(
-                                      'Date Range',
-                                      style: TextStyle(
-                                          color: ThemeManager.colorBlack),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 20.0),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10.0),
-                                            child: Card(
-                                                elevation: 1,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                  // first tab bar view widget
+                                  SingleChildScrollView(
+                                    physics: BouncingScrollPhysics(),
+                                    child: Container(
+                                      color: Color(0xffF8F8F8),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 15),
+                                          Container(
+                                            height: 40,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(width: 12),
+                                                Image.asset(
+                                                  'assets/images/calender.png',
+                                                  height: 20,
+                                                  color: Colors.black,
                                                 ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Bounce(
-                                                        duration: Duration(
-                                                            milliseconds: 110),
-                                                        onPressed: () {
-                                                          showDatePicker(
-                                                            fieldHintText:
-                                                                'dd-mm-yyyy',
-                                                            builder: (context,
-                                                                child) {
-                                                              return Theme(
-                                                                data: Theme.of(
-                                                                        context)
-                                                                    .copyWith(
-                                                                  colorScheme:
-                                                                      ColorScheme
-                                                                          .light(
-                                                                    primary:
-                                                                        ThemeManager
-                                                                            .primaryColor,
-                                                                    onPrimary:
-                                                                        Colors
-                                                                            .white,
-                                                                    onSurface:
-                                                                        ThemeManager
-                                                                            .colorBlack,
-                                                                    background:
-                                                                        Colors
-                                                                            .white,
-                                                                    onBackground:
-                                                                        Colors
-                                                                            .white,
-                                                                    onSecondary:
-                                                                        Colors
-                                                                            .white,
-                                                                  ),
-                                                                  dialogBackgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  textButtonTheme:
-                                                                      TextButtonThemeData(
-                                                                    style: TextButton
-                                                                        .styleFrom(
-                                                                      primary:
-                                                                          ThemeManager
-                                                                              .primaryColor,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                child: child!,
-                                                              );
-                                                            },
-                                                            context: context,
-                                                            initialDate:
-                                                                DateTime.now(),
-                                                            firstDate: DateTime
-                                                                    .now()
-                                                                .add(Duration(
-                                                                    days: -30)),
-                                                            lastDate: DateTime(
-                                                                2030, 1),
-                                                          ).then((value) => {
-                                                                selectDay =
-                                                                    8473657834,
-                                                                currentDate =
-                                                                    DateFormat(
-                                                                            'yyyy-MM-dd')
-                                                                        .format(
-                                                                            value!),
-                                                                convertdate =
-                                                                    DateFormat(
-                                                                            'yyyy-MM-dd')
-                                                                        .format(
-                                                                            value),
-                                                                endDate =
-                                                                    currentDate,
-                                                                _leaveController
-                                                                    .update()
-                                                              });
-                                                        },
-                                                        child: Text(
-                                                          DateFormat(
-                                                                  'dd/MM/yyyy')
-                                                              .format(DateTime
-                                                                  .parse(
-                                                                      currentDate)),
-                                                          textScaleFactor: 1.0,
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black45,
-                                                              fontSize: 12),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        '   to   ',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 14),
-                                                      ),
-                                                      Expanded(
-                                                        child: Bounce(
-                                                          duration: Duration(
-                                                              milliseconds:
-                                                                  110),
-                                                          onPressed: () {
-                                                            showDatePicker(
-                                                              fieldHintText:
-                                                                  'dd-mm-yyyy',
-                                                              builder: (context,
-                                                                  child) {
-                                                                return Theme(
-                                                                  data: Theme.of(
-                                                                          context)
-                                                                      .copyWith(
-                                                                    colorScheme:
-                                                                        ColorScheme
-                                                                            .light(
-                                                                      primary:
-                                                                          ThemeManager
-                                                                              .primaryColor,
-                                                                      onPrimary:
-                                                                          Colors
-                                                                              .white,
-                                                                      onSurface:
-                                                                          ThemeManager
-                                                                              .colorBlack,
-                                                                      background:
-                                                                          Colors
-                                                                              .white,
-                                                                      onBackground:
-                                                                          Colors
-                                                                              .white,
-                                                                      onSecondary:
-                                                                          Colors
-                                                                              .white,
-                                                                    ),
-                                                                    dialogBackgroundColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    textButtonTheme:
-                                                                        TextButtonThemeData(
-                                                                      style: TextButton
-                                                                          .styleFrom(
-                                                                        primary:
-                                                                            ThemeManager.primaryColor,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  child: child!,
-                                                                );
-                                                              },
-                                                              context: context,
-                                                              initialDate:
-                                                                  DateTime
-                                                                      .now(),
-                                                              firstDate: DateTime
-                                                                      .now()
-                                                                  .add(Duration(
-                                                                      days:
-                                                                          -30)),
-                                                              lastDate:
-                                                                  DateTime(
-                                                                      2030, 1),
-                                                            ).then((value) {
-                                                              selectDay =
-                                                                  8473657834;
-                                                              var tempdate =
-                                                                  DateTime.parse(
-                                                                      convertdate);
-                                                              daycount = value!
-                                                                  .difference(
-                                                                      tempdate)
-                                                                  .inDays;
-
-                                                              if (daycount ==
-                                                                  0) {
-                                                                daycount = 1;
-                                                              }
-                                                              print(value
-                                                                  .difference(
-                                                                      tempdate)
-                                                                  .inDays);
-                                                              if (daycount <
-                                                                  0) {
-                                                                daycount = 0;
-                                                                endDate =
-                                                                    currentDate;
-                                                                Utils.showErrorToast(
-                                                                    context,
-                                                                    'Please select valid date');
-                                                              } else {
-                                                                endDate = DateFormat(
-                                                                        'yyyy-MM-dd')
-                                                                    .format(
-                                                                        value);
-                                                              }
-                                                              _leaveController
-                                                                  .update();
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            DateFormat(
-                                                                    'dd/MM/yyyy')
-                                                                .format(DateTime
-                                                                    .parse(
-                                                                        endDate)),
-                                                            textScaleFactor:
-                                                                1.0,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black45,
-                                                                fontSize: 12),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Image.asset(
-                                                        'assets/images/calender.png',
-                                                        color: ThemeManager
-                                                            .colorGrey,
-                                                        height: 20,
-                                                      )
-                                                    ],
-                                                  ),
-                                                )),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10.0, right: 10),
-                                          child: Card(
-                                              elevation: 1,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Text(
-                                                    daycount.toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ))),
-                                        ),
-                                        Text(
-                                          'Days',
-                                          style: TextStyle(color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  daycount < 2
-                                      ? Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 15.0,
-                                                  top: 20,
-                                                  bottom: 10),
-                                              child: Text(
-                                                'Hours',
-                                                style: TextStyle(
-                                                    color: ThemeManager
-                                                        .colorBlack),
-                                              ),
+                                                SizedBox(width: 12),
+                                                Text(
+                                                  'Day',
+                                                  style: TextStyle(
+                                                      letterSpacing: 1,
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ],
                                             ),
-                                            Padding(
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(0.0),
+                                            child: Padding(
                                               padding: EdgeInsets.only(
                                                   left: 10, top: 10),
                                               child: SizedBox(
-                                                height: 55,
+                                                height: 80,
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -546,214 +234,36 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                     physics:
                                                         BouncingScrollPhysics(),
                                                     shrinkWrap: true,
-                                                    itemCount: hourlist.length,
+                                                    itemCount: daylist.length,
                                                     itemBuilder:
                                                         (BuildContext, index) {
-                                                      return Bounce(
-                                                        onPressed: () {
-                                                          selectDuration =
-                                                              index;
-                                                          selectedHours =
-                                                              hourlist[index];
-                                                          starttime = DateFormat(
-                                                                  'kk:mm:ss')
-                                                              .format(DateTime
-                                                                  .now());
-                                                          endtime = DateFormat(
-                                                                  'kk:mm:ss')
-                                                              .format(DateTime
-                                                                      .now()
-                                                                  .add(Duration(
-                                                                      hours: int
-                                                                          .parse(
-                                                                              hourlist[index]))));
-                                                          daycount = 0;
-                                                          _leaveController
-                                                              .update();
-                                                        },
-                                                        duration: Duration(
-                                                            milliseconds: 110),
-                                                        child: Container(
-                                                          width: 70,
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 5,
-                                                                  left: 5),
-                                                          padding:
-                                                              EdgeInsets.all(8),
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              color: selectDuration ==
-                                                                      index
-                                                                  ? colorlist[
-                                                                      index]
-                                                                  : colorlist[
-                                                                          index]
-                                                                      .withOpacity(
-                                                                          0.2)),
-                                                          child: Text(
-                                                            hourlist[index] +
-                                                                ' hr',
-                                                            style: TextStyle(
-                                                                color: selectDuration ==
-                                                                        index
-                                                                    ? Colors
-                                                                        .white
-                                                                    : colorlist[
-                                                                        index]),
-                                                          ),
-                                                        ),
-                                                      );
+                                                      return dayrowView(index);
                                                     },
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 20.0, top: 0),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10.0),
-                                                      child: Card(
-                                                          elevation: 1,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Row(
-                                                              children: [
-                                                                Bounce(
-                                                                  onPressed:
-                                                                      () {
-                                                                    DatePicker.showTime12hPicker(
-                                                                        context,
-                                                                        showTitleActions:
-                                                                            true,
-                                                                        onConfirm:
-                                                                            (date) {
-                                                                      starttime = DateFormat(
-                                                                              'HH:mm:ss')
-                                                                          .format(
-                                                                              date);
-                                                                      daycount =
-                                                                          0;
-                                                                      _leaveController
-                                                                          .update();
-                                                                      // _endTimeController.text = DateFormat.jm().format(date);
-                                                                    },
-                                                                        locale:
-                                                                            LocaleType.en);
-                                                                  },
-                                                                  duration: Duration(
-                                                                      milliseconds:
-                                                                          110),
-                                                                  child: Text(
-                                                                    starttime,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black45,
-                                                                        fontSize:
-                                                                            14),
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  '   to   ',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          14),
-                                                                ),
-                                                                Expanded(
-                                                                  child: Bounce(
-                                                                    onPressed:
-                                                                        () {
-                                                                      if (starttime ==
-                                                                          '--:--:--') {
-                                                                        Utils.showErrorToast(
-                                                                            context,
-                                                                            'Please select start time');
-                                                                      } else {
-                                                                        DatePicker.showTimePicker(
-                                                                            context,
-                                                                            showTitleActions:
-                                                                                true,
-                                                                            onConfirm:
-                                                                                (date) {
-                                                                          var temp =
-                                                                              DateFormat('HH:mm:ss').format(date);
-                                                                          var format =
-                                                                              DateFormat("HH:mm:ss");
-
-                                                                          selectedHours = format
-                                                                              .parse(temp)
-                                                                              .difference(format.parse(starttime))
-                                                                              .inHours
-                                                                              .toString();
-                                                                          daycount =
-                                                                              0;
-
-                                                                          if (int.parse(selectedHours) >
-                                                                              8) {
-                                                                            endtime =
-                                                                                '';
-                                                                            Utils.showErrorToast(context,
-                                                                                'Durations should be less than 8 hrs');
-                                                                          } else {
-                                                                            endtime =
-                                                                                temp;
-                                                                            print(selectedHours);
-                                                                          }
-                                                                          _leaveController
-                                                                              .update();
-                                                                          // _endTimeController.text = DateFormat.jm().format(date);
-                                                                        }, locale: LocaleType.en);
-                                                                      }
-                                                                    },
-                                                                    duration: Duration(
-                                                                        milliseconds:
-                                                                            110),
-                                                                    child: Text(
-                                                                      endtime,
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .black45,
-                                                                          fontSize:
-                                                                              14),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Image.asset(
-                                                                  'assets/images/wait.png',
-                                                                  color: ThemeManager
-                                                                      .colorGrey,
-                                                                  height: 20,
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )),
-                                                    ),
-                                                  ),
-                                                  Padding(
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0, top: 0, bottom: 10),
+                                            child: Text(
+                                              'Date Range',
+                                              style: TextStyle(
+                                                  color:
+                                                      ThemeManager.colorBlack),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 20.0),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 10.0,
-                                                            right: 10),
+                                                            left: 10.0),
                                                     child: Card(
                                                         elevation: 1,
                                                         shape:
@@ -763,197 +273,696 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                   .circular(10),
                                                         ),
                                                         child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(10.0),
-                                                            child: Text(
-                                                              selectedHours,
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black),
-                                                            ))),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            children: [
+                                                              Bounce(
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        110),
+                                                                onPressed: () {
+                                                                  showDatePicker(
+                                                                    fieldHintText:
+                                                                        'dd-mm-yyyy',
+                                                                    builder:
+                                                                        (context,
+                                                                            child) {
+                                                                      return Theme(
+                                                                        data: Theme.of(context)
+                                                                            .copyWith(
+                                                                          colorScheme:
+                                                                              ColorScheme.light(
+                                                                            primary:
+                                                                                ThemeManager.primaryColor,
+                                                                            onPrimary:
+                                                                                Colors.white,
+                                                                            onSurface:
+                                                                                ThemeManager.colorBlack,
+                                                                            background:
+                                                                                Colors.white,
+                                                                            onBackground:
+                                                                                Colors.white,
+                                                                            onSecondary:
+                                                                                Colors.white,
+                                                                          ),
+                                                                          dialogBackgroundColor:
+                                                                              Colors.white,
+                                                                          textButtonTheme:
+                                                                              TextButtonThemeData(
+                                                                            style:
+                                                                                TextButton.styleFrom(
+                                                                              primary: ThemeManager.primaryColor,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            child!,
+                                                                      );
+                                                                    },
+                                                                    context:
+                                                                        context,
+                                                                    initialDate:
+                                                                        DateTime
+                                                                            .now(),
+                                                                    firstDate: DateTime
+                                                                            .now()
+                                                                        .add(Duration(
+                                                                            days:
+                                                                                -30)),
+                                                                    lastDate:
+                                                                        DateTime(
+                                                                            2030,
+                                                                            1),
+                                                                  ).then(
+                                                                      (value) =>
+                                                                          {
+                                                                            selectDay =
+                                                                                8473657834,
+                                                                            currentDate =
+                                                                                DateFormat('yyyy-MM-dd').format(value!),
+                                                                            convertdate =
+                                                                                DateFormat('yyyy-MM-dd').format(value),
+                                                                            endDate =
+                                                                                currentDate,
+                                                                            _leaveController.update()
+                                                                          });
+                                                                },
+                                                                child: Text(
+                                                                  DateFormat(
+                                                                          'dd/MM/yyyy')
+                                                                      .format(DateTime
+                                                                          .parse(
+                                                                              currentDate)),
+                                                                  textScaleFactor:
+                                                                      1.0,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black45,
+                                                                      fontSize:
+                                                                          12),
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                '   to   ',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                              Expanded(
+                                                                child: Bounce(
+                                                                  duration: Duration(
+                                                                      milliseconds:
+                                                                          110),
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDatePicker(
+                                                                      fieldHintText:
+                                                                          'dd-mm-yyyy',
+                                                                      builder:
+                                                                          (context,
+                                                                              child) {
+                                                                        return Theme(
+                                                                          data:
+                                                                              Theme.of(context).copyWith(
+                                                                            colorScheme:
+                                                                                ColorScheme.light(
+                                                                              primary: ThemeManager.primaryColor,
+                                                                              onPrimary: Colors.white,
+                                                                              onSurface: ThemeManager.colorBlack,
+                                                                              background: Colors.white,
+                                                                              onBackground: Colors.white,
+                                                                              onSecondary: Colors.white,
+                                                                            ),
+                                                                            dialogBackgroundColor:
+                                                                                Colors.white,
+                                                                            textButtonTheme:
+                                                                                TextButtonThemeData(
+                                                                              style: TextButton.styleFrom(
+                                                                                primary: ThemeManager.primaryColor,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          child:
+                                                                              child!,
+                                                                        );
+                                                                      },
+                                                                      context:
+                                                                          context,
+                                                                      initialDate:
+                                                                          DateTime
+                                                                              .now(),
+                                                                      firstDate: DateTime
+                                                                              .now()
+                                                                          .add(Duration(
+                                                                              days: -30)),
+                                                                      lastDate:
+                                                                          DateTime(
+                                                                              2030,
+                                                                              1),
+                                                                    ).then(
+                                                                        (value) {
+                                                                      selectDay =
+                                                                          8473657834;
+                                                                      var tempdate =
+                                                                          DateTime.parse(
+                                                                              convertdate);
+                                                                      daycount = value!
+                                                                          .difference(
+                                                                              tempdate)
+                                                                          .inDays;
+
+                                                                      if (daycount ==
+                                                                          0) {
+                                                                        daycount =
+                                                                            1;
+                                                                      }
+                                                                      print(value
+                                                                          .difference(
+                                                                              tempdate)
+                                                                          .inDays);
+                                                                      if (daycount <
+                                                                          0) {
+                                                                        daycount =
+                                                                            0;
+                                                                        endDate =
+                                                                            currentDate;
+                                                                        Utils.showErrorToast(
+                                                                            context,
+                                                                            'Please select valid date');
+                                                                      } else {
+                                                                        endDate =
+                                                                            DateFormat('yyyy-MM-dd').format(value);
+                                                                      }
+                                                                      _leaveController
+                                                                          .update();
+                                                                    });
+                                                                  },
+                                                                  child: Text(
+                                                                    DateFormat(
+                                                                            'dd/MM/yyyy')
+                                                                        .format(
+                                                                            DateTime.parse(endDate)),
+                                                                    textScaleFactor:
+                                                                        1.0,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black45,
+                                                                        fontSize:
+                                                                            12),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Image.asset(
+                                                                'assets/images/calender.png',
+                                                                color: ThemeManager
+                                                                    .colorGrey,
+                                                                height: 20,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        )),
                                                   ),
-                                                  Text(
-                                                    'Hours',
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(height: 20),
-                                          ],
-                                        )
-                                      : Container(),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0),
-                                    child: Divider(
-                                      color: Colors.black,
-                                      thickness: 1,
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 40,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(width: 12),
-                                        Image.asset(
-                                          'assets/images/shape.png',
-                                          height: 20,
-                                          color: Colors.black,
-                                        ),
-                                        SizedBox(width: 12),
-                                        Text(
-                                          'Type',
-                                          style: TextStyle(
-                                              letterSpacing: 1,
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10, top: 10),
-                                    child: SizedBox(
-                                      height: 80,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 20),
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          physics: BouncingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: _leaveController
-                                              .leavetypeList.length,
-                                          itemBuilder: (BuildContext, index) {
-                                            return TyperowView(index);
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: false,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Current Leave Balance',
-                                          style:
-                                              TextStyle(color: Colors.black45),
-                                        ),
-                                        SizedBox(width: 15),
-                                        Container(
-                                          width: 50,
-                                          height: 35,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: Center(
-                                            child: Text(
-                                              'TBA',
-                                              style: TextStyle(
-                                                  color: Colors.black45),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0,
+                                                          right: 10),
+                                                  child: Card(
+                                                      elevation: 1,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(10.0),
+                                                          child: Text(
+                                                            daycount.toString(),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),
+                                                          ))),
+                                                ),
+                                                Text(
+                                                  'Days',
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                )
+                                              ],
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  /*   Center(
-                                      child: Text(
-                                    'Manager : John dew',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 16),
-                                  )),*/
-                                  // SizedBox(height: 15),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: ThemeManager.colorGrey)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: TextFormField(
-                                          controller:
-                                              _commentTextEditingController,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          style: TextStyle(
-                                              color: ThemeManager.colorBlack,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700),
-                                          decoration: InputDecoration(
-                                              hintText: 'Comment',
-                                              hintStyle: TextStyle(
-                                                  color:
-                                                      ThemeManager.colorBlack,
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w700),
-                                              border: InputBorder.none)),
-                                    ),
-                                  ),
-                                  Bounce(
-                                    onPressed: () {
-                                      if (TypeID.isEmpty) {
-                                        Utils.showErrorMessage(context,
-                                            'Please Select Leave Type');
-                                      } else {
-                                        var data =
-                                            '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${currentDate} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(starttime).add(Duration(hours: 4, minutes: 30)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${endDate} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(endtime).add(Duration(hours: 4, minutes: 30)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
-                                        print(data);
-                                        _leaveController.requestLeave(
-                                            data, callback);
-                                      }
-                                    },
-                                    duration: Duration(milliseconds: 110),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Image.asset(
-                                          'assets/images/rfa_bt.png',
-                                          height: 50,
-                                        ),
+                                          daycount < 2
+                                              ? Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15.0,
+                                                              top: 20,
+                                                              bottom: 10),
+                                                      child: Text(
+                                                        'Hours',
+                                                        style: TextStyle(
+                                                            color: ThemeManager
+                                                                .colorBlack),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 10, top: 10),
+                                                      child: SizedBox(
+                                                        height: 55,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  bottom: 20),
+                                                          child:
+                                                              ListView.builder(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            physics:
+                                                                BouncingScrollPhysics(),
+                                                            shrinkWrap: true,
+                                                            itemCount:
+                                                                hourlist.length,
+                                                            itemBuilder:
+                                                                (BuildContext,
+                                                                    index) {
+                                                              return Bounce(
+                                                                onPressed: () {
+                                                                  selectDuration =
+                                                                      index;
+                                                                  selectedHours =
+                                                                      hourlist[
+                                                                          index];
+                                                                  starttime = DateFormat(
+                                                                          'kk:mm:ss')
+                                                                      .format(DateTime
+                                                                          .now());
+                                                                  endtime = DateFormat(
+                                                                          'kk:mm:ss')
+                                                                      .format(DateTime
+                                                                              .now()
+                                                                          .add(Duration(
+                                                                              hours: int.parse(hourlist[index]))));
+                                                                  daycount = 0;
+                                                                  _leaveController
+                                                                      .update();
+                                                                },
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        110),
+                                                                child:
+                                                                    Container(
+                                                                  width: 70,
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          right:
+                                                                              5,
+                                                                          left:
+                                                                              5),
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8),
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      color: selectDuration ==
+                                                                              index
+                                                                          ? colorlist[
+                                                                              index]
+                                                                          : colorlist[index]
+                                                                              .withOpacity(0.2)),
+                                                                  child: Text(
+                                                                    hourlist[
+                                                                            index] +
+                                                                        ' hr',
+                                                                    style: TextStyle(
+                                                                        color: selectDuration ==
+                                                                                index
+                                                                            ? Colors.white
+                                                                            : colorlist[index]),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 20.0,
+                                                              top: 0),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left:
+                                                                          10.0),
+                                                              child: Card(
+                                                                  elevation: 1,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                  ),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Bounce(
+                                                                          onPressed:
+                                                                              () {
+                                                                            DatePicker.showTime12hPicker(context,
+                                                                                showTitleActions: true,
+                                                                                onConfirm: (date) {
+                                                                              starttime = DateFormat('HH:mm:ss').format(date);
+                                                                              daycount = 0;
+                                                                              _leaveController.update();
+                                                                              // _endTimeController.text = DateFormat.jm().format(date);
+                                                                            }, locale: LocaleType.en);
+                                                                          },
+                                                                          duration:
+                                                                              Duration(milliseconds: 110),
+                                                                          child:
+                                                                              Text(
+                                                                            starttime,
+                                                                            style:
+                                                                                TextStyle(color: Colors.black45, fontSize: 14),
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          '   to   ',
+                                                                          style: TextStyle(
+                                                                              color: Colors.black,
+                                                                              fontSize: 14),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child:
+                                                                              Bounce(
+                                                                            onPressed:
+                                                                                () {
+                                                                              if (starttime == '--:--:--') {
+                                                                                Utils.showErrorToast(context, 'Please select start time');
+                                                                              } else {
+                                                                                DatePicker.showTimePicker(context, showTitleActions: true, onConfirm: (date) {
+                                                                                  var temp = DateFormat('HH:mm:ss').format(date);
+                                                                                  var format = DateFormat("HH:mm:ss");
+
+                                                                                  selectedHours = format.parse(temp).difference(format.parse(starttime)).inMinutes.toString();
+                                                                                  selectedHours = (int.parse(selectedHours) / 60).round().toString();
+                                                                                  daycount = 0;
+
+                                                                                  if (int.parse(selectedHours) > 8) {
+                                                                                    endtime = '';
+                                                                                    Utils.showErrorToast(context, 'Durations should be less than 8 hrs');
+                                                                                  } else {
+                                                                                    endtime = temp;
+                                                                                    print(selectedHours);
+                                                                                  }
+                                                                                  _leaveController.update();
+                                                                                  // _endTimeController.text = DateFormat.jm().format(date);
+                                                                                }, locale: LocaleType.en);
+                                                                              }
+                                                                            },
+                                                                            duration:
+                                                                                Duration(milliseconds: 110),
+                                                                            child:
+                                                                                Text(
+                                                                              endtime,
+                                                                              style: TextStyle(color: Colors.black45, fontSize: 14),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Image
+                                                                            .asset(
+                                                                          'assets/images/wait.png',
+                                                                          color:
+                                                                              ThemeManager.colorGrey,
+                                                                          height:
+                                                                              20,
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  )),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10.0,
+                                                                    right: 10),
+                                                            child: Card(
+                                                                elevation: 1,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                                child: Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .all(
+                                                                        10.0),
+                                                                    child: Text(
+                                                                      selectedHours,
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ))),
+                                                          ),
+                                                          Text(
+                                                            'Hours',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 20),
+                                                  ],
+                                                )
+                                              : Container(),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15.0),
+                                            child: Divider(
+                                              color: Colors.black,
+                                              thickness: 1,
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 40,
+                                            child: Row(
+                                              children: [
+                                                SizedBox(width: 12),
+                                                Image.asset(
+                                                  'assets/images/shape.png',
+                                                  height: 20,
+                                                  color: Colors.black,
+                                                ),
+                                                SizedBox(width: 12),
+                                                Text(
+                                                  'Type',
+                                                  style: TextStyle(
+                                                      letterSpacing: 1,
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 10, top: 10),
+                                            child: SizedBox(
+                                              height: 80,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 20),
+                                                child: ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  physics:
+                                                      BouncingScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  itemCount: _leaveController
+                                                      .leavetypeList.length,
+                                                  itemBuilder:
+                                                      (BuildContext, index) {
+                                                    return TyperowView(index);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Visibility(
+                                            visible: false,
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Current Leave Balance',
+                                                  style: TextStyle(
+                                                      color: Colors.black45),
+                                                ),
+                                                SizedBox(width: 15),
+                                                Container(
+                                                  width: 50,
+                                                  height: 35,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'TBA',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.black45),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          /*   Center(
+                                        child: Text(
+                                      'Manager : John dew',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 16),
+                                    )),*/
+                                          // SizedBox(height: 15),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: ThemeManager
+                                                        .colorGrey)),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                              child: TextFormField(
+                                                  controller:
+                                                      _commentTextEditingController,
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  style: TextStyle(
+                                                      color: ThemeManager
+                                                          .colorBlack,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                  decoration: InputDecoration(
+                                                      hintText: 'Comment',
+                                                      hintStyle: TextStyle(
+                                                          color: ThemeManager
+                                                              .colorBlack,
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                      border:
+                                                          InputBorder.none)),
+                                            ),
+                                          ),
+                                          Bounce(
+                                            onPressed: () {
+                                              if (TypeID.isEmpty) {
+                                                Utils.showErrorMessage(context,
+                                                    'Please Select Leave Type');
+                                              } else {
+                                                var data =
+                                                    '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(starttime).add(Duration(hours: 4, minutes: 30)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(endtime).add(Duration(hours: 4, minutes: 30)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
+                                                print(data);
+                                                _leaveController.requestLeave(
+                                                    data, callback);
+                                              }
+                                            },
+                                            duration:
+                                                Duration(milliseconds: 110),
+                                            child: Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(20.0),
+                                                child: Hero(
+                                                  tag: 'button',
+                                                  child: Image.asset(
+                                                    'assets/images/rfa_bt.png',
+                                                    height: 50,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
-                                  )
+                                  ),
+
+                                  // second tab bar view widget
+
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: _leaveController
+                                          .leavehistoryList.length,
+                                      itemBuilder: (BuildContext, index) {
+                                        return HistoryRowView(index);
+                                      },
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                          ),
+                          ],
 
-                          // second tab bar view widget
-
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:
-                                  _leaveController.leavehistoryList.length,
-                              itemBuilder: (BuildContext, index) {
-                                return HistoryRowView(index);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                      /*: Center(
+                          child: CircularProgressIndicator(
+                          color: ThemeManager.primaryColor,
+                        )),*/
                 );
               })),
     );
@@ -962,8 +971,7 @@ class _LeaveScreenState extends State<LeaveScreen>
   Widget dayrowView(int index) {
     return Bounce(
       onPressed: () {
-
-        if(index==4) {
+        if (index == 4) {
           var friday = 5;
           var now = new DateTime.now();
 
@@ -973,12 +981,11 @@ class _LeaveScreenState extends State<LeaveScreen>
 
           print('Recent monday $now');
           selectDay = index;
-          currentDate = DateFormat('yyyy-MM-dd')
-              .format(now);
+          currentDate = DateFormat('yyyy-MM-dd').format(now);
           print(currentDate);
           endDate = currentDate;
           print(endDate);
-        }else if(index==5){
+        } else if (index == 5) {
           var monday = 1;
           var now = new DateTime.now();
 
@@ -988,12 +995,11 @@ class _LeaveScreenState extends State<LeaveScreen>
 
           print('Recent monday $now');
           selectDay = index;
-          currentDate = DateFormat('yyyy-MM-dd')
-              .format(now);
+          currentDate = DateFormat('yyyy-MM-dd').format(now);
           print(currentDate);
           endDate = currentDate;
           print(endDate);
-        }else {
+        } else {
           selectDay = index;
           currentDate = DateFormat('yyyy-MM-dd')
               .format(DateTime.now().add(Duration(days: selectDay - 1)));
@@ -1001,8 +1007,6 @@ class _LeaveScreenState extends State<LeaveScreen>
           endDate = currentDate;
           print(endDate);
         }
-
-
 
         _leaveController.update();
       },

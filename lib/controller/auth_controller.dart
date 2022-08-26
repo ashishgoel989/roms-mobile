@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import '../utils/constants/app_constants.dart';
 
 class AuthController extends GetxController {
-  bool _isLoading = false;
+  final _isLoading = false.obs;
   String driverscount = "0";
   String vehiclecount = "0";
   String ordercount = "0";
@@ -18,7 +18,7 @@ class AuthController extends GetxController {
   get isLoading => _isLoading;
 
   Future login(data, callback) async {
-    _isLoading = true;
+    _isLoading.value = true;
     update();
     print(data);
     Map<String, String> headers = {
@@ -36,15 +36,15 @@ class AuthController extends GetxController {
       map = jsonDecode(response.body);
       print(response.body);
       if (map!['token'] != '') {
-        callback(true, map);
-        _isLoading = false;
+        _isLoading.value = false;
         PrefUtils.setUserToken(map['token']);
         PrefUtils.setRole(map['role']);
         PrefUtils.setFirstName(map['userDetail']['firstName']);
         PrefUtils.setUserID(map['userDetail']['id']);
+        callback(true, map);
         update();
       } else {
-        _isLoading = false;
+        _isLoading.value = false;
         callback(
           false,
           map,
@@ -53,7 +53,7 @@ class AuthController extends GetxController {
       }
     } else {
       callback(false,'');
-      _isLoading = false;
+      _isLoading.value = false;
       update();
     }
   }

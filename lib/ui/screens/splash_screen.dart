@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future init() async {
-    const _duration = Duration(milliseconds: 8010);
+    const _duration = Duration(milliseconds: 5500);
     return Timer(_duration, navigateToPage);
   }
 
