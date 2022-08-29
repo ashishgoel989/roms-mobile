@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -10,6 +11,7 @@ import 'package:rtl/controller/leave_controller.dart';
 import 'package:rtl/ui/screens/dashboard/dashboard_screen.dart';
 import 'package:rtl/utils/helper/theme_manager.dart';
 
+import '../../../data/model/LeaveHistoryResponser.dart';
 import '../../../utils/helper/primary_button.dart';
 import '../../../utils/utils.dart';
 
@@ -32,7 +34,7 @@ class _LeaveScreenState extends State<LeaveScreen>
     'Tomorrow',
     'Day After',
     'This Friday',
-    'Next Monday',
+    'This Monday',
   ];
 
   List<String> typelist = [
@@ -49,8 +51,6 @@ class _LeaveScreenState extends State<LeaveScreen>
     '2',
     '3',
     '4',
-    '6',
-    '8',
   ];
   final TextEditingController _commentTextEditingController =
       TextEditingController();
@@ -80,20 +80,29 @@ class _LeaveScreenState extends State<LeaveScreen>
   String endDate = '--/--/--';
   LeaveController _leaveController = Get.find<LeaveController>();
 
-  int daycount = 1;
+  final daycount = 1.obs;
 
   String TypeID = '';
 
   String starttime = '--:--:--';
   String endtime = '--:--:--';
+  late ScrollController _controller;
+  List _leaveHistoryList = [];
+  bool _isFirstLoadRunning = false;
+  bool _hasNextPage = true;
+  bool _isLoadMoreRunning = false;
+  final int _limit = 10;
+  int _page = 0;
 
   @override
   void initState() {
     _tabController =
         TabController(length: 2, vsync: this, initialIndex: widget.tabindex);
     super.initState();
+    _controller = ScrollController()..addListener(_loadMore);
+    _isFirstLoadRunning = true;
     _leaveController.GetLeaveType(leaveTypecallback);
-    _leaveController.GetLeaveHistory(leaveHistorycallback);
+    _leaveController.GetLeaveHistory(leaveHistorycallback, _page);
     currentDate = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().add(Duration(days: selectDay - 1)));
     convertdate = DateFormat('yyyy-MM-dd')
@@ -111,7 +120,19 @@ class _LeaveScreenState extends State<LeaveScreen>
 
   leaveHistorycallback(bool status, Map data) async {
     if (status == true) {
+      if (_isFirstLoadRunning == true) {
+        _leaveHistoryList.addAll(data['data']);
+        _isFirstLoadRunning = false;
+      } else {
+        _leaveHistoryList.addAll(data['data']);
+        _isLoadMoreRunning = false;
+        if (_leaveHistoryList.length >= data['totalElement']) {
+          _hasNextPage = false;
+        }
+      }
+      print('list length' + _leaveHistoryList.length.toString());
       TypeID = _leaveController.leavetypeList[0].id.toString();
+      setState(() {});
     } else {
       // ToastUtils.setToast(data['message']);
     }
@@ -150,9 +171,9 @@ class _LeaveScreenState extends State<LeaveScreen>
           body: GetBuilder<LeaveController>(
               init: _leaveController,
               builder: (_orderController) {
-                return /*Obx(
+                return Obx(
                   () => !_leaveController.isLoading.value
-                      ? */Column(
+                      ? Column(
                           children: [
                             // give the tab bar a height [can change height to preferred height]
                             Container(
@@ -430,15 +451,15 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                       var tempdate =
                                                                           DateTime.parse(
                                                                               convertdate);
-                                                                      daycount = value!
+                                                                      daycount.value = value!
                                                                           .difference(
                                                                               tempdate)
                                                                           .inDays;
 
                                                                       if (daycount ==
                                                                           0) {
-                                                                        daycount =
-                                                                            1;
+                                                                        daycount
+                                                                            .value = 1;
                                                                       }
                                                                       print(value
                                                                           .difference(
@@ -446,8 +467,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                           .inDays);
                                                                       if (daycount <
                                                                           0) {
-                                                                        daycount =
-                                                                            0;
+                                                                        daycount
+                                                                            .value = 0;
                                                                         endDate =
                                                                             currentDate;
                                                                         Utils.showErrorToast(
@@ -492,24 +513,30 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                       const EdgeInsets.only(
                                                           left: 10.0,
                                                           right: 10),
-                                                  child: Card(
-                                                      elevation: 1,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                      child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10.0),
-                                                          child: Text(
-                                                            daycount.toString(),
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ))),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      BottomSheet();
+                                                    },
+                                                    child: Card(
+                                                        elevation: 1,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10.0),
+                                                            child: Text(
+                                                              daycount
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black),
+                                                            ))),
+                                                  ),
                                                 ),
                                                 Text(
                                                   'Days',
@@ -576,7 +603,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                               .now()
                                                                           .add(Duration(
                                                                               hours: int.parse(hourlist[index]))));
-                                                                  daycount = 0;
+                                                                  daycount
+                                                                      .value = 0;
                                                                   _leaveController
                                                                       .update();
                                                                 },
@@ -659,7 +687,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                                 showTitleActions: true,
                                                                                 onConfirm: (date) {
                                                                               starttime = DateFormat('HH:mm:ss').format(date);
-                                                                              daycount = 0;
+                                                                              daycount.value = 0;
                                                                               _leaveController.update();
                                                                               // _endTimeController.text = DateFormat.jm().format(date);
                                                                             }, locale: LocaleType.en);
@@ -693,7 +721,7 @@ class _LeaveScreenState extends State<LeaveScreen>
 
                                                                                   selectedHours = format.parse(temp).difference(format.parse(starttime)).inMinutes.toString();
                                                                                   selectedHours = (int.parse(selectedHours) / 60).round().toString();
-                                                                                  daycount = 0;
+                                                                                  daycount.value = 0;
 
                                                                                   if (int.parse(selectedHours) > 8) {
                                                                                     endtime = '';
@@ -767,7 +795,18 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                     SizedBox(height: 20),
                                                   ],
                                                 )
-                                              : Container(),
+                                              : Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 15,
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    'Hours disabled for multi day leaves',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Colors.deepPurple,
+                                                        fontSize: 12),
+                                                  ),
+                                                ),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 15.0),
@@ -913,7 +952,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                     'Please Select Leave Type');
                                               } else {
                                                 var data =
-                                                    '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(starttime).add(Duration(hours: 4, minutes: 30)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(endtime).add(Duration(hours: 4, minutes: 30)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
+                                                    '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(starttime).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(endtime).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
                                                 print(data);
                                                 _leaveController.requestLeave(
                                                     data, callback);
@@ -939,16 +978,14 @@ class _LeaveScreenState extends State<LeaveScreen>
                                       ),
                                     ),
                                   ),
-
                                   // second tab bar view widget
-
                                   Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: ListView.builder(
                                       physics: BouncingScrollPhysics(),
+                                      controller: _controller,
                                       shrinkWrap: true,
-                                      itemCount: _leaveController
-                                          .leavehistoryList.length,
+                                      itemCount: _leaveHistoryList.length,
                                       itemBuilder: (BuildContext, index) {
                                         return HistoryRowView(index);
                                       },
@@ -958,11 +995,11 @@ class _LeaveScreenState extends State<LeaveScreen>
                               ),
                             ),
                           ],
-
-                      /*: Center(
+                        )
+                      : Center(
                           child: CircularProgressIndicator(
                           color: ThemeManager.primaryColor,
-                        )),*/
+                        )),
                 );
               })),
     );
@@ -971,6 +1008,7 @@ class _LeaveScreenState extends State<LeaveScreen>
   Widget dayrowView(int index) {
     return Bounce(
       onPressed: () {
+        daycount.value = 1;
         if (index == 4) {
           var friday = 5;
           var now = new DateTime.now();
@@ -1060,7 +1098,7 @@ class _LeaveScreenState extends State<LeaveScreen>
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(2)),
               child: Text(
-                index == 0 || index == 2 ? '' : '',
+                index == 0 || index == 2 ? 'Personal' : '',
                 style: TextStyle(color: colorlist[index], fontSize: 8),
               ),
             ),
@@ -1091,12 +1129,12 @@ class _LeaveScreenState extends State<LeaveScreen>
   }
 
   Widget HistoryRowView(int index) {
-    String day = DateTime.parse(
+    /*  String day = DateTime.parse(
             _leaveController.leavehistoryList[index].endDateTime.toString())
         .difference(DateTime.parse(
             _leaveController.leavehistoryList[index].startDateTime.toString()))
         .inDays
-        .toString();
+        .toString();*/
     return Bounce(
       onPressed: () {},
       duration: Duration(milliseconds: 110),
@@ -1105,13 +1143,9 @@ class _LeaveScreenState extends State<LeaveScreen>
         margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         padding: EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
-            color: _leaveController.leavehistoryList[index].leaveStatus
-                        .toString() ==
-                    "1"
+            color: _leaveHistoryList[index]['leaveStatus'].toString() == "1"
                 ? Colors.grey.withOpacity(0.2)
-                : _leaveController.leavehistoryList[index].leaveStatus
-                            .toString() ==
-                        "2"
+                : _leaveHistoryList[index]['leaveStatus'].toString() == "2"
                     ? Colors.green.withOpacity(0.2)
                     : Colors.red.withOpacity(0.2),
             borderRadius: BorderRadius.circular(5)),
@@ -1124,7 +1158,7 @@ class _LeaveScreenState extends State<LeaveScreen>
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  '${DateFormat('dd MMM yyyy').format(DateTime.parse(_leaveController.leavehistoryList[index].applyDate.toString()))}',
+                  '${DateFormat('dd MMM yyyy').format(DateTime.parse(_leaveHistoryList[index]['applyDate'].toString()))}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.black45,
@@ -1140,8 +1174,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                 SizedBox(width: 5),
                 Expanded(
                   child: Text(
-                    _leaveController
-                        .leavehistoryList[index].leaveType!.leaveDescription!,
+                    _leaveHistoryList[index]['leaveType']['leaveDescription'],
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         color: /*selectType == index
@@ -1153,23 +1186,17 @@ class _LeaveScreenState extends State<LeaveScreen>
                   ),
                 ),
                 Text(
-                  _leaveController.leavehistoryList[index].leaveStatus
-                              .toString() ==
-                          "1"
-                      ? _leaveController.leavehistoryList[index].approver !=
-                              null
+                  _leaveHistoryList[index]['leaveStatus'].toString() == "1"
+                      ? _leaveHistoryList[index]['approver'] != null
                           ? 'Pending with ${_leaveController.leavehistoryList[index].approver!.firstName}'
                           : 'Pending'
-                      : _leaveController.leavehistoryList[index].leaveStatus
-                                  .toString() ==
+                      : _leaveHistoryList[index]['leaveStatus'].toString() ==
                               "2"
-                          ? _leaveController.leavehistoryList[index].approver !=
-                                  null
-                              ? 'Approved by ${_leaveController.leavehistoryList[index].approver!.firstName}'
+                          ? _leaveHistoryList[index]['approver'] != null
+                              ? 'Approved by ${_leaveHistoryList[index]['approver']['firstName']}'
                               : "Approved"
-                          : _leaveController.leavehistoryList[index].approver !=
-                                  null
-                              ? 'Rejected by ${_leaveController.leavehistoryList[index].approver!.firstName}'
+                          : _leaveHistoryList[index]['approver'] != null
+                              ? 'Rejected by ${_leaveHistoryList[index]['approver']['firstName']}'
                               : "Rejected",
                   textAlign: TextAlign.start,
                   style: TextStyle(
@@ -1190,7 +1217,7 @@ class _LeaveScreenState extends State<LeaveScreen>
               children: [
                 SizedBox(width: 5),
                 Text(
-                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.leavehistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.leavehistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}',
+                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveHistoryList[index]['startDateTime'].toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveHistoryList[index]['endDateTime'].toString())).replaceAll("T00:00:00Z", '')}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors
@@ -1201,12 +1228,10 @@ class _LeaveScreenState extends State<LeaveScreen>
                 SizedBox(width: 15),
                 Expanded(
                   child: Text(
-                    _leaveController.leavehistoryList[index].totalDay
-                            .toString() +
+                    _leaveHistoryList[index]['totalDay'].toString() +
                         ' Days,   ' +
-                        '${DateFormat('HH:mm a').format(DateTime.parse(_leaveController.leavehistoryList[index].startDateTime.toString())).toLowerCase()} to ${DateFormat('HH:mm a').format(DateTime.parse(_leaveController.leavehistoryList[index].endDateTime.toString())).toLowerCase()},     ' +
-                        _leaveController.leavehistoryList[index].totalHour
-                            .toString() +
+                        '${DateFormat('HH:mm a').format(DateTime.parse(_leaveHistoryList[index]['startDateTime'].toString()).toLocal()).toLowerCase()} to ${DateFormat('HH:mm a').format(DateTime.parse(_leaveHistoryList[index]['endDateTime'].toString()).toLocal()).toLowerCase()},     ' +
+                        _leaveHistoryList[index]['totalHour'].toString() +
                         ' hr',
                     textAlign: TextAlign.start,
                     style: TextStyle(
@@ -1314,5 +1339,76 @@ class _LeaveScreenState extends State<LeaveScreen>
         );
       },
     );
+  }
+
+  Widget? BottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      isDismissible: true,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => true,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 25),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: daycount.value,
+              itemBuilder: (BuildContext, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    daycount.value = index + 1;
+                    _leaveController.update();
+                  },
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10),
+                        child: Text(
+                          '${index + 1}',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      Divider()
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+    return null;
+  }
+
+  void _loadMore() async {
+    if (_hasNextPage == true &&
+        _isFirstLoadRunning == false &&
+        _isLoadMoreRunning == false &&
+        _controller.position.extentAfter < 300) {
+      setState(() {
+        _isLoadMoreRunning = true; // Display a progress indicator at the bottom
+      });
+      _page += 1; // Increase _page by 1
+      print(_page);
+      _leaveController.GetLeaveHistory(leaveHistorycallback, _page);
+    } else {
+      print('jhfhfhgfh');
+    }
   }
 }

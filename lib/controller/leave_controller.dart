@@ -67,14 +67,17 @@ class LeaveController extends GetxController {
     }
   }
 
-  Future GetLeaveHistory(callback) async {
+  Future GetLeaveHistory(callback, page) async {
     _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
     print(headers);
-    http.Response response =
-        await http.get(Uri.parse(AppConstants.history_leave), headers: headers);
+    http.Response response = await http.get(
+        Uri.parse('${AppConstants.history_leave}?page=$page&size=10'),
+        headers: headers);
+    print(
+        'request url  : ' + '${AppConstants.history_leave}?page=$page&size=10');
     print('response : ' + response.body.toString());
     if (response != null && response.statusCode == 200) {
       Map map = jsonDecode(response.body);

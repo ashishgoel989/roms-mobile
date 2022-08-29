@@ -48,7 +48,6 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
     '8',
   ];
 
-
   List<Color> colorlist = [
     Color(0xff764AF1),
     Color(0xff947EC3),
@@ -293,7 +292,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
             child: Row(
               children: [
                 Text(
-                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveRequestList[index].totalHour} Hrs',
+                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].startDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].endDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveRequestList[index].totalHour} Hrs',
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 )
               ],
@@ -307,7 +306,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                 Expanded(
                   child: Bounce(
                     onPressed: () {
-                      showDetailsDialog(context, index);
+                      showDetailsDialog(context, index, true);
                     },
                     duration: Duration(milliseconds: 110),
                     child: Container(
@@ -448,7 +447,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
             child: Row(
               children: [
                 Text(
-                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
+                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 )
               ],
@@ -462,7 +461,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                 Expanded(
                   child: Bounce(
                     onPressed: () {
-                      //showDetailsDialog(context);
+                      showDetailsDialog(context, index, false);
                     },
                     duration: Duration(milliseconds: 110),
                     child: Container(
@@ -521,7 +520,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
     );
   }
 
-  void showDetailsDialog(BuildContext context, int index) {
+  void showDetailsDialog(BuildContext context, int index, bool type) {
     String day = DateTime.parse(
             _leaveController.teamLeaveRequestList[index].endDateTime.toString())
         .difference(DateTime.parse(_leaveController
@@ -529,6 +528,8 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
             .toString()))
         .inDays
         .toString();
+    final TextEditingController _commentTextEditingController =
+        TextEditingController();
 
     showDialog(
       context: context,
@@ -546,7 +547,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10)),
-                        height: 220,
+                        height: type == true ? 280 : 180,
                         child: Column(
                           children: [
                             Align(
@@ -632,7 +633,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString())).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString())).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
+                                      '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12),
                                     ),
@@ -659,73 +660,109 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                   ),
                                 )),
                             SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Bounce(
-                                      onPressed: () {
-                                        var data =
-                                            '{"id":"${_leaveController.teamLeaveRequestList[index].id}","reviewerRemark":"all team member are on leave"}';
-                                        _leaveController.DeclineRequest(
-                                            data, Approvecallback);
-                                        //showDetailsDialog(context);
-                                      },
-                                      duration: Duration(milliseconds: 110),
-                                      child: Container(
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                            color: ThemeManager.colorRed,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: Center(
-                                            child: Text(
-                                          'Decline',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 12),
-                                        )),
+                            Visibility(
+                              visible: type,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: ThemeManager.colorGrey)),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: TextFormField(
+                                      controller: _commentTextEditingController,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      style: TextStyle(
+                                          color: ThemeManager.colorBlack,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700),
+                                      decoration: InputDecoration(
+                                          hintText: 'Comment',
+                                          hintStyle: TextStyle(
+                                              color: ThemeManager.colorBlack,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700),
+                                          border: InputBorder.none)),
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                                visible: type, child: SizedBox(height: 20)),
+                            Visibility(
+                              visible: type,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Bounce(
+                                        onPressed: () {
+                                          var data =
+                                              '{"id":"${_leaveController.teamLeaveRequestList[index].id}","reviewerRemark": "${_commentTextEditingController.text.toString()}"';
+                                          _leaveController.DeclineRequest(
+                                              data, Approvecallback);
+                                          //showDetailsDialog(context);
+                                        },
+                                        duration: Duration(milliseconds: 110),
+                                        child: Container(
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                              color: ThemeManager.colorRed,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Center(
+                                              child: Text(
+                                            'Decline',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 12),
+                                          )),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(width: 20),
-                                  Expanded(
-                                    child: Bounce(
-                                      onPressed: () {
-                                        var data =
-                                            '{"id":"${_leaveController.teamLeaveRequestList[index].id}","reviewerRemark":""}';
-                                        _leaveController.ApproveRequest(
-                                            data, Approvecallback);
-                                        /*  Navigator.push(
-                            context,
-                            PageTransition(
-                                child: ViewScheduleScreen(),
-                                type: PageTransitionType.fade,
-                                duration: const Duration(milliseconds: 900),
-                                reverseDuration: (const Duration(milliseconds: 900))));*/
-                                      },
-                                      duration: Duration(milliseconds: 110),
-                                      child: Container(
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                            color: ThemeManager.secondaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: Center(
-                                            child: Text(
-                                          'Approve',
-                                          style: TextStyle(
-                                              color: ThemeManager.colorWhite,
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 14),
-                                        )),
+                                    SizedBox(width: 20),
+                                    Expanded(
+                                      child: Bounce(
+                                        onPressed: () {
+                                          var data =
+                                              '{"id":"${_leaveController.teamLeaveRequestList[index].id}","reviewerRemark": "${_commentTextEditingController.text.toString()}"}';
+                                          _leaveController.ApproveRequest(
+                                              data, Approvecallback);
+                                          /*  Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: ViewScheduleScreen(),
+                                  type: PageTransitionType.fade,
+                                  duration: const Duration(milliseconds: 900),
+                                  reverseDuration: (const Duration(milliseconds: 900))));*/
+                                        },
+                                        duration: Duration(milliseconds: 110),
+                                        child: Container(
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  ThemeManager.secondaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Center(
+                                              child: Text(
+                                            'Approve',
+                                            style: TextStyle(
+                                                color: ThemeManager.colorWhite,
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 14),
+                                          )),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(height: 10),

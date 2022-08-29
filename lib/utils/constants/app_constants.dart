@@ -8,7 +8,7 @@ class AppConstants {
   static String registration = base_url + 'authenticate';
   static String leave_type = base_url + 'v1/leave/types';
   static String request_leave = base_url + 'v1/leave/request';
-  static String history_leave = base_url + 'v1/leave/applied?page=0&size=10';
+  static String history_leave = base_url + 'v1/leave/applied';
   static String team_leave_request = base_url + 'v1/leave/appliedToMe?leaveStatus=1&page=0&size=50';
   static String team_leave_history = base_url + 'v1/leave/appliedToMe?leaveStatus=0&page=0&size=50';
   static String approve_request = base_url + 'v1/leave/approve';
