@@ -34,7 +34,7 @@ class _LeaveScreenState extends State<LeaveScreen>
     'Tomorrow',
     'Day After',
     'This Friday',
-    'This Monday',
+    'Next Monday',
   ];
 
   List<String> typelist = [
@@ -93,6 +93,8 @@ class _LeaveScreenState extends State<LeaveScreen>
   bool _isLoadMoreRunning = false;
   final int _limit = 10;
   int _page = 0;
+
+  int tempdaycount = 1;
 
   @override
   void initState() {
@@ -357,18 +359,73 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                             2030,
                                                                             1),
                                                                   ).then(
-                                                                      (value) =>
-                                                                          {
-                                                                            selectDay =
-                                                                                8473657834,
-                                                                            currentDate =
-                                                                                DateFormat('yyyy-MM-dd').format(value!),
-                                                                            convertdate =
-                                                                                DateFormat('yyyy-MM-dd').format(value),
-                                                                            endDate =
-                                                                                currentDate,
-                                                                            _leaveController.update()
-                                                                          });
+                                                                      (value) {
+                                                                    selectDay =
+                                                                        8473657834;
+                                                                    currentDate = DateFormat(
+                                                                            'yyyy-MM-dd')
+                                                                        .format(
+                                                                            value!);
+                                                                    convertdate = DateFormat(
+                                                                            'yyyy-MM-dd')
+                                                                        .format(
+                                                                            value);
+                                                                    endDate =
+                                                                        currentDate;
+
+                                                                    var tempdate =
+                                                                        DateTime.parse(
+                                                                            convertdate);
+
+                                                                    daycount.value = tempdate
+                                                                        .difference(
+                                                                            value)
+                                                                        .inDays;
+
+                                                                    tempdaycount =
+                                                                        daycount
+                                                                            .value;
+
+                                                                    if (daycount ==
+                                                                        0) {
+                                                                      daycount
+                                                                          .value = 1;
+                                                                    }
+                                                                    print(value
+                                                                        .difference(
+                                                                            tempdate)
+                                                                        .inDays);
+                                                                    if (daycount <
+                                                                        0) {
+                                                                      daycount
+                                                                          .value = 0;
+                                                                      endDate =
+                                                                          currentDate;
+                                                                      Utils.showErrorToast(
+                                                                          context,
+                                                                          'Please select valid date');
+                                                                    } else {
+                                                                      if (daycount
+                                                                              .value ==
+                                                                          1) {
+                                                                        selectedHours =
+                                                                            '0';
+                                                                        selectDuration =
+                                                                            365376576;
+                                                                        starttime =
+                                                                            '--:--:--';
+                                                                        endtime =
+                                                                            '--:--:--';
+                                                                      }
+                                                                      currentDate = DateFormat(
+                                                                              'yyyy-MM-dd')
+                                                                          .format(
+                                                                              value);
+                                                                    }
+
+                                                                    _leaveController
+                                                                        .update();
+                                                                  });
                                                                 },
                                                                 child: Text(
                                                                   DateFormat(
@@ -455,6 +512,9 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                           .difference(
                                                                               tempdate)
                                                                           .inDays;
+                                                                      tempdaycount =
+                                                                          daycount
+                                                                              .value;
 
                                                                       if (daycount ==
                                                                           0) {
@@ -475,9 +535,22 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                             context,
                                                                             'Please select valid date');
                                                                       } else {
+                                                                        if (daycount.value ==
+                                                                            1) {
+                                                                          selectedHours =
+                                                                              '0';
+                                                                          selectDuration =
+                                                                              365376576;
+                                                                          starttime =
+                                                                              '--:--:--';
+                                                                          endtime =
+                                                                              '--:--:--';
+                                                                        }
                                                                         endDate =
                                                                             DateFormat('yyyy-MM-dd').format(value);
                                                                       }
+                                                                      print(
+                                                                          endDate);
                                                                       _leaveController
                                                                           .update();
                                                                     });
@@ -688,6 +761,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                                 onConfirm: (date) {
                                                                               starttime = DateFormat('HH:mm:ss').format(date);
                                                                               daycount.value = 0;
+                                                                              selectedHours = '1';
+                                                                              endtime = DateFormat('HH:mm:ss').format(date.add(Duration(hours: 1)));
                                                                               _leaveController.update();
                                                                               // _endTimeController.text = DateFormat.jm().format(date);
                                                                             }, locale: LocaleType.en);
@@ -715,18 +790,26 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                               if (starttime == '--:--:--') {
                                                                                 Utils.showErrorToast(context, 'Please select start time');
                                                                               } else {
-                                                                                DatePicker.showTimePicker(context, showTitleActions: true, onConfirm: (date) {
+                                                                                DatePicker.showTime12hPicker(context, showTitleActions: true, onConfirm: (date) {
                                                                                   var temp = DateFormat('HH:mm:ss').format(date);
                                                                                   var format = DateFormat("HH:mm:ss");
+                                                                                  var tempselectedHours = format.parse(temp).difference(format.parse(starttime)).inMinutes.toString();
+                                                                                 // tempselectedHours = (int.parse(tempselectedHours) / 60).round().toString();
 
-                                                                                  selectedHours = format.parse(temp).difference(format.parse(starttime)).inMinutes.toString();
-                                                                                  selectedHours = (int.parse(selectedHours) / 60).round().toString();
-                                                                                  daycount.value = 0;
-
-                                                                                  if (int.parse(selectedHours) > 8) {
-                                                                                    endtime = '';
-                                                                                    Utils.showErrorToast(context, 'Durations should be less than 8 hrs');
+                                                                                  print(tempselectedHours);
+                                                                                  if (int.parse(tempselectedHours) < 0) {
+                                                                                    endtime = '--:--:--';
+                                                                                    Utils.showErrorToast(context, 'Please select valid time');
+                                                                                  } else if (int.parse(tempselectedHours) > 240) {
+                                                                                    endtime = '--:--:--';
+                                                                                    Utils.showErrorToast(context, 'Durations should be less than 4 hrs');
                                                                                   } else {
+                                                                                    selectedHours = format.parse(temp).difference(format.parse(starttime)).inMinutes.toString();
+                                                                                    selectedHours = (int.parse(selectedHours) / 60).round().toString();
+                                                                                    daycount.value = 0;
+                                                                                    if (selectedHours == '0') {
+                                                                                      selectedHours = '1';
+                                                                                    }
                                                                                     endtime = temp;
                                                                                     print(selectedHours);
                                                                                   }
@@ -952,7 +1035,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                     'Please Select Leave Type');
                                               } else {
                                                 var data =
-                                                    '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(starttime).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(endtime).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
+                                                    '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate))} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(starttime).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(endDate))} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(endtime).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
                                                 print(data);
                                                 _leaveController.requestLeave(
                                                     data, callback);
@@ -1005,10 +1088,22 @@ class _LeaveScreenState extends State<LeaveScreen>
     );
   }
 
+  DateTime findFirstDateOfNextWeek(DateTime dateTime) {
+    final DateTime sameWeekDayOfNextWeek =
+        dateTime.add(const Duration(days: 7));
+    return findFirstDateOfTheWeek(sameWeekDayOfNextWeek);
+  }
+
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  }
+
   Widget dayrowView(int index) {
     return Bounce(
       onPressed: () {
+        print(findFirstDateOfNextWeek(DateTime.now()));
         daycount.value = 1;
+        tempdaycount = daycount.value;
         if (index == 4) {
           var friday = 5;
           var now = new DateTime.now();
@@ -1024,13 +1119,7 @@ class _LeaveScreenState extends State<LeaveScreen>
           endDate = currentDate;
           print(endDate);
         } else if (index == 5) {
-          var monday = 1;
-          var now = new DateTime.now();
-
-          while (now.weekday != monday) {
-            now = now.add(new Duration(days: 1));
-          }
-
+          var now = findFirstDateOfNextWeek(DateTime.now());
           print('Recent monday $now');
           selectDay = index;
           currentDate = DateFormat('yyyy-MM-dd').format(now);
@@ -1362,9 +1451,9 @@ class _LeaveScreenState extends State<LeaveScreen>
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
-              itemCount: daycount.value,
+              itemCount: tempdaycount,
               itemBuilder: (BuildContext, index) {
-                return GestureDetector(
+                return InkWell(
                   onTap: () {
                     Navigator.pop(context);
                     daycount.value = index + 1;

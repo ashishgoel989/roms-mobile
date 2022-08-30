@@ -34,9 +34,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   String version = '';
 
 
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       String appName = packageInfo.appName;
@@ -47,11 +47,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
+
     return Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Color(
@@ -313,15 +315,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                       Navigator.pop(context);
                       _showLogountDialog();
                     }),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Version : 0.0.1',
-                      style: TextStyle(color: Colors.black, fontSize: 12),
-                    ),
-                  ),
+                Text(
+                  'Version : 0.0.1',
+                  style: TextStyle(color: Colors.black, fontSize: 12),
                 )
               ]),
         )));

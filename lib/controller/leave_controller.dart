@@ -113,7 +113,7 @@ class LeaveController extends GetxController {
     http.Response response = await http
         .get(Uri.parse(AppConstants.team_leave_request), headers: headers);
     print('response : ' + response.body.toString());
-    if (response != null && response.statusCode == 200) {
+    if (response.statusCode == 200) {
       Map map = jsonDecode(response.body);
       print(response.body);
       if (map['token'] != '') {
@@ -151,7 +151,10 @@ class LeaveController extends GetxController {
         TeamLeaveRequestResponser teamLeaveRequestResponser =
             TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
-        _teamleaveHistoryList = teamLeaveRequestResponser.data!;
+        _teamleaveHistoryList = teamLeaveRequestResponser.data!
+            .where((element) =>
+                element.leaveStatus == 2 || element.leaveStatus == 3)
+            .toList();
         _isLoading.value = false;
         update();
       } else {

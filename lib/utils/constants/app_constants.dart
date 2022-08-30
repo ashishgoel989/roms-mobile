@@ -13,6 +13,7 @@ class AppConstants {
   static String team_leave_history = base_url + 'v1/leave/appliedToMe?leaveStatus=0&page=0&size=50';
   static String approve_request = base_url + 'v1/leave/approve';
   static String decline_request = base_url + 'v1/leave/reject';
+  static String appliedToMeHistory = base_url + 'v1/leave/appliedToMeHistory?&page=0&size=50';
 
   //Pref Constant
   static String fcmToken = '';
