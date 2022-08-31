@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -102,7 +105,6 @@ class StateHomeScreen extends State<HomeScreen> {
                                 reverseDuration:
                                     (const Duration(milliseconds: 900))));
 
-
                         /**/
                       },
                       duration: Duration(microseconds: 110),
@@ -116,12 +118,19 @@ class StateHomeScreen extends State<HomeScreen> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child: Image.asset(
-                              'assets/images/profile.png',
-                              height: 50,
-                              width: 50,
-                              fit: BoxFit.fill,
-                            ),
+                            child: PrefUtils.getProfileImage().isNotEmpty
+                                ? Image.memory(
+                              Uint8List.fromList(Base64Decoder().convert(PrefUtils.getProfileImage())),
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.fill,
+                                  )
+                                : Image.asset(
+                                    'assets/images/profile.png',
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.fill,
+                                  ),
                           ),
                         ),
                       ),
@@ -431,7 +440,6 @@ class StateHomeScreen extends State<HomeScreen> {
                 image: AssetImage('assets/images/cardbg.png'),
                 fit: BoxFit.fill,
               ),
-              border: Border.all(color: Colors.white, width: 2),
               borderRadius: BorderRadius.circular(15)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

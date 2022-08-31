@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -8,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rtl/controller/leave_controller.dart';
 import 'package:rtl/ui/screens/dashboard/dashboard_screen.dart';
+import 'package:rtl/utils/helper/pref_utils.dart';
 import 'package:rtl/utils/helper/theme_manager.dart';
 
 import '../../../utils/helper/primary_button.dart';
@@ -97,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Matthew Mcconaughey',
+                                  '${PrefUtils.getFirstName()} ${PrefUtils.getLastName()}',
                                   style: TextStyle(
                                       color: Colors.black54, fontSize: 12),
                                 ),
@@ -105,13 +109,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 Row(
                                   children: [
                                     Text(
-                                      'RTL1199',
+                                      PrefUtils.getemployeeNo(),
                                       style: TextStyle(
                                           color: Colors.black54, fontSize: 10),
                                     ),
                                     SizedBox(width: 40),
                                     Text(
-                                      'Operator',
+                                      PrefUtils.getjobTitle(),
                                       style: TextStyle(
                                           color: Colors.black54, fontSize: 10),
                                     ),
@@ -119,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  'YALLOURN',
+                                  'RTL',
                                   style: TextStyle(
                                       color: Colors.black54, fontSize: 10),
                                 ),
@@ -129,10 +133,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                           Hero(
                             tag: 'profile',
                             child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/profile_image.png',
-                                fit: BoxFit.fill,
+                              child: PrefUtils.getProfileImage().isNotEmpty
+                                  ? Image.memory(
+                                Uint8List.fromList(Base64Decoder().convert(PrefUtils.getProfileImage())),
                                 height: 80,
+                                width: 80,
+                                fit: BoxFit.fill,
+                              )
+
+                              : Image.asset(
+                                'assets/images/profile.png',
+                                height: 80,
+                                width: 80,
+                                fit: BoxFit.fill,
                               ),
                             ),
                           )
@@ -149,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              '25/08/1999',
+                              PrefUtils.getBirthday(),
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 12),
                             ),
@@ -162,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              '25/08/1999',
+                              PrefUtils.getGender(),
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 12),
                             ),
@@ -180,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           SizedBox(width: 10),
                           Center(
                             child: Text(
-                              '+61 987654321',
+                              '+61 ${PrefUtils.getphone()}',
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 12),
                             ),
@@ -198,7 +211,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           SizedBox(width: 10),
                           Center(
                             child: Text(
-                              'mmathew@rtl.com.au',
+                              PrefUtils.getEmail(),
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 12),
                             ),

@@ -377,11 +377,15 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                         DateTime.parse(
                                                                             convertdate);
 
-                                                                    daycount.value = tempdate
-                                                                        .difference(
-                                                                            value)
-                                                                        .inDays;
-
+                                                                    daycount
+                                                                        .value = tempdate.difference(value).inDays <
+                                                                            0
+                                                                        ? tempdate
+                                                                            .difference(
+                                                                                value)
+                                                                            .inDays
+                                                                        : tempdate.difference(value).inDays +
+                                                                            1;
                                                                     tempdaycount =
                                                                         daycount
                                                                             .value;
@@ -508,10 +512,15 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                       var tempdate =
                                                                           DateTime.parse(
                                                                               convertdate);
-                                                                      daycount.value = value!
-                                                                          .difference(
-                                                                              tempdate)
-                                                                          .inDays;
+                                                                      daycount
+                                                                          .value = value!.difference(tempdate).inDays <
+                                                                              0
+                                                                          ? value
+                                                                              .difference(
+                                                                                  tempdate)
+                                                                              .inDays
+                                                                          : value.difference(tempdate).inDays +
+                                                                              1;
                                                                       tempdaycount =
                                                                           daycount
                                                                               .value;
@@ -761,8 +770,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                                 onConfirm: (date) {
                                                                               starttime = DateFormat('HH:mm:ss').format(date);
                                                                               daycount.value = 0;
-                                                                              selectedHours = '1';
-                                                                              endtime = DateFormat('HH:mm:ss').format(date.add(Duration(hours: 1)));
+                                                                              endtime = DateFormat('HH:mm:ss').format(date.add(Duration(hours: int.parse(selectedHours))));
                                                                               _leaveController.update();
                                                                               // _endTimeController.text = DateFormat.jm().format(date);
                                                                             }, locale: LocaleType.en);
@@ -794,7 +802,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                                   var temp = DateFormat('HH:mm:ss').format(date);
                                                                                   var format = DateFormat("HH:mm:ss");
                                                                                   var tempselectedHours = format.parse(temp).difference(format.parse(starttime)).inMinutes.toString();
-                                                                                 // tempselectedHours = (int.parse(tempselectedHours) / 60).round().toString();
+                                                                                  // tempselectedHours = (int.parse(tempselectedHours) / 60).round().toString();
 
                                                                                   print(tempselectedHours);
                                                                                   if (int.parse(tempselectedHours) < 0) {
@@ -1102,8 +1110,12 @@ class _LeaveScreenState extends State<LeaveScreen>
     return Bounce(
       onPressed: () {
         print(findFirstDateOfNextWeek(DateTime.now()));
-        daycount.value = 1;
+        daycount.value = 0;
         tempdaycount = daycount.value;
+        selectedHours = '0';
+        selectDuration = 365376576;
+        starttime = '--:--:--';
+        endtime = '--:--:--';
         if (index == 4) {
           var friday = 5;
           var now = new DateTime.now();

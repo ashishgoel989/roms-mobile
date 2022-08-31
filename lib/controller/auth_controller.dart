@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
 import 'package:rtl/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,9 +12,6 @@ import '../utils/constants/app_constants.dart';
 
 class AuthController extends GetxController {
   final _isLoading = false.obs;
-  String driverscount = "0";
-  String vehiclecount = "0";
-  String ordercount = "0";
 
   get isLoading => _isLoading;
 
@@ -37,10 +35,25 @@ class AuthController extends GetxController {
       print(response.body);
       if (map!['token'] != '') {
         _isLoading.value = false;
-        PrefUtils.setUserToken(map['token']);
-        PrefUtils.setRole(map['role']);
-        PrefUtils.setFirstName(map['userDetail']['firstName']);
-        PrefUtils.setUserID(map['userDetail']['id']);
+        try {
+          PrefUtils.setUserToken(map['token']);
+          PrefUtils.setRole(map['role']);
+          PrefUtils.setFirstName(map['userDetail']['firstName']);
+          PrefUtils.setLastName(map['userDetail']['lastName']);
+          PrefUtils.setUserID(map['userDetail']['id']);
+          PrefUtils.setEmail(map['userDetail']['email']);
+          PrefUtils.setjobTitle(map['userDetail']['jobTitle']);
+          PrefUtils.setphone(map['userDetail']['phone']);
+          PrefUtils.setBirthday(DateFormat('dd/MMM/yyyy')
+              .format(DateTime.parse(map['userDetail']['birthdate'])));
+          PrefUtils.setGender(map['userDetail']['gender']);
+          PrefUtils.setemployeeNo(map['userDetail']['employeeNo']);
+          PrefUtils.setProfileImage(map['userDetail']['profileImage'] != null
+              ? map['userDetail']['profileImage']
+              : '');
+        }catch(e){
+
+        }
         callback(true, map);
         update();
       } else {
@@ -52,7 +65,7 @@ class AuthController extends GetxController {
         update();
       }
     } else {
-      callback(false,'');
+      callback(false, '');
       _isLoading.value = false;
       update();
     }

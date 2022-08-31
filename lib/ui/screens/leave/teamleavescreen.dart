@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -9,6 +12,7 @@ import 'package:rtl/controller/leave_controller.dart';
 import 'package:rtl/ui/screens/dashboard/dashboard_screen.dart';
 import 'package:rtl/utils/helper/theme_manager.dart';
 
+import '../../../utils/helper/pref_utils.dart';
 import '../../../utils/helper/primary_button.dart';
 import '../../../utils/utils.dart';
 
@@ -240,10 +244,27 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                 SizedBox(width: 10),
                 Icon(Icons.brightness_1, color: Colors.grey, size: 10),
                 SizedBox(width: 15),
-                Image.asset(
-                  'assets/images/profile.png',
-                  height: 40,
-                ),
+                _leaveController.teamLeaveRequestList[index].employe!
+                            .profileImage !=
+                        null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.memory(
+                          Uint8List.fromList(Base64Decoder().convert(
+                              _leaveController.teamLeaveRequestList[index]
+                                  .employe!.profileImage)),
+                          height: 40,
+                          width: 40,
+                          fit: BoxFit.fill,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.asset(
+                          'assets/images/profile.png',
+                          height: 40,
+                        ),
+                      ),
                 SizedBox(width: 15),
                 Expanded(
                   child: Column(
@@ -279,8 +300,10 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                         .leaveDescription!,
                     textAlign: TextAlign.center,
                     maxLines: 2,
-                    style:
-                        TextStyle(color: Colors.deepPurpleAccent, fontSize: 10),
+                    style: TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700),
                   )),
                 )
               ],
@@ -312,12 +335,12 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                     child: Container(
                       height: 30,
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
+                          border: Border.all(color: Colors.green),
                           color: ThemeManager.colorWhite,
                           borderRadius: BorderRadius.circular(5)),
                       child: Center(
                           child: Text(
-                        'View Details',
+                        'take action',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w800,
@@ -342,7 +365,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                     child: Container(
                       height: 30,
                       decoration: BoxDecoration(
-                          color: ThemeManager.secondaryColor,
+                          color: ThemeManager.colorGrey,
                           borderRadius: BorderRadius.circular(5)),
                       child: Center(
                           child: Text(
@@ -357,8 +380,8 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                 ? "Approved"
                                 : "Rejected",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
                             fontSize: 14),
                       )),
                     ),
@@ -386,7 +409,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
       margin: EdgeInsets.symmetric(vertical: 8),
       color: _leaveController.teamLeaveHistoryList[index].leaveStatus == 3
           ? Color(0xffF56D91).withOpacity(0.2)
-          : Colors.white,
+          : Colors.green.withOpacity(0.2),
       child: Column(
         children: [
           Container(
@@ -396,10 +419,27 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                 SizedBox(width: 10),
                 Icon(Icons.brightness_1, color: Colors.grey, size: 10),
                 SizedBox(width: 15),
-                Image.asset(
-                  'assets/images/profile.png',
-                  height: 40,
-                ),
+                _leaveController.teamLeaveHistoryList[index].employe!
+                            .profileImage !=
+                        null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.memory(
+                          Uint8List.fromList(Base64Decoder().convert(
+                              _leaveController.teamLeaveHistoryList[index]
+                                  .employe!.profileImage)),
+                          height: 40,
+                          width: 40,
+                          fit: BoxFit.fill,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.asset(
+                          'assets/images/profile.png',
+                          height: 40,
+                        ),
+                      ),
                 SizedBox(width: 15),
                 Expanded(
                   child: Column(
@@ -437,8 +477,10 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                         .toString(),
                     textAlign: TextAlign.center,
                     maxLines: 2,
-                    style:
-                        TextStyle(color: Colors.deepPurpleAccent, fontSize: 10),
+                    style: TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700),
                   )),
                 )
               ],
@@ -450,7 +492,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
             child: Row(
               children: [
                 Text(
-                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
+                  '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveHistoryList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 )
               ],
@@ -470,7 +512,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                     child: Container(
                       height: 30,
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
+                          border: Border.all(color: Colors.green),
                           color: ThemeManager.colorWhite,
                           borderRadius: BorderRadius.circular(5)),
                       child: Center(
@@ -507,7 +549,12 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                 ? "Approved"
                                 : "Rejected",
                         style: TextStyle(
-                            color: ThemeManager.secondaryColor,
+                            color: _leaveController
+                                        .teamLeaveHistoryList[index].leaveStatus
+                                        .toString() ==
+                                    "3"
+                                ? ThemeManager.colorRed
+                                : ThemeManager.secondaryColor,
                             fontWeight: FontWeight.w800,
                             fontSize: 14),
                       )),
@@ -574,10 +621,23 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                   Icon(Icons.brightness_1,
                                       color: Colors.grey, size: 10),
                                   SizedBox(width: 15),
-                                  Image.asset(
-                                    'assets/images/profile.png',
-                                    height: 40,
-                                  ),
+                                  _leaveController.teamLeaveRequestList[index]
+                                              .employe!.profileImage !=
+                                          null
+                                      ? Image.memory(
+                                          Uint8List.fromList(Base64Decoder()
+                                              .convert(_leaveController
+                                                  .teamLeaveRequestList[index]
+                                                  .employe!
+                                                  .profileImage)),
+                                          height: 40,
+                                          width: 40,
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/profile.png',
+                                          height: 40,
+                                        ),
                                   SizedBox(width: 15),
                                   Expanded(
                                     child: Column(
@@ -636,7 +696,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].startDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveHistoryList[index].endDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveHistoryList[index].totalHour} Hrs',
+                                      '${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].startDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')} to ${DateFormat('dd MMM').format(DateTime.parse(_leaveController.teamLeaveRequestList[index].endDateTime.toString()).toLocal()).replaceAll("T00:00:00Z", '')}    ${_leaveController.teamLeaveRequestList[index].totalDay} Day  ${_leaveController.teamLeaveRequestList[index].totalHour} Hrs',
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12),
                                     ),
@@ -781,6 +841,7 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
       },
     );
   }
+
   void showDetailsRDialog(BuildContext context, int index, bool type) {
     String day = DateTime.parse(
             _leaveController.teamLeaveHistoryList[index].endDateTime.toString())
@@ -832,10 +893,23 @@ class _TeamLeaveScreenState extends State<TeamLeaveScreen>
                                   Icon(Icons.brightness_1,
                                       color: Colors.grey, size: 10),
                                   SizedBox(width: 15),
-                                  Image.asset(
-                                    'assets/images/profile.png',
-                                    height: 40,
-                                  ),
+                                  _leaveController.teamLeaveHistoryList[index]
+                                              .employe!.profileImage !=
+                                          null
+                                      ? Image.memory(
+                                          Uint8List.fromList(Base64Decoder()
+                                              .convert(_leaveController
+                                                  .teamLeaveHistoryList[index]
+                                                  .employe!
+                                                  .profileImage)),
+                                          height: 40,
+                                          width: 40,
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/profile.png',
+                                          height: 40,
+                                        ),
                                   SizedBox(width: 15),
                                   Expanded(
                                     child: Column(

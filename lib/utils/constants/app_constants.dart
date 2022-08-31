@@ -4,7 +4,8 @@ import '../localization/language_model.dart';
 
 class AppConstants {
   //static String base_url = 'https://13.234.56.70/';
-  static String base_url = 'http://13.234.56.70:8080/';
+ static String base_url = 'http://13.234.56.70:8080/';
+ // static String base_url = 'http://13.236.181.82:8080/';
   static String registration = base_url + 'authenticate';
   static String leave_type = base_url + 'v1/leave/types';
   static String request_leave = base_url + 'v1/leave/request';
@@ -45,7 +46,15 @@ class SharedPrefsKeys {
   static const role = 'role';
   static const firebasetoken = 'firebasetoken';
   static const firstname = 'firstname';
+  static const lastname = 'lastname';
   static const userId = 'userId';
+  static const email = 'email';
+  static const phone = 'phone';
+  static const birthday = 'birthday';
+  static const gender = 'gender';
+  static const employeeNo = 'employeeNo';
+  static const jobTitle = 'jobTitle';
+  static const profileimage = 'profileimage';
   static const FIRST_TIME_LAUNCH = 'first_time_launch';
   static const USER_DATA = "user_data";
   static const USER_LANGUAGE = 'user_language';

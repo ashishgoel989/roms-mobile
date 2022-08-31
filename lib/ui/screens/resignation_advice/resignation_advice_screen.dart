@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rtl/controller/leave_controller.dart';
 import 'package:rtl/ui/screens/dashboard/dashboard_screen.dart';
+import 'package:rtl/utils/helper/pref_utils.dart';
 import 'package:rtl/utils/helper/theme_manager.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'dart:ui' as ui;
@@ -181,7 +182,7 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                                       fontWeight: FontWeight.w700,
                                       fontSize: 12))),
                           Expanded(
-                              child: Text('Matthew Mcconaughey',
+                              child: Text('${PrefUtils.getFirstName()} ${PrefUtils.getLastName()}',
                                   style: TextStyle(
                                       color: Colors.black54,
                                       fontWeight: FontWeight.w500,
@@ -197,7 +198,7 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                                       fontWeight: FontWeight.w700,
                                       fontSize: 12))),
                           Expanded(
-                              child: Text('RTL1199',
+                              child: Text(PrefUtils.getemployeeNo(),
                                   style: TextStyle(
                                       color: Colors.black54,
                                       fontWeight: FontWeight.w500,

@@ -50,7 +50,7 @@ class LeaveController extends GetxController {
             LeaveTypeResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _leavetypeList = leaveTypeResponser.data!;
-        _isLoading.value = false;
+        //_isLoading.value = false;
         update();
       } else {
         _isLoading.value = false;
@@ -121,7 +121,7 @@ class LeaveController extends GetxController {
             TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _teamleaveRequestList = teamLeaveRequestResponser.data!;
-        _isLoading.value = false;
+     //   _isLoading.value = false;
         update();
       } else {
         _isLoading.value = false;
