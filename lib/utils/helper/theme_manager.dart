@@ -35,9 +35,9 @@ class ThemeManager {
   static Color darkShimmerHighlight = Color(0xff505050);
   static Color darkShimmerShape = Color(0xff5d5d5d);
 
-  static Color darkGreen = Color(0xff59c6a6);
+  static Color darkGreen = Color(0xffcdf6d6);
   static Color lightGreen = Color(0xffe0fcf4);
-  static Color darkPink = Color(0xfff96fba);
+  static Color darkPink = Color(0xfff5c8ce);
   static Color lightPink = Color(0xfffae3f0);
   static Color darkGrey = Color(0xffdedede);
   static Color lightGrey = Color(0xfff0f0f0);

@@ -90,7 +90,8 @@ class _ProfileScreenState extends State<ProfileScreen>
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -135,18 +136,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: ClipOval(
                               child: PrefUtils.getProfileImage().isNotEmpty
                                   ? Image.memory(
-                                Uint8List.fromList(Base64Decoder().convert(PrefUtils.getProfileImage())),
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.fill,
-                              )
-
-                              : Image.asset(
-                                'assets/images/profile.png',
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.fill,
-                              ),
+                                      Uint8List.fromList(Base64Decoder()
+                                          .convert(
+                                              PrefUtils.getProfileImage())),
+                                      height: 80,
+                                      width: 80,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Image.asset(
+                                      'assets/images/profile.png',
+                                      height: 80,
+                                      width: 80,
+                                      fit: BoxFit.fill,
+                                    ),
                             ),
                           )
                         ],
@@ -167,10 +169,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   color: Colors.black54, fontSize: 12),
                             ),
                           ),
-                          Icon(
-                            Icons.transgender,
+                          Image.asset(
+                            'assets/images/gender.png',
                             color: Colors.black,
-                            size: 20,
+                            height: 20,
                           ),
                           SizedBox(width: 10),
                           Expanded(
@@ -234,7 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Container(
                               height: 40,
                               decoration: BoxDecoration(
-                                color: colorlist[0],
+                                  color: colorlist[0],
                                   border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(15)),
                               child: Center(
@@ -332,7 +334,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                       SizedBox(height: 10),
                       Row(
                         children: [
-                          Switch(value: true,activeColor: Colors.blue, onChanged: (value) {}),
+                          Switch(
+                              value: true,
+                              activeColor: Colors.blue,
+                              onChanged: (value) {}),
                           Flexible(
                             child: Text(
                               'I wish to receive my payslip in my E-mail stated above.',
