@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
+import 'package:rtl/ui/screens/notification/notificationscreen.dart';
 import '../../../utils/helper/theme_manager.dart';
 import 'home_screen.dart';
 
@@ -23,7 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _pagedata = [
       HomeScreen(),
       HomeScreen(),
-      HomeScreen(),
+      NotificationScreen(),
       HomeScreen(),
     ];
   }

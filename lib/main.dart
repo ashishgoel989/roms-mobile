@@ -77,13 +77,11 @@ class _RTLAppState extends State<RTLApp> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
-      print(message.notification!.title);
-      print(message.notification!.body);
       print(message.data);
       flutterLocalNotificationsPlugin.show(
         notification.hashCode,
-        message.notification!.title,
-        message.notification!.body,
+        message.data['title'],
+        message.data['msg'],
         NotificationDetails(
           android: AndroidNotificationDetails(
             channel.id,

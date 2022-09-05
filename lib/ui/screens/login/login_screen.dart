@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:rtl/utils/helper/pref_utils.dart';
 
 import '../../../controller/auth_controller.dart';
 import '../../../provider/provider/theme_provider.dart';
@@ -295,7 +296,8 @@ class _LoginScreenState extends State<LoginScreen> {
       var data = {
         "username": _emailTextEditingController.text.toString(),
         "password": _passwordTextField.text.toString(),
-        "orgId": "ab905406-79a3-4e54-8244-d79fc0e60937"
+        "orgId": "ab905406-79a3-4e54-8244-d79fc0e60937",
+        "device_token": PrefUtils.getFirebaseToken()
       };
       _authController.login(data, callback);
     }
