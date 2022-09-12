@@ -7,6 +7,7 @@ import 'package:rtl/utils/helper/pref_utils.dart';
 
 import '../../../../utils/helper/primary_button.dart';
 import '../../../../utils/helper/theme_manager.dart';
+import '../../change_password/ChangePasswordScreen.dart';
 import '../../login/login_screen.dart';
 import '../../transfer_form/transfer_form_screen.dart';
 
@@ -33,8 +34,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   var _selectedDestination = 0;
   String version = '';
 
-
-
   @override
   void initState() {
     super.initState();
@@ -46,7 +45,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
       setState(() {});
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +70,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               // Important: Remove any padding from the ListView.
               children: <Widget>[
                 SizedBox(height: size.height * 0.045),
-             /*   ListTile(
+                /*   ListTile(
                     leading: Padding(
                       padding: const EdgeInsets.only(top: 5.0),
                       child: Container(
@@ -277,15 +275,14 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     selected: _selectedDestination == 7,
                     onTap: () {
                       Navigator.pop(context);
-                      /*   Navigator.push(
-                              context,
-                              PageTransition(
-                                  child: ChangePasswordScreen(),
-                                  type: PageTransitionType.fade,
-                                  duration:
-                                      const Duration(milliseconds: 900),
-                                  reverseDuration:
-                                      (const Duration(milliseconds: 900))));*/
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: ChangePasswordScreen(),
+                              type: PageTransitionType.fade,
+                              duration: const Duration(milliseconds: 900),
+                              reverseDuration:
+                                  (const Duration(milliseconds: 900))));
                     }),
                 ListTile(
                     leading: Padding(
@@ -384,16 +381,28 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   fontWeight: FontWeight.w900,
                                   color: ThemeManager.primaryText)),
                           onPressed: () {
-                            PrefUtils.logout();
+                            if (PrefUtils.getRemember() == '1') {
+                              String email = PrefUtils.getEmail();
+                              String password = PrefUtils.getPassword();
+                              PrefUtils.logout();
+                              PrefUtils.setEmail(email);
+                              PrefUtils.setPassword(password);
+                              PrefUtils.setRemember('1');
+                              print('remember ${PrefUtils.getRemember()}');
+                              print('email ${PrefUtils.getEmail()}');
+                            } else {
+                              PrefUtils.logout();
+                            }
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 PageTransition(
                                     child: LoginScreen(),
                                     type: PageTransitionType.fade,
-                                    duration: const Duration(milliseconds: 900),
+                                    duration:
+                                    const Duration(milliseconds: 900),
                                     reverseDuration:
-                                        (const Duration(milliseconds: 900))),
-                                (Route<dynamic> route) => false);
+                                    (const Duration(milliseconds: 900))),
+                                    (Route<dynamic> route) => false);
                           },
                         ),
                       ],

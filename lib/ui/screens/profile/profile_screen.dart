@@ -17,6 +17,7 @@ import 'package:rtl/utils/helper/theme_manager.dart';
 import '../../../utils/helper/primary_button.dart';
 import '../../../utils/utils.dart';
 import '../resignation_advice/resignation_advice_screen.dart';
+import '../resignation_advice/resignation_one_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen();
@@ -299,12 +300,21 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 Navigator.push(
                                     context,
                                     PageTransition(
+                                        child: ResignationOneScreen(),
+                                        type: PageTransitionType.fade,
+                                        duration:
+                                            const Duration(milliseconds: 900),
+                                        reverseDuration: (const Duration(
+                                            milliseconds:
+                                                900)))); /*    Navigator.push(
+                                    context,
+                                    PageTransition(
                                         child: ResignationAdviceScreen(),
                                         type: PageTransitionType.fade,
                                         duration:
                                             const Duration(milliseconds: 900),
                                         reverseDuration: (const Duration(
-                                            milliseconds: 900))));
+                                            milliseconds: 900))));*/
                               },
                               duration: Duration(milliseconds: 110),
                               child: Container(

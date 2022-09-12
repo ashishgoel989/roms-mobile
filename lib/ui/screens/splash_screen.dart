@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
 
+import '../../controller/notification_controller.dart';
 import '../../provider/provider/theme_provider.dart';
 import 'dashboard/dashboard_screen.dart';
 import 'intro/intro_screen.dart';
@@ -16,18 +19,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  NotificationController _notificationController = Get.find<NotificationController>();
+
+
   @override
   void initState() {
     super.initState();
     init();
+    if (PrefUtils.getUserToken().isNotEmpty) {
+      _notificationController.GetNotification(callback);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-      ),
-     bottomNavigationBar: Image.asset('assets/images/splash.gif'),
+      body: Container(),
+      bottomNavigationBar: Image.asset('assets/images/splash.gif'),
     );
   }
 
@@ -48,6 +56,14 @@ class _SplashScreenState extends State<SplashScreen> {
           context,
           MaterialPageRoute(builder: (context) => DashboardScreen()),
           (Route<dynamic> route) => false);
+    }
+  }
+
+  callback(bool status, Map data) async {
+    if (status == true) {
+
+    } else {
+      // ToastUtils.setToast(data['message']);
     }
   }
 }

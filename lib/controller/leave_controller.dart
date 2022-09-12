@@ -104,14 +104,14 @@ class LeaveController extends GetxController {
     }
   }
 
-  Future GetTeamLeaveRequest(callback) async {
+  Future GetTeamLeaveRequest(callback,page) async {
     _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
     print(headers);
     http.Response response = await http
-        .get(Uri.parse(AppConstants.team_leave_request), headers: headers);
+        .get(Uri.parse('${AppConstants.team_leave_request}&page=$page&size=10'), headers: headers);
     print('response : ' + response.body.toString());
     if (response.statusCode == 200) {
       Map map = jsonDecode(response.body);
@@ -121,7 +121,7 @@ class LeaveController extends GetxController {
             TeamLeaveRequestResponser.fromJson(jsonDecode(response.body));
         callback(true, map);
         _teamleaveRequestList = teamLeaveRequestResponser.data!;
-     //   _isLoading.value = false;
+       _isLoading.value = false;
         update();
       } else {
         _isLoading.value = false;
@@ -135,14 +135,14 @@ class LeaveController extends GetxController {
     }
   }
 
-  Future GetTeamLeaveHistory(callback) async {
+  Future GetTeamLeaveHistory(callback,page) async {
     _isLoading.value = true;
     Map<String, String> headers = {
       "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
     };
     print(headers);
     http.Response response = await http
-        .get(Uri.parse(AppConstants.team_leave_history), headers: headers);
+        .get(Uri.parse('${AppConstants.team_leave_history}&page=$page&size=10'), headers: headers);
     print('response : ' + response.body.toString());
     if (response != null && response.statusCode == 200) {
       Map map = jsonDecode(response.body);
@@ -270,6 +270,31 @@ class LeaveController extends GetxController {
         update();
       }
     } else {
+      _isLoading.value = false;
+      update();
+    }
+  }
+
+  Future GetManagerName( callback) async {
+    _isLoading.value = true;
+    Map<String, String> headers = {
+      "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
+      "content-type": "application/json",
+    };
+    print(headers);
+    http.Response response = await http.get(
+        Uri.parse(AppConstants.approver),
+        headers: headers,
+    );
+    print('manager response : ' + response.body.toString());
+    if (response != null && response.statusCode == 200) {
+      Map map = jsonDecode(response.body);
+      print(response.body);
+        callback(true, map);
+        _isLoading.value = false;
+        update();
+    } else {
+      callback(false);
       _isLoading.value = false;
       update();
     }

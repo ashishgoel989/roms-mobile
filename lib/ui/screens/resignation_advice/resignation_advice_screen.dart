@@ -21,7 +21,11 @@ import '../../../utils/helper/primary_button.dart';
 import '../../../utils/utils.dart';
 
 class ResignationAdviceScreen extends StatefulWidget {
-  ResignationAdviceScreen();
+  dynamic imageFile;
+
+  ResignationAdviceScreen(dynamic imageFile) {
+    this.imageFile = imageFile;
+  }
 
   @override
   _ResignationAdviceScreenState createState() =>
@@ -91,6 +95,7 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
   String currentDate = '--/--/--';
   String convertdate = '';
   String endDate = '--/--/--';
+  var managerName = ''.obs;
   final GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
 
   LeaveController _leaveController = Get.find<LeaveController>();
@@ -109,8 +114,8 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
   @override
   void initState() {
     super.initState();
-    //_leaveController.GetLeaveType(leaveTypecallback);
-    //_leaveController.GetLeaveHistory(leaveHistorycallback);
+    print('advice' + widget.imageFile);
+    _leaveController.GetManagerName(callbackManagerName);
     currentDate = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().add(Duration(days: selectDay - 1)));
     convertdate = DateFormat('yyyy-MM-dd')
@@ -141,6 +146,14 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
     }
   }
 
+  callbackManagerName(bool status, Map data) async {
+    if (status == true) {
+      managerName.value = data['firstName'] + ' ' + data['lastName'];
+    } else {
+      // ToastUtils.setToast(data['message']);
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -151,193 +164,211 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
     return MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), // Large
         child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Color(0xffFFF8E3),
-              centerTitle: true,
-              iconTheme: IconThemeData(
-                color: Colors.black, //change your color here
-              ),
-              title: Text(
-                'Resignation Advice',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 16),
-              ),
+          backgroundColor: Colors.grey.shade100,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            iconTheme: IconThemeData(
+              color: Colors.black, //change your color here
             ),
-            body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              margin: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Colors.black54)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                              child: Text('Name',
-                                  style: TextStyle(
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 12))),
-                          Expanded(
-                              child: Text('${PrefUtils.getFirstName()} ${PrefUtils.getLastName()}',
-                                  style: TextStyle(
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12)))
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                              child: Text('Employee number',
-                                  style: TextStyle(
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 12))),
-                          Expanded(
-                              child: Text(PrefUtils.getemployeeNo(),
-                                  style: TextStyle(
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12)))
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Divider(color: ThemeManager.colorGrey),
-                      SizedBox(height: 5),
-                      Text(
-                          'Please accept this resignation advice as notice of my intention to cease my employment with RTL Mining and Earthworks Ptv. Ltd.',
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12)),
-                      SizedBox(height: 30),
-                      Text('Photograph',
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14)),
-                      Row(
-                        children: [
-                          Bounce(
-                            duration: Duration(milliseconds: 110),
-                            onPressed: () {
-                              captureImages();
-                            },
-                            child: Container(
-                              height: 30,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Center(
-                                child: Text(
-                                  'Take a selfie',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Spacer(),
-                          Container(
-                            width: 150,
-                            height: 150,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: ThemeManager.colorGrey),
-                                image: _imageFile != null
-                                    ? DecorationImage(
-                                        image:
-                                            FileImage(File(_imageFile!.path)),
-                                        fit: BoxFit.fill,
-                                      )
-                                    : null),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Text('Signature',
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14)),
-                      Row(
-                        children: [
-                          Bounce(
-                            duration: Duration(milliseconds: 110),
-                            onPressed: () {
-                              showSignatureDialog(context);
-                            },
-                            child: Container(
-                              height: 30,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Center(
-                                child: Text(
-                                  'Add Signature',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Spacer(),
-                          Container(
-                            width: 150,
-                            height: 150,
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: ThemeManager.colorGrey)),
-                            child: bytes != null
-                                ? Image.memory(
-                                    bytes!.buffer.asUint8List(),
-                                    fit: BoxFit.fill,
-                                  )
-                                : null,
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Center(
-                          child: Text(
-                        'Date : ${DateFormat('dd MMM yyyy').format(DateTime.now())}',
-                        style: TextStyle(color: Colors.black, fontSize: 14),
-                      )),
-                      SizedBox(height: 20),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: ThemeManager.primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      Image.asset('assets/images/big_logo.png'),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text('RESIGN',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700)),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: Colors.white,
-                            )
+                            Text(
+                              'Form',
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 8),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 30.0),
+                              child: Divider(
+                                color: Colors.black54,
+                                height: 1,
+                              ),
+                            ),
+                            Text(
+                              'Submitted via RTL mobile app',
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 8),
+                            ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: 20),
+                      )
                     ],
-                  )),
-            )));
+                  ),
+                  SizedBox(height: 10),
+                  Center(
+                    child: Text(
+                      'Resignation Advice',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Text('Photograph',
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600))),
+                      Text('Date : ${DateFormat('dd MMM yyyy').format(DateTime.now())}',
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 10)),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: ThemeManager.colorGrey),
+                        image: widget.imageFile != null
+                            ? DecorationImage(
+                                image: FileImage(File(widget.imageFile)),
+                                fit: BoxFit.fill,
+                              )
+                            : null),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Text('Name',
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 10))),
+                      Expanded(
+                          child: Text(
+                              '${PrefUtils.getFirstName()} ${PrefUtils.getLastName()}',
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10)))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Text('Employee number',
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 10))),
+                      Expanded(
+                          child: Text(PrefUtils.getemployeeNo(),
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10)))
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                  Text(
+                      'Please accept this resignation advice as notice of my intention to cease my employment with RTL Mining and Earthworks Ptv. Ltd.',
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12)),
+                  SizedBox(height: 30),
+                  Text('Please sign below',
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14)),
+                  SizedBox(height: 5),
+                  InkWell(
+                      onTap: () {
+                        showSignatureDialog(context);
+                      },
+                      child: Container(
+                        width: 120,
+                        height: 60,
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: ThemeManager.colorGrey)),
+                        child: bytes != null
+                            ? Image.memory(
+                                bytes!.buffer.asUint8List(),
+                                fit: BoxFit.fill,
+                              )
+                            : null,
+                      )),
+                  SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: Container(
+            height: 100,
+            child: Column(
+              children: [
+                Bounce(
+                  duration: Duration(milliseconds: 110),
+                  onPressed: () {},
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        right: 30, top: 10, bottom: 10, left: 30),
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: ThemeManager.primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Submit',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600)),
+                        SizedBox(width: 5),
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Center(
+                    child: Text(
+                  'Manager : ${managerName.value}',
+                  style: TextStyle(color: Colors.black54, fontSize: 12),
+                )),
+              ],
+            ),
+          ),
+        ));
   }
 
   void captureImages() async {

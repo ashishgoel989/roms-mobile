@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -35,14 +36,24 @@ class _LoginScreenState extends State<LoginScreen> {
       TextEditingController();
   final TextEditingController _passwordTextField = TextEditingController();
   final textFieldFocusNode = FocusNode();
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
   final AuthController _authController = Get.put(AuthController());
   bool _obscured = true;
-
+  bool _checkboxListTile = false;
   bool validEmail = false;
 
   @override
   void initState() {
     super.initState();
+    messaging.getToken().then((token) {
+      PrefUtils.setFirebaseToken(token!);
+      print("token>>>>>>>" + PrefUtils.getFirebaseToken());
+    });
+    if (PrefUtils.getRemember() == '1') {
+      _emailTextEditingController.text = PrefUtils.getEmail();
+      _passwordTextField.text = PrefUtils.getPassword();
+    }
+    PrefUtils.setRemember('0');
     _emailTextEditingController.addListener(_validateEmailAddress);
   }
 
@@ -198,7 +209,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: size.height * 0.01,
+                                  height: size.height * 0.015,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Theme(
+                                        data: Theme.of(context).copyWith(
+                                          unselectedWidgetColor: Colors.black54,
+                                        ),
+                                        child: SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: Checkbox(
+                                            value: _checkboxListTile,
+                                            checkColor: Colors.white,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _checkboxListTile =
+                                                    !_checkboxListTile;
+                                              });
+                                            },
+                                          ),
+                                        )),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'Remember me',
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black),
+                                    ),
+                                  ],
                                 ),
                                 Bounce(
                                   duration: Duration(milliseconds: 110),
@@ -305,6 +347,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   callback(bool status, dynamic data) async {
     if (status == true) {
+      if (_checkboxListTile) {
+        PrefUtils.setPassword(_passwordTextField.text.toString());
+        PrefUtils.setRemember('1');
+        print('remember ${PrefUtils.getRemember()}');
+      } else {
+        PrefUtils.setRemember('0');
+      }
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => DashboardScreen()),

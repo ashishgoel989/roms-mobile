@@ -10,7 +10,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:rtl/controller/leave_controller.dart';
 import 'package:rtl/ui/screens/dashboard/dashboard_screen.dart';
 import 'package:rtl/utils/helper/theme_manager.dart';
-
 import '../../../data/model/LeaveHistoryResponser.dart';
 import '../../../utils/helper/primary_button.dart';
 import '../../../utils/utils.dart';
@@ -29,8 +28,8 @@ class _LeaveScreenState extends State<LeaveScreen>
   late TabController _tabController;
 
   final daylist = [
-    'Yesterday',
     'Today',
+    'Yesterday',
     'Tomorrow',
     'Day After',
     'This Friday',
@@ -70,7 +69,7 @@ class _LeaveScreenState extends State<LeaveScreen>
     Color(0xffF56D91),
   ];
 
-  var selectDay = 1.obs;
+  var selectDay = 0.obs;
   var selectType = 0.obs;
   var selectedHours = '0'.obs;
   var selectDuration = 978787.obs;
@@ -93,8 +92,8 @@ class _LeaveScreenState extends State<LeaveScreen>
   var _isLoadMoreRunning = false.obs;
   var _limit = 10.obs;
   var _page = 0.obs;
-
   int tempdaycount = 1;
+  var managerName = ''.obs;
 
   @override
   void initState() {
@@ -103,18 +102,22 @@ class _LeaveScreenState extends State<LeaveScreen>
     super.initState();
     _controller = ScrollController()..addListener(_loadMore);
     _isFirstLoadRunning.value = true;
+    _leaveController.GetManagerName(callbackManagerName);
     _leaveController.GetLeaveType(leaveTypecallback);
     _leaveController.GetLeaveHistory(leaveHistorycallback, _page);
     currentDate.value = DateFormat('yyyy-MM-dd')
-        .format(DateTime.now().add(Duration(days: selectDay.value - 1)));
+        .format(DateTime.now().add(Duration(days: selectDay.value)));
     convertdate.value = DateFormat('yyyy-MM-dd')
-        .format(DateTime.now().add(Duration(days: selectDay.value - 1)));
+        .format(DateTime.now().add(Duration(days: selectDay.value)));
     endDate.value = DateFormat('yyyy-MM-dd')
-        .format(DateTime.now().add(Duration(days: selectDay.value - 1)));
+        .format(DateTime.now().add(Duration(days: selectDay.value)));
   }
 
-  leaveTypecallback(bool status, Map data) async {
+  leaveTypecallback(bool status, Map data) async {}
+
+  callbackManagerName(bool status, Map data) async {
     if (status == true) {
+      managerName.value = data['firstName'] + ' ' + data['lastName'];
     } else {
       // ToastUtils.setToast(data['message']);
     }
@@ -154,19 +157,52 @@ class _LeaveScreenState extends State<LeaveScreen>
     _tabController.dispose();
   }
 
+/*
+  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    /// The argument value will return the changed date as [DateTime] when the
+    /// widget [SfDateRangeSelectionMode] set as single.
+    ///
+    /// The argument value will return the changed dates as [List<DateTime>]
+    /// when the widget [SfDateRangeSelectionMode] set as multiple.
+    ///
+    /// The argument value will return the changed range as [PickerDateRange]
+    /// when the widget [SfDateRangeSelectionMode] set as range.
+    ///
+    /// The argument value will return the changed ranges as
+    /// [List<PickerDateRange] when the widget [SfDateRangeSelectionMode] set as
+    /// multi range.
+    setState(() {
+      if (args.value is PickerDateRange) {
+        print('${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
+        // ignore: lines_longer_than_80_chars
+            ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}');
+      } else if (args.value is DateTime) {
+        print(args.value.toString());
+      } else if (args.value is List<DateTime>) {
+        print(args.value.length.toString());
+      } else {
+        print(args.value.length.toString());
+      }
+    });
+  }
+*/
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), // Large
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Color(0xffFFF8E3),
+          backgroundColor: Color(0xffFFFFFF),
+          centerTitle: false,
           iconTheme: IconThemeData(
             color: Colors.black, //change your color here
           ),
           title: Text(
             'My Leaves',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
+            style:
+                TextStyle(color: Colors.black87, fontWeight: FontWeight.w500),
           ),
         ),
         body: Column(
@@ -175,7 +211,7 @@ class _LeaveScreenState extends State<LeaveScreen>
             Container(
               height: 45,
               decoration: BoxDecoration(
-                color: Color(0xffFFF8E3),
+                color: Color(0xffFFFFFF),
               ),
               child: TabBar(
                 controller: _tabController,
@@ -183,12 +219,12 @@ class _LeaveScreenState extends State<LeaveScreen>
                 indicatorColor: ThemeManager.primaryColor,
                 indicatorWeight: 3,
                 labelColor: ThemeManager.primaryColor,
-                unselectedLabelColor: Colors.black,
+                unselectedLabelColor: Colors.black54,
                 labelStyle:
                     TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
                 tabs: [
                   Tab(
-                    text: 'Apply Leave',
+                    text: 'Apply',
                   ),
                   Tab(
                     text: 'History',
@@ -216,12 +252,12 @@ class _LeaveScreenState extends State<LeaveScreen>
                                   child: Row(
                                     children: [
                                       SizedBox(width: 12),
-                                      Image.asset(
-                                        'assets/images/calender.png',
-                                        height: 20,
-                                        color: Colors.black,
-                                      ),
-                                      SizedBox(width: 12),
+                                      /*  Image.asset(
+                                          'assets/images/calender.png',
+                                          height: 20,
+                                          color: Colors.black,
+                                        ),
+                                        SizedBox(width: 12),*/
                                       Text(
                                         'Day',
                                         style: TextStyle(
@@ -276,7 +312,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                               elevation: 1,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(5),
                                               ),
                                               child: Padding(
                                                 padding:
@@ -428,15 +464,26 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                         textScaleFactor: 1.0,
                                                         style: TextStyle(
                                                             color:
-                                                                Colors.black45,
+                                                                Colors.black54,
                                                             fontSize: 12),
                                                       ),
                                                     ),
-                                                    Text(
-                                                      '   to   ',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 14),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        /*     SfDateRangePicker(
+                                                            onSelectionChanged: _onSelectionChanged,
+                                                            selectionMode: DateRangePickerSelectionMode.range,
+                                                            initialSelectedRange: PickerDateRange(
+                                                                DateTime.now().subtract(const Duration(days: 4)),
+                                                                DateTime.now().add(const Duration(days: 3))),
+                                                          );*/
+                                                      },
+                                                      child: Text(
+                                                        '   to   ',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 14),
+                                                      ),
                                                     ),
                                                     Expanded(
                                                       child: Bounce(
@@ -576,15 +623,14 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                           textScaleFactor: 1.0,
                                                           style: TextStyle(
                                                               color: Colors
-                                                                  .black45,
+                                                                  .black54,
                                                               fontSize: 12),
                                                         ),
                                                       ),
                                                     ),
                                                     Image.asset(
                                                       'assets/images/calender.png',
-                                                      color: ThemeManager
-                                                          .colorGrey,
+                                                      color: Colors.black54,
                                                       height: 20,
                                                     )
                                                   ],
@@ -603,22 +649,30 @@ class _LeaveScreenState extends State<LeaveScreen>
                                               elevation: 1,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(5),
                                               ),
-                                              child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Text(
-                                                    daycount.toString(),
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: Text(
+                                                        daycount.toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                      )),
+                                                  Text(
+                                                    'Days',
                                                     style: TextStyle(
                                                         color: Colors.black),
-                                                  ))),
+                                                  ),
+                                                  SizedBox(width: 10),
+                                                ],
+                                              )),
                                         ),
                                       ),
-                                      Text(
-                                        'Days',
-                                        style: TextStyle(color: Colors.black),
-                                      )
                                     ],
                                   ),
                                 ),
@@ -664,12 +718,12 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             hourlist[index];
                                                         starttime
                                                             .value = DateFormat(
-                                                                'kk:mm:ss')
+                                                                'kk:mm')
                                                             .format(
                                                                 DateTime.now());
                                                         endtime
                                                             .value = DateFormat(
-                                                                'kk:mm:ss')
+                                                                'kk:mm')
                                                             .format(DateTime
                                                                     .now()
                                                                 .add(Duration(
@@ -734,7 +788,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             RoundedRectangleBorder(
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(10),
+                                                                  .circular(5),
                                                         ),
                                                         child: Padding(
                                                           padding:
@@ -744,32 +798,65 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             children: [
                                                               Bounce(
                                                                 onPressed: () {
-                                                                  DatePicker.showTime12hPicker(
-                                                                      context,
-                                                                      showTitleActions:
-                                                                          true,
-                                                                      onConfirm:
-                                                                          (date) {
-                                                                    starttime
-                                                                        .value = DateFormat(
-                                                                            'HH:mm:ss')
-                                                                        .format(
-                                                                            date);
+                                                                  showTimePicker(
+                                                                      context:
+                                                                          context,
+                                                                      initialTime: TimeOfDay(
+                                                                          hour: DateTime.now()
+                                                                              .hour,
+                                                                          minute: DateTime.now()
+                                                                              .minute),
+                                                                      builder:
+                                                                          (context,
+                                                                              child) {
+                                                                        return Theme(
+                                                                            data:
+                                                                                ThemeData.light().copyWith(
+                                                                              colorScheme: ColorScheme.light(
+                                                                                // change the border color
+                                                                                primary: Color(0xff764AF1),
+                                                                                // change the text color
+                                                                                onSurface: Color(0xff764AF1),
+                                                                              ),
+                                                                              // button colors
+                                                                              buttonTheme: ButtonThemeData(
+                                                                                colorScheme: ColorScheme.light(
+                                                                                  primary: Colors.green,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            child: child!);
+                                                                      }).then((date) {
+                                                                    starttime.value = DateFormat('HH:mm').format(DateTime(
+                                                                        DateTime.now()
+                                                                            .year,
+                                                                        DateTime.now()
+                                                                            .month,
+                                                                        DateTime.now()
+                                                                            .day,
+                                                                        date!
+                                                                            .hour,
+                                                                        date.minute));
                                                                     daycount
                                                                         .value = 0;
                                                                     endtime
-                                                                        .value = DateFormat(
-                                                                            'HH:mm:ss')
-                                                                        .format(date.add(Duration(
+                                                                        .value = DateFormat('HH:mm').format(DateTime(
+                                                                            DateTime.now()
+                                                                                .year,
+                                                                            DateTime.now()
+                                                                                .month,
+                                                                            DateTime.now()
+                                                                                .day,
+                                                                            date
+                                                                                .hour,
+                                                                            date
+                                                                                .minute)
+                                                                        .add(Duration(
                                                                             hours:
                                                                                 int.parse(selectedHours.value))));
                                                                     _leaveController
                                                                         .update();
-                                                                    // _endTimeController.text = DateFormat.jm().format(date);
-                                                                  },
-                                                                      locale:
-                                                                          LocaleType
-                                                                              .en);
+                                                                  });
                                                                 },
                                                                 duration: Duration(
                                                                     milliseconds:
@@ -779,7 +866,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                       .value,
                                                                   style: TextStyle(
                                                                       color: Colors
-                                                                          .black45,
+                                                                          .black54,
                                                                       fontSize:
                                                                           14),
                                                                 ),
@@ -802,66 +889,80 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                           context,
                                                                           'Please select start time');
                                                                     } else {
-                                                                      DatePicker.showTime12hPicker(
-                                                                          context,
-                                                                          showTitleActions:
-                                                                              true,
-                                                                          onConfirm:
-                                                                              (date) {
-                                                                        var temp =
-                                                                            DateFormat('HH:mm:ss').format(date);
-                                                                        var format =
-                                                                            DateFormat("HH:mm:ss");
-                                                                        var tempselectedHours = format
-                                                                            .parse(temp)
-                                                                            .difference(format.parse(starttime.value))
-                                                                            .inMinutes
-                                                                            .toString();
-                                                                        // tempselectedHours = (int.parse(tempselectedHours) / 60).round().toString();
-
-                                                                        print(
-                                                                            tempselectedHours);
-                                                                        if (int.parse(tempselectedHours) <
-                                                                            0) {
-                                                                          endtime.value = starttime.value;
-                                                                          Utils.showErrorToast(
+                                                                      showTimePicker(
+                                                                          context:
                                                                               context,
-                                                                              'Please select valid time');
-                                                                        } else if (int.parse(tempselectedHours) >
-                                                                            240) {
-                                                                          endtime.value = starttime.value;
-                                                                          Utils.showErrorToast(
-                                                                              context,
-                                                                              'Durations should be less than 4 hrs');
-                                                                        } else {
-                                                                          selectedHours.value = format
+                                                                          initialTime: TimeOfDay(
+                                                                              hour: DateTime.now().hour,
+                                                                              minute: DateTime.now().minute),
+                                                                          builder: (context, child) {
+                                                                            return Theme(
+                                                                                data: ThemeData.light().copyWith(
+                                                                                  colorScheme: ColorScheme.light(
+                                                                                    // change the border color
+                                                                                    primary: Color(0xff764AF1),
+                                                                                    // change the text color
+                                                                                    onSurface: Color(0xff764AF1),
+                                                                                  ),
+                                                                                  // button colors
+                                                                                  buttonTheme: ButtonThemeData(
+                                                                                    colorScheme: ColorScheme.light(
+                                                                                      primary: Colors.green,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                child: child!);
+                                                                          }).then(
+                                                                        (date) {
+                                                                          var temp = DateFormat('HH:mm').format(DateTime(
+                                                                              DateTime.now().year,
+                                                                              DateTime.now().month,
+                                                                              DateTime.now().day,
+                                                                              date!.hour,
+                                                                              date.minute));
+                                                                          var format =
+                                                                              DateFormat("HH:mm");
+                                                                          var tempselectedHours = format
                                                                               .parse(temp)
                                                                               .difference(format.parse(starttime.value))
                                                                               .inMinutes
                                                                               .toString();
-                                                                          selectedHours
-                                                                              .value = (int.parse(selectedHours.value) /
-                                                                                  60)
-                                                                              .round()
-                                                                              .toString();
-                                                                          daycount.value =
-                                                                              0;
-                                                                          if (selectedHours ==
-                                                                              '0') {
-                                                                            selectedHours.value =
-                                                                                '1';
-                                                                          }
-                                                                          endtime.value =
-                                                                              temp;
+                                                                          // tempselectedHours = (int.parse(tempselectedHours) / 60).round().toString();
+
                                                                           print(
-                                                                              selectedHours);
-                                                                        }
-                                                                        _leaveController
-                                                                            .update();
-                                                                        // _endTimeController.text = DateFormat.jm().format(date);
-                                                                      },
-                                                                          locale:
-                                                                              LocaleType.en);
+                                                                              tempselectedHours);
+                                                                          if (int.parse(tempselectedHours) <
+                                                                              0) {
+                                                                            endtime.value =
+                                                                                starttime.value;
+                                                                            Utils.showErrorToast(context,
+                                                                                'Please select valid time');
+                                                                          } else if (int.parse(tempselectedHours) >
+                                                                              240) {
+                                                                            endtime.value =
+                                                                                starttime.value;
+                                                                            Utils.showErrorToast(context,
+                                                                                'Durations should be less than 4 hrs');
+                                                                          } else {
+                                                                            selectedHours.value =
+                                                                                format.parse(temp).difference(format.parse(starttime.value)).inMinutes.toString();
+                                                                            selectedHours.value =
+                                                                                (int.parse(selectedHours.value) / 60).round().toString();
+                                                                            daycount.value =
+                                                                                0;
+                                                                            if (selectedHours ==
+                                                                                '0') {
+                                                                              selectedHours.value = '1';
+                                                                            }
+                                                                            endtime.value =
+                                                                                temp;
+                                                                            print(selectedHours);
+                                                                          }
+                                                                          _leaveController
+                                                                              .update();
+                                                                          // _endTimeController.text = DateFormat.jm().format(date);
+                                                                        },
+                                                                      );
                                                                     }
                                                                   },
                                                                   duration: Duration(
@@ -872,7 +973,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                                         .value,
                                                                     style: TextStyle(
                                                                         color: Colors
-                                                                            .black45,
+                                                                            .black54,
                                                                         fontSize:
                                                                             14),
                                                                   ),
@@ -880,8 +981,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                               ),
                                                               Image.asset(
                                                                 'assets/images/wait.png',
-                                                                color: ThemeManager
-                                                                    .colorGrey,
+                                                                color: Colors
+                                                                    .black54,
                                                                 height: 20,
                                                               )
                                                             ],
@@ -900,24 +1001,32 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                           RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(10),
+                                                                .circular(5),
                                                       ),
-                                                      child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10.0),
-                                                          child: Text(
-                                                            selectedHours.value,
+                                                      child: Row(
+                                                        children: [
+                                                          Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .all(
+                                                                      10.0),
+                                                              child: Text(
+                                                                selectedHours
+                                                                    .value,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black),
+                                                              )),
+                                                          Text(
+                                                            'Hours',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black),
-                                                          ))),
+                                                          ),
+                                                          SizedBox(width: 10)
+                                                        ],
+                                                      )),
                                                 ),
-                                                Text(
-                                                  'Hours',
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                )
                                               ],
                                             ),
                                           ),
@@ -947,12 +1056,12 @@ class _LeaveScreenState extends State<LeaveScreen>
                                   child: Row(
                                     children: [
                                       SizedBox(width: 12),
-                                      Image.asset(
-                                        'assets/images/shape.png',
-                                        height: 20,
-                                        color: Colors.black,
-                                      ),
-                                      SizedBox(width: 12),
+                                      /* Image.asset(
+                                          'assets/images/shape.png',
+                                          height: 20,
+                                          color: Colors.black,
+                                        ),
+                                        SizedBox(width: 12),*/
                                       Text(
                                         'Type',
                                         style: TextStyle(
@@ -1018,13 +1127,6 @@ class _LeaveScreenState extends State<LeaveScreen>
                                 SizedBox(
                                   height: 15,
                                 ),
-                                /*   Center(
-                                        child: Text(
-                                      'Manager : John dew',
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 16),
-                                    )),*/
-                                // SizedBox(height: 15),
                                 Container(
                                   margin: const EdgeInsets.symmetric(
                                       horizontal: 20),
@@ -1047,12 +1149,19 @@ class _LeaveScreenState extends State<LeaveScreen>
                                         decoration: InputDecoration(
                                             hintText: 'Comment',
                                             hintStyle: TextStyle(
-                                                color: ThemeManager.colorBlack,
+                                                color: Colors.black54,
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w700),
                                             border: InputBorder.none)),
                                   ),
                                 ),
+                                SizedBox(height: 20),
+                                Center(
+                                    child: Text(
+                                  'Manager : ${managerName.value}',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 12),
+                                )),
                                 Bounce(
                                   onPressed: () {
                                     if (TypeID.isEmpty) {
@@ -1060,7 +1169,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                           context, 'Please Select Leave Type');
                                     } else {
                                       var data =
-                                          '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate.value))} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(starttime.value).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(endDate.value))} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm:ss').parse(endtime.value).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
+                                          '{"leaveType": {"id": "$TypeID"},"strStartDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(currentDate.value))} ${starttime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm').parse(starttime.value).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","strEndDateTime": "${DateFormat('dd-MM-yyyy').format(DateTime.parse(endDate.value))} ${endtime == '--:--:--' ? '00:00:00' : DateFormat('HH:mm').parse(endtime.value).toUtc().add(Duration(hours: 0)).toString().replaceAll('1970-01-01', '')}","totalHour": $selectedHours,"totalDay": $daycount,"leaveReason": "${_commentTextEditingController.text.toString()}"}';
                                       print(data);
                                       _leaveController.requestLeave(
                                           data, callback);
@@ -1089,20 +1198,18 @@ class _LeaveScreenState extends State<LeaveScreen>
                           color: ThemeManager.primaryColor,
                         ))),
                   // second tab bar view widget
-                  Obx(() => Column(
+                  Obx(() => Stack(
                         children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                controller: _controller,
-                                shrinkWrap: true,
-                                itemCount: _leaveHistoryList.length,
-                                itemBuilder: (BuildContext, index) {
-                                  return HistoryRowView(index);
-                                },
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              controller: _controller,
+                              shrinkWrap: true,
+                              itemCount: _leaveHistoryList.length,
+                              itemBuilder: (BuildContext, index) {
+                                return HistoryRowView(index);
+                              },
                             ),
                           ),
                           !_leaveController.isLoading.value
@@ -1136,7 +1243,7 @@ class _LeaveScreenState extends State<LeaveScreen>
     return Bounce(
         onPressed: () {
           print(findFirstDateOfNextWeek(DateTime.now()));
-          daycount.value = 0;
+          daycount.value = 1;
           tempdaycount = daycount.value;
           selectedHours.value = '0';
           selectDuration.value = 365376576;
@@ -1164,6 +1271,19 @@ class _LeaveScreenState extends State<LeaveScreen>
             print(currentDate);
             endDate.value = currentDate.value;
             print(endDate);
+          } else if (index == 0) {
+            selectDay.value = index;
+            currentDate.value = DateFormat('yyyy-MM-dd')
+                .format(DateTime.now().add(Duration(days: selectDay.value)));
+            print(currentDate);
+            endDate.value = currentDate.value;
+            print(endDate);
+          } else if (index == 1) {
+            selectDay.value = index;
+            currentDate.value = DateFormat('yyyy-MM-dd')
+                .format(DateTime.now().add(Duration(days: -1)));
+            print(currentDate);
+            endDate.value = currentDate.value;
           } else {
             selectDay.value = index;
             currentDate.value = DateFormat('yyyy-MM-dd').format(
@@ -1207,8 +1327,7 @@ class _LeaveScreenState extends State<LeaveScreen>
       },
       duration: Duration(milliseconds: 110),
       child: Obx(
-        ()=>
-            Container(
+        () => Container(
           height: 60,
           width: 100,
           margin: EdgeInsets.symmetric(horizontal: 5),
@@ -1226,7 +1345,8 @@ class _LeaveScreenState extends State<LeaveScreen>
                 width: 50,
                 padding: EdgeInsets.only(left: 5, right: 5),
                 decoration: BoxDecoration(
-                    color: Colors.white, borderRadius: BorderRadius.circular(2)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(2)),
                 child: Text(
                   index == 0 || index == 2 ? 'Personal' : '',
                   style: TextStyle(color: colorlist[index], fontSize: 8),
@@ -1319,7 +1439,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                 Text(
                   _leaveHistoryList[index]['leaveStatus'].toString() == "1"
                       ? _leaveHistoryList[index]['approver'] != null
-                          ? 'Pending with ${_leaveController.leavehistoryList[index].approver!.firstName}'
+                          ? 'Pending with ${_leaveHistoryList[index]['approver']['firstName']}'
                           : 'Pending'
                       : _leaveHistoryList[index]['leaveStatus'].toString() ==
                               "2"

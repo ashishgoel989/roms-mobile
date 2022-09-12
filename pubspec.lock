@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.1"
+  badges:
+    dependency: "direct main"
+    description:
+      name: badges
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -134,6 +141,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.3"
+  device_information:
+    dependency: "direct main"
+    description:
+      name: device_information
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   dots_indicator:
     dependency: transitive
     description:
@@ -499,6 +513,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.4.0"
+  permission_handler:
+    dependency: "direct main"
+    description:
+      name: permission_handler
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.3.0"
   petitparser:
     dependency: transitive
     description:
@@ -636,7 +657,7 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.2.45"
+    version: "20.2.46"
   syncfusion_flutter_signaturepad:
     dependency: "direct main"
     description:

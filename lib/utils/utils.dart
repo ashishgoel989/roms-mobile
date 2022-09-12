@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 
 import 'helper/theme_manager.dart';
 
@@ -16,6 +17,7 @@ class Utils {
   static bool _isLoadingDialogShowing = false;
   static late Timer toastTimer;
   static late OverlayEntry _overlayEntry;
+  static var notificationcount = 0.obs;
 
 //  Checks
   static bool isNotEmpty(String s) {

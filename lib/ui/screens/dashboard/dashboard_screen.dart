@@ -1,8 +1,12 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
+import 'package:get/get.dart';
 import 'package:rtl/ui/screens/notification/notificationscreen.dart';
+import '../../../controller/notification_controller.dart';
 import '../../../utils/helper/theme_manager.dart';
+import '../../../utils/utils.dart';
 import 'home_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -15,11 +19,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   static int _SelectedItem = 0;
   bool showSelectedLabels = false;
   bool showUnselectedLabels = false;
-  int _selectedDestination = 0;
+  NotificationController _notificationController =
+      Get.find<NotificationController>();
 
   @override
   void initState() {
     super.initState();
+    _notificationController.GetNotification(callback);
 
     _pagedata = [
       HomeScreen(),
@@ -29,6 +35,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ];
   }
 
+  callback(bool status, Map data) async {}
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
@@ -37,7 +45,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         resizeToAvoidBottomInset: false,
         body: Container(child: _pagedata[_SelectedItem]),
         bottomNavigationBar: SnakeNavigationBar.color(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           behaviour: SnakeBarBehaviour.pinned,
           snakeShape: SnakeShape.circle,
           shape: null,
@@ -73,8 +81,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 label: 'Chat'),
             BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage("assets/images/bell.png"),
+                icon: Obx(
+                  () => Badge(
+                    badgeColor: Colors.red,
+                    animationType: BadgeAnimationType.slide,
+                    badgeContent: Text(Utils.notificationcount.value.toString(),
+                        style: TextStyle(color: Colors.white, fontSize: 8)),
+                    child: ImageIcon(
+                      AssetImage("assets/images/bell.png"),
+                    ),
+                  ),
                 ),
                 label: 'Community'),
             BottomNavigationBarItem(

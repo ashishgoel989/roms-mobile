@@ -12,6 +12,25 @@ class PrefUtils {
     return value ?? '';
   }
 
+  static String? setRemember(String token) {
+    Prefs.prefs!.setString(SharedPrefsKeys.password_remember, token);
+  }
+
+  static String getRemember() {
+    final String? value = Prefs.prefs!.getString(SharedPrefsKeys.password_remember);
+    return value ?? '';
+  }
+
+
+  static String? setPassword(String token) {
+    Prefs.prefs!.setString(SharedPrefsKeys.password, token);
+  }
+
+  static String getPassword() {
+    final String? value = Prefs.prefs!.getString(SharedPrefsKeys.password);
+    return value ?? '';
+  }
+
   static String? setRole(String role) {
     Prefs.prefs!.setString(SharedPrefsKeys.role, role);
   }

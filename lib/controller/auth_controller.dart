@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:device_information/device_information.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:package_info/package_info.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
 import 'package:rtl/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +32,7 @@ class AuthController extends GetxController {
         headers: headers);
     print(response.body.toString());
     Map? map;
-    if (response != null && response.statusCode == 200) {
+    if (response.statusCode == 200) {
       map = jsonDecode(response.body);
       print(response.body);
       if (map!['token'] != '') {
@@ -51,9 +53,8 @@ class AuthController extends GetxController {
           PrefUtils.setProfileImage(map['userDetail']['profileImage'] != null
               ? map['userDetail']['profileImage']
               : '');
-        }catch(e){
-
-        }
+        } catch (e) {}
+        addDevice();
         callback(true, map);
         update();
       } else {
@@ -66,6 +67,52 @@ class AuthController extends GetxController {
       }
     } else {
       callback(false, '');
+      _isLoading.value = false;
+      update();
+    }
+  }
+
+  Future addDevice() async {
+    _isLoading.value = true;
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) async {
+      Map<String, String> headers = {
+        "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
+        "content-type": "application/json",
+      };
+      var data =
+          '{"appVersion": "${packageInfo.version}","emiNo": "","notificationDeviceToken": "${PrefUtils.getFirebaseToken()}","deviceId":""}';
+      print(data);
+      http.Response response = await http.post(
+          Uri.parse(AppConstants.addDevice),
+          body: data,
+          headers: headers);
+      print("add device " + response.body.toString());
+      if (response != null && response.statusCode == 200) {
+        _isLoading.value = false;
+      } else {
+        _isLoading.value = false;
+        // callback(false, '', loginController);
+        update();
+      }
+    });
+  }
+
+  Future changepassword(data, callback) async {
+    _isLoading.value = true;
+
+    Map<String, String> headers = {
+      "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
+      "content-type": "application/json",
+    };
+    http.Response response = await http.post(
+        Uri.parse(AppConstants.change_password),
+        body: data,
+        headers: headers);
+    if (response != null && response.statusCode == 200) {
+      _isLoading.value = false;
+      update();
+      return jsonDecode(response.body)['status'];
+    } else {
       _isLoading.value = false;
       update();
     }
@@ -122,36 +169,6 @@ class AuthController extends GetxController {
     }
   }
 
-  Future forgotpassword(data, callback) async {
-    _isLoading = true;
-    update();
-    http.Response response = await http.post(
-        Uri.parse(AppConstants.contractor_password_help),
-        body: jsonEncode(data));
-    if (response != null && response.statusCode == 200) {
-      Map map = jsonDecode(response.body);
-      print(map);
-      if (map['status'].toString() == '0') {
-        print('true');
-
-        callback(true, map);
-        _isLoading = false;
-        update();
-      } else {
-        print(false);
-        _isLoading = false;
-        callback(
-          false,
-          map,
-        );
-        update();
-      }
-    } else {
-      _isLoading = false;
-      // callback(false, '', loginController);
-      update();
-    }
-  }
 
   Future verifyOtp(data, email, callback) async {
     _isLoading = true;
