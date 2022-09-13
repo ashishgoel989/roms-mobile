@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:rtl/ui/screens/resignation_advice/resignation_three_screen.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/helper/theme_manager.dart';
 
@@ -28,7 +29,7 @@ class ResignationTwoScreen extends StatelessWidget {
           children: [
             SizedBox(height: 15),
             Text(
-              'We are sad to loose you, ${PrefUtils.getFirstName()} !',
+              'We will be sad to loose you, ${PrefUtils.getFirstName()} !',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.black,
@@ -38,7 +39,7 @@ class ResignationTwoScreen extends StatelessWidget {
             Expanded(
               child: Center(
                 child: Text(
-                  'Would you like to talk to our\nHR personnel about this\nbefore you make your\ndecision ?',
+                  'Would you like to talk to our\nHR personnel about this\nbefore you make your\nfinal decision ?',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.black,
@@ -48,7 +49,7 @@ class ResignationTwoScreen extends StatelessWidget {
               ),
             ),
             Text(
-              'The process will take around 1 min to complete',
+              'This process will take less than 1 min to complete',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.black,
@@ -60,28 +61,38 @@ class ResignationTwoScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Row(
         children: [
-          Container(
-            margin: EdgeInsets.only(left: 30, top: 10, bottom: 20),
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            height: 45,
-            decoration: BoxDecoration(
-              color: ThemeManager.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.call,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 8),
-                Text('Call HR',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600)),
-              ],
+          InkWell(
+            onTap: () async {
+              const url = "tel:+61 987654321";
+              if (await canLaunch(url)) {
+              await launch(url);
+              } else {
+              throw 'Could not launch $url';
+              }
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: 30, top: 10, bottom: 20),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              height: 45,
+              decoration: BoxDecoration(
+                color: ThemeManager.primaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.call,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 8),
+                  Text('Call HR',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600)),
+                ],
+              ),
             ),
           ),
           Expanded(

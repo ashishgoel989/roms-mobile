@@ -13,54 +13,59 @@ import 'package:http/http.dart' as http;
 import '../data/model/NotificationResponser.dart';
 import '../ui/screens/login/login_screen.dart';
 import '../utils/constants/app_constants.dart';
+import 'GetxNetworkManager.dart';
 
 class NotificationController extends GetxController {
   final _isLoading = false.obs;
-
   get isLoading => _isLoading;
-
   final _notificationList = [].obs;
-
   get notificationList => _notificationList.obs;
+  final GetXNetworkManager _networkManager = Get.find<GetXNetworkManager>();
+
 
   Future GetNotification(callback) async {
-    _isLoading.value = true;
-    Map<String, String> headers = {
-      "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
-    };
-    print(headers);
-    http.Response response =
-        await http.get(Uri.parse(AppConstants.notification), headers: headers);
-    if (response != null && response.statusCode == 200) {
-      Map map = jsonDecode(response.body);
-      if (map['token'] != '') {
-        NotificationResponser teamLeaveRequestResponser =
-            NotificationResponser.fromJson(jsonDecode(response.body));
-        _notificationList.value = teamLeaveRequestResponser.data != null
-            ? teamLeaveRequestResponser.data!
-            : [];
-        Utils.notificationcount.value = _notificationList.value.length;
-        print(Utils.notificationcount.value);
-        _isLoading.value = false;
-        callback(true, map);
-        update();
+  //  if(_networkManager.connectionType!=0) {
+      _isLoading.value = true;
+      Map<String, String> headers = {
+        "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
+      };
+      print(headers);
+      http.Response response =
+      await http.get(Uri.parse(AppConstants.notification), headers: headers);
+      if (response != null && response.statusCode == 200) {
+        Map map = jsonDecode(response.body);
+        if (map['token'] != '') {
+          NotificationResponser teamLeaveRequestResponser =
+          NotificationResponser.fromJson(jsonDecode(response.body));
+          _notificationList.value = teamLeaveRequestResponser.data != null
+              ? teamLeaveRequestResponser.data!
+              : [];
+          Utils.notificationcount.value = _notificationList.value.length;
+          print(Utils.notificationcount.value);
+          _isLoading.value = false;
+          callback(true, map);
+          update();
+        } else {
+          _isLoading.value = false;
+          callback(
+            false,
+            map,
+          );
+          update();
+        }
       } else {
         _isLoading.value = false;
-        callback(
-          false,
-          map,
-        );
+        Get.off(LoginScreen());
         update();
       }
-    } else {
-      _isLoading.value = false;
-      Get.off(LoginScreen());
-      update();
-    }
+   // }else{
+    //  Get.snackbar(AppConstants.title, AppConstants.message);
+   // }
   }
 
   Future deleteNotification(String eventID) async {
-    _isLoading.value = true;
+  //  if(_networkManager.connectionType!=0) {
+      _isLoading.value = true;
 
       Map<String, String> headers = {
         "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
@@ -69,7 +74,8 @@ class NotificationController extends GetxController {
       var data = '{"eventId": "${eventID}"}';
       print(data);
       http.Response response = await http
-          .post(Uri.parse(AppConstants.delete_notification), body:data,headers: headers);
+          .post(Uri.parse(AppConstants.delete_notification), body: data,
+          headers: headers);
       print("delete notification " + response.body.toString());
       if (response != null && response.statusCode == 200) {
         _isLoading.value = false;
@@ -78,6 +84,9 @@ class NotificationController extends GetxController {
         _isLoading.value = false;
         update();
       }
+   // }else{
+    //  Get.snackbar(AppConstants.title, AppConstants.message);
+   // }
   }
 
   callback(bool status, Map data) async {

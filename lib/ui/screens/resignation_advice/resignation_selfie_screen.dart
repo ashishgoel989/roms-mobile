@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -14,8 +16,11 @@ class ResignationSelfieScreen extends StatelessWidget {
       TextEditingController();
   final ImagePicker imagePicker = ImagePicker();
   var _imageFile = XFile('').obs;
+  String? comment;
 
-
+  ResignationSelfieScreen(String comment) {
+    this.comment = comment;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,22 @@ class ResignationSelfieScreen extends StatelessWidget {
                   fontSize: 18),
             ),
             Spacer(),
+            Obx(
+              ()=> Container(
+                width: 200,
+                height: 200,
+                margin: EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: ThemeManager.colorGrey),
+                    image: _imageFile != null
+                        ? DecorationImage(
+                            image: FileImage(File(_imageFile.value.path)),
+                            fit: BoxFit.fill,
+                          )
+                        : null),
+              ),
+            ),
             Bounce(
               duration: Duration(milliseconds: 110),
               onPressed: () {
@@ -82,7 +103,7 @@ class ResignationSelfieScreen extends StatelessWidget {
         duration: Duration(milliseconds: 110),
         onPressed: () {
           print(_imageFile.value.path);
-          Get.to(ResignationFiveScreen(_imageFile.value.path));
+          Get.to(ResignationFiveScreen(_imageFile.value.path, comment));
         },
         child: Container(
           margin: EdgeInsets.only(right: 30, top: 10, bottom: 20, left: 30),
@@ -112,10 +133,9 @@ class ResignationSelfieScreen extends StatelessWidget {
   }
 
   void captureImages() async {
-    final selectedImages =
-    await imagePicker.pickImage(source: ImageSource.camera);
-      _imageFile.value = selectedImages!;
+
+    final selectedImages = await imagePicker.pickImage(
+        source: ImageSource.camera, preferredCameraDevice: CameraDevice.front);
+    _imageFile.value = selectedImages!;
   }
-
-
 }

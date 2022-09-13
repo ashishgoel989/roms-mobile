@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +20,18 @@ class Utils {
   static late Timer toastTimer;
   static late OverlayEntry _overlayEntry;
   static var notificationcount = 0.obs;
+
+
+  static bool checkInternet() {
+    var connectivityResult = (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    }
+    return false;
+  }
+
 
 //  Checks
   static bool isNotEmpty(String s) {

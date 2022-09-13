@@ -10,6 +10,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:rtl/controller/leave_controller.dart';
 import 'package:rtl/ui/screens/dashboard/dashboard_screen.dart';
 import 'package:rtl/utils/helper/theme_manager.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../../data/model/LeaveHistoryResponser.dart';
 import '../../../utils/helper/primary_button.dart';
 import '../../../utils/utils.dart';
@@ -26,6 +27,10 @@ class LeaveScreen extends StatefulWidget {
 class _LeaveScreenState extends State<LeaveScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  String _selectedDate = '';
+  String _dateCount = '';
+  String _range = '';
+  String _rangeCount = '';
 
   final daylist = [
     'Today',
@@ -224,6 +229,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                     TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
                 tabs: [
                   Tab(
+
                     text: 'Apply',
                   ),
                   Tab(
@@ -300,6 +306,16 @@ class _LeaveScreenState extends State<LeaveScreen>
                                         color: ThemeManager.colorBlack),
                                   ),
                                 ),
+                                /*  SfDateRangePicker(
+                                  onSelectionChanged: _onSelectionChanged,
+                                  selectionMode:
+                                      DateRangePickerSelectionMode.range,
+                                  initialSelectedRange: PickerDateRange(
+                                      DateTime.now()
+                                          .subtract(const Duration(days: 0)),
+                                      DateTime.now()
+                                          .add(const Duration(days: 0))),
+                                ),*/
                                 Padding(
                                   padding: const EdgeInsets.only(right: 20.0),
                                   child: Row(
@@ -323,7 +339,9 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                       duration: Duration(
                                                           milliseconds: 110),
                                                       onPressed: () {
-                                                        showDatePicker(
+                                                        showDatePickerDialog(
+                                                            context);
+                                                        /*   showDatePicker(
                                                           fieldHintText:
                                                               'dd-mm-yyyy',
                                                           builder:
@@ -453,7 +471,7 @@ class _LeaveScreenState extends State<LeaveScreen>
 
                                                           _leaveController
                                                               .update();
-                                                        });
+                                                        });*/
                                                       },
                                                       child: Text(
                                                         DateFormat('dd/MM/yyyy')
@@ -468,29 +486,20 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             fontSize: 12),
                                                       ),
                                                     ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        /*     SfDateRangePicker(
-                                                            onSelectionChanged: _onSelectionChanged,
-                                                            selectionMode: DateRangePickerSelectionMode.range,
-                                                            initialSelectedRange: PickerDateRange(
-                                                                DateTime.now().subtract(const Duration(days: 4)),
-                                                                DateTime.now().add(const Duration(days: 3))),
-                                                          );*/
-                                                      },
-                                                      child: Text(
-                                                        '   to   ',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 14),
-                                                      ),
+                                                    Text(
+                                                      '   to   ',
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14),
                                                     ),
                                                     Expanded(
                                                       child: Bounce(
                                                         duration: Duration(
                                                             milliseconds: 110),
                                                         onPressed: () {
-                                                          showDatePicker(
+                                                          showDatePickerDialog(
+                                                              context);
+                                                          /*         showDatePicker(
                                                             fieldHintText:
                                                                 'dd-mm-yyyy',
                                                             builder: (context,
@@ -612,7 +621,7 @@ class _LeaveScreenState extends State<LeaveScreen>
                                                             print(endDate);
                                                             _leaveController
                                                                 .update();
-                                                          });
+                                                          });*/
                                                         },
                                                         child: Text(
                                                           DateFormat(
@@ -1372,6 +1381,63 @@ class _LeaveScreenState extends State<LeaveScreen>
     );
   }
 
+  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    setState(() {
+      if (args.value is PickerDateRange) {
+        _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
+            // ignore: lines_longer_than_80_chars
+            ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
+
+        selectDay.value = 8473657834;
+        currentDate.value =
+            DateFormat('yyyy-MM-dd').format(args.value.startDate!);
+        convertdate.value =
+            DateFormat('yyyy-MM-dd').format(args.value.startDate);
+        endDate.value = DateFormat('yyyy-MM-dd')
+            .format(args.value.endDate ?? args.value.startDate);
+
+        var tempdate = DateTime.parse(convertdate.value);
+
+        daycount.value = (args.value.endDate ?? args.value.startDate)
+            .difference(tempdate)
+            .inDays;
+
+        tempdaycount = daycount.value;
+
+        if (daycount == 0) {
+          daycount.value = 1;
+        }
+        print(args.value.startDate.difference(tempdate).inDays);
+        if (daycount < 0) {
+          daycount.value = 0;
+          endDate.value = currentDate.value;
+          Utils.showErrorToast(context, 'Please select valid date');
+        } else {
+          if (daycount.value == 1) {
+            selectedHours.value = '0';
+            selectDuration.value = 365376576;
+            starttime.value = '--:--:--';
+            endtime.value = '--:--:--';
+          }
+          currentDate.value =
+              DateFormat('yyyy-MM-dd').format(args.value.startDate);
+        }
+
+        _leaveController.update();
+      } else if (args.value is DateTime) {
+        _selectedDate = args.value.toString();
+      } else if (args.value is List<DateTime>) {
+        _dateCount = args.value.length.toString();
+      } else {
+        _rangeCount = args.value.length.toString();
+      }
+      print(_range);
+      print(_selectedDate);
+      print(_dateCount);
+      print(_rangeCount);
+    });
+  }
+
   getDifference(DateTime date1, DateTime date2) async {
     print('date1 $date1');
     print('date2 $date2');
@@ -1581,6 +1647,66 @@ class _LeaveScreenState extends State<LeaveScreen>
                                               milliseconds: 900))));
                                 }),
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ));
+          },
+        );
+      },
+    );
+  }
+
+  void showDatePickerDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Material(
+                type: MaterialType.transparency,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SfDateRangePicker(
+                            onSelectionChanged: _onSelectionChanged,
+                            selectionMode: DateRangePickerSelectionMode.range,
+                            initialSelectedRange: PickerDateRange(
+                                DateTime.now()
+                                    .subtract(const Duration(days: 0)),
+                                DateTime.now().add(const Duration(days: 0))),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              /* GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('CANCEL',
+                                      style: TextStyle(color: Colors.black87))),
+                              SizedBox(width: 30),*/
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('DONE',
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w600))),
+                              SizedBox(width: 20),
+                            ],
+                          ),
+                          SizedBox(height: 15),
                         ],
                       ),
                     ),

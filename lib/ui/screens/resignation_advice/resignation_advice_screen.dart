@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:rtl/controller/leave_controller.dart';
 import 'package:rtl/ui/screens/dashboard/dashboard_screen.dart';
+import 'package:rtl/ui/screens/resignation_advice/resignation_confirm_screen.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
 import 'package:rtl/utils/helper/theme_manager.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -22,9 +23,11 @@ import '../../../utils/utils.dart';
 
 class ResignationAdviceScreen extends StatefulWidget {
   dynamic imageFile;
+  dynamic comment;
 
-  ResignationAdviceScreen(dynamic imageFile) {
+  ResignationAdviceScreen(dynamic imageFile, dynamic comment) {
     this.imageFile = imageFile;
+    this.comment = comment;
   }
 
   @override
@@ -172,15 +175,16 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
               color: Colors.black, //change your color here
             ),
           ),
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
-              margin: EdgeInsets.all(20),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.black54)),
+          body: Container(
+            height: double.infinity,
+            margin: EdgeInsets.all(20),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: Colors.black54)),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -234,19 +238,20 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                           child: Text('Photograph',
                               style: TextStyle(
                                   color: Colors.black54,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600))),
-                      Text('Date : ${DateFormat('dd MMM yyyy').format(DateTime.now())}',
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700))),
+                      Text(
+                          'Date : ${DateFormat('dd MMM yyyy').format(DateTime.now())}',
                           style: TextStyle(
                               color: Colors.black54,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w700,
                               fontSize: 10)),
                     ],
                   ),
                   SizedBox(height: 10),
                   Container(
-                    width: 80,
-                    height: 80,
+                    width: 90,
+                    height: 90,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(color: ThemeManager.colorGrey),
@@ -271,7 +276,7 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                               '${PrefUtils.getFirstName()} ${PrefUtils.getLastName()}',
                               style: TextStyle(
                                   color: Colors.black54,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w700,
                                   fontSize: 10)))
                     ],
                   ),
@@ -287,35 +292,48 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                           child: Text(PrefUtils.getemployeeNo(),
                               style: TextStyle(
                                   color: Colors.black54,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w700,
                                   fontSize: 10)))
                     ],
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(
+                      height: widget.comment.toString().isNotEmpty ? 15 : 0),
+                  Text(widget.comment,
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10)),
+                  SizedBox(
+                      height: widget.comment.toString().isNotEmpty ? 15 : 0),
                   Text(
                       'Please accept this resignation advice as notice of my intention to cease my employment with RTL Mining and Earthworks Ptv. Ltd.',
                       style: TextStyle(
                           color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12)),
-                  SizedBox(height: 30),
-                  Text('Please sign below',
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14)),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 10)),
+                  SizedBox(height: bytes == null ? 30 : 0),
+                  bytes == null
+                      ? Text('Please sign below',
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14))
+                      : Text(''),
                   SizedBox(height: 5),
                   InkWell(
                       onTap: () {
                         showSignatureDialog(context);
                       },
                       child: Container(
-                        width: 120,
+                        width: bytes == null ? 120 : null,
                         height: 60,
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.all(bytes == null ? 5 : 0),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: ThemeManager.colorGrey)),
+                            border: Border.all(
+                                color: bytes == null
+                                    ? ThemeManager.colorGrey
+                                    : Colors.white)),
                         child: bytes != null
                             ? Image.memory(
                                 bytes!.buffer.asUint8List(),
@@ -323,7 +341,22 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                               )
                             : null,
                       )),
-                  SizedBox(height: 20),
+                  SizedBox(height: 5),
+                  Text(
+                    'Regards',
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    '${PrefUtils.getFirstName()} ${PrefUtils.getLastName()}',
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10),
+                  ),
                 ],
               ),
             ),
@@ -332,9 +365,16 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
             height: 100,
             child: Column(
               children: [
+                Center(
+                    child: Text(
+                  'This advice will be send to your manager, ${managerName.value}',
+                  style: TextStyle(color: Colors.black54, fontSize: 10),
+                )),
                 Bounce(
                   duration: Duration(milliseconds: 110),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(ResignationConfirmScreen());
+                  },
                   child: Container(
                     margin: EdgeInsets.only(
                         right: 30, top: 10, bottom: 10, left: 30),
@@ -360,11 +400,6 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                     ),
                   ),
                 ),
-                Center(
-                    child: Text(
-                  'Manager : ${managerName.value}',
-                  style: TextStyle(color: Colors.black54, fontSize: 12),
-                )),
               ],
             ),
           ),

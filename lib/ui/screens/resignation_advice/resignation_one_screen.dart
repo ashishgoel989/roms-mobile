@@ -38,7 +38,7 @@ class ResignationOneScreen extends StatelessWidget {
               ),
             ),
             Text(
-              'Do you really want to resign from your current position in RTL?',
+              'Do you want to proceed and resign from your position at RTL?',
               textAlign: TextAlign.start,
               style: TextStyle(
                   color: Colors.black,

@@ -5,6 +5,7 @@ import '../localization/language_model.dart';
 class AppConstants {
   //static String base_url = 'https://13.234.56.70/';
   static String base_url = 'http://13.234.56.70:8080/';
+
   //static String base_url = 'http://13.236.181.82:8080/';
   static String registration = base_url + 'authenticate';
   static String leave_type = base_url + 'v1/leave/types';
@@ -23,10 +24,15 @@ class AppConstants {
   static String delete_notification = base_url + 'v1/notification/delete';
   static String change_password = base_url + 'v1/password/change';
   static String approver = base_url + 'v1/leave/approver';
+  static String apply_resign = base_url + 'v1/resignation/apply';
 
   //Pref Constant
   static String fcmToken = '';
   static String totalBalance = '';
+
+  //Internet connection
+  static String title = 'Connectivity';
+  static String message = 'No Internet Available';
 }
 
 class LanguageConstants {

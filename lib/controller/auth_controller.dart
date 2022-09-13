@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_information/device_information.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,64 +12,71 @@ import 'package:rtl/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../utils/constants/app_constants.dart';
+import '../utils/myconnectivity.dart';
+import 'GetxNetworkManager.dart';
 
 class AuthController extends GetxController {
   final _isLoading = false.obs;
 
   get isLoading => _isLoading;
+  final GetXNetworkManager _networkManager = Get.find<GetXNetworkManager>();
 
   Future login(data, callback) async {
-    _isLoading.value = true;
-    update();
-    print(data);
     Map<String, String> headers = {
       "Accept": "application/json",
       "content-type": "application/json",
     };
 
-    http.Response response = await http.post(
-        Uri.parse(AppConstants.registration),
-        body: jsonEncode(data),
-        headers: headers);
-    print(response.body.toString());
-    Map? map;
-    if (response.statusCode == 200) {
-      map = jsonDecode(response.body);
-      print(response.body);
-      if (map!['token'] != '') {
-        _isLoading.value = false;
-        try {
-          PrefUtils.setUserToken(map['token']);
-          PrefUtils.setRole(map['role']);
-          PrefUtils.setFirstName(map['userDetail']['firstName']);
-          PrefUtils.setLastName(map['userDetail']['lastName']);
-          PrefUtils.setUserID(map['userDetail']['id']);
-          PrefUtils.setEmail(map['userDetail']['email']);
-          PrefUtils.setjobTitle(map['userDetail']['jobTitle']);
-          PrefUtils.setphone(map['userDetail']['phone']);
-          PrefUtils.setBirthday(DateFormat('dd/MMM/yyyy')
-              .format(DateTime.parse(map['userDetail']['birthdate'])));
-          PrefUtils.setGender(map['userDetail']['gender']);
-          PrefUtils.setemployeeNo(map['userDetail']['employeeNo']);
-          PrefUtils.setProfileImage(map['userDetail']['profileImage'] != null
-              ? map['userDetail']['profileImage']
-              : '');
-        } catch (e) {}
-        addDevice();
-        callback(true, map);
-        update();
+    if (_networkManager.connectionType != 0) {
+      _isLoading.value = true;
+      update();
+      print(data);
+      http.Response response = await http.post(
+          Uri.parse(AppConstants.registration),
+          body: jsonEncode(data),
+          headers: headers);
+      print(response.body.toString());
+      Map? map;
+      if (response.statusCode == 200) {
+        map = jsonDecode(response.body);
+        print(response.body);
+        if (map!['token'] != '') {
+          _isLoading.value = false;
+          try {
+            PrefUtils.setUserToken(map['token']);
+            PrefUtils.setRole(map['role']);
+            PrefUtils.setFirstName(map['userDetail']['firstName']);
+            PrefUtils.setLastName(map['userDetail']['lastName']);
+            PrefUtils.setUserID(map['userDetail']['id']);
+            PrefUtils.setEmail(map['userDetail']['email']);
+            PrefUtils.setjobTitle(map['userDetail']['jobTitle']);
+            PrefUtils.setphone(map['userDetail']['phone']);
+            PrefUtils.setBirthday(DateFormat('dd/MMM/yyyy')
+                .format(DateTime.parse(map['userDetail']['birthdate'])));
+            PrefUtils.setGender(map['userDetail']['gender']);
+            PrefUtils.setemployeeNo(map['userDetail']['employeeNo']);
+            PrefUtils.setProfileImage(map['userDetail']['profileImage'] != null
+                ? map['userDetail']['profileImage']
+                : '');
+          } catch (e) {}
+          addDevice();
+          callback(true, map);
+          update();
+        } else {
+          _isLoading.value = false;
+          callback(
+            false,
+            map,
+          );
+          update();
+        }
       } else {
+        callback(false, '');
         _isLoading.value = false;
-        callback(
-          false,
-          map,
-        );
         update();
       }
     } else {
-      callback(false, '');
-      _isLoading.value = false;
-      update();
+      Get.snackbar(AppConstants.title, AppConstants.message);
     }
   }
 
@@ -98,23 +106,27 @@ class AuthController extends GetxController {
   }
 
   Future changepassword(data, callback) async {
-    _isLoading.value = true;
+    if (_networkManager.connectionType != 0) {
+      _isLoading.value = true;
 
-    Map<String, String> headers = {
-      "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
-      "content-type": "application/json",
-    };
-    http.Response response = await http.post(
-        Uri.parse(AppConstants.change_password),
-        body: data,
-        headers: headers);
-    if (response != null && response.statusCode == 200) {
-      _isLoading.value = false;
-      update();
-      return jsonDecode(response.body)['status'];
+      Map<String, String> headers = {
+        "Authorization": 'Bearer ${PrefUtils.getUserToken()}',
+        "content-type": "application/json",
+      };
+      http.Response response = await http.post(
+          Uri.parse(AppConstants.change_password),
+          body: data,
+          headers: headers);
+      if (response != null && response.statusCode == 200) {
+        _isLoading.value = false;
+        update();
+        return jsonDecode(response.body)['status'];
+      } else {
+        _isLoading.value = false;
+        update();
+      }
     } else {
-      _isLoading.value = false;
-      update();
+      Get.snackbar(AppConstants.title, AppConstants.message);
     }
   }
 

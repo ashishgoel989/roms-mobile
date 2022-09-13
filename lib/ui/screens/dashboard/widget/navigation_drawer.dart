@@ -359,7 +359,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        FlatButton(
+                        TextButton(
                             child: Text('Cancel',
                                 textScaleFactor: 1.0,
                                 style: TextStyle(
@@ -373,7 +373,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           width: 3,
                           color: ThemeManager.primaryText,
                         ),
-                        FlatButton(
+                        TextButton(
                           child: Text('Logout',
                               textScaleFactor: 1.0,
                               style: TextStyle(

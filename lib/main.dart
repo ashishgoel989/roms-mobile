@@ -17,6 +17,7 @@ import 'package:rtl/utils/localization/app_localization.dart';
 import 'package:rtl/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'controller/GetxNetworkManager.dart';
 import 'controller/notification_controller.dart';
 import 'data/store_binding.dart';
 
@@ -62,10 +63,13 @@ class _RTLAppState extends State<RTLApp> {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
   String messageTitle = "Empty";
   String notificationAlert = "alert";
 
   RemoteMessage? notificationdata;
+  GetXNetworkManager _networkManager =
+      Get.put(GetXNetworkManager());
   NotificationController _notificationController =
       Get.put(NotificationController());
 

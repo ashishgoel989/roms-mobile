@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
 import 'package:rtl/ui/screens/resignation_advice/resignation_selfie_screen.dart';
-import 'package:rtl/ui/screens/resignation_advice/resignation_sign_screen.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
 
 import '../../../utils/helper/theme_manager.dart';
@@ -31,7 +30,7 @@ class ResignationThreeScreen extends StatelessWidget {
           children: [
             SizedBox(height: 15),
             Text(
-              'We would like to hear about why you are resigning.',
+              'We would like to hear about the reasons for your resignation?',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.black,
@@ -43,7 +42,7 @@ class ResignationThreeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Will you like to write a reason?',
+                    'Write your reasons below?',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.black,
@@ -54,6 +53,7 @@ class ResignationThreeScreen extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
+                      color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: ThemeManager.colorGrey)),
                     child: Padding(
@@ -62,7 +62,7 @@ class ResignationThreeScreen extends StatelessWidget {
                           controller: _commentTextEditingController,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
-                          maxLines: 5,
+                          maxLines: 7,
                           style: TextStyle(
                               color: ThemeManager.colorBlack,
                               fontSize: 12,
@@ -79,13 +79,18 @@ class ResignationThreeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Text(
-              'Skip',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: ThemeManager.primaryColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16),
+            GestureDetector(
+              onTap: (){
+                Get.to(ResignationSelfieScreen(''));
+              },
+              child: Text(
+                'Skip',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: ThemeManager.primaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16),
+              ),
             ),
           ],
         ),
@@ -93,7 +98,7 @@ class ResignationThreeScreen extends StatelessWidget {
       bottomNavigationBar: Bounce(
         duration: Duration(milliseconds: 110),
         onPressed: () {
-          Get.to(ResignationSelfieScreen());
+          Get.to(ResignationSelfieScreen(_commentTextEditingController.text.toString()));
         },
         child: Container(
           margin: EdgeInsets.only(right: 30, top: 10, bottom: 20, left: 30),
