@@ -229,7 +229,6 @@ class _LeaveScreenState extends State<LeaveScreen>
                     TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
                 tabs: [
                   Tab(
-
                     text: 'Apply',
                   ),
                   Tab(

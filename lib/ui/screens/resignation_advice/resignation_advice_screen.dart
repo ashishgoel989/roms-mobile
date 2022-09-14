@@ -10,7 +10,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rtl/controller/leave_controller.dart';
+import 'package:rtl/controller/resign_controller.dart';
 import 'package:rtl/ui/screens/dashboard/dashboard_screen.dart';
 import 'package:rtl/ui/screens/resignation_advice/resignation_confirm_screen.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
@@ -24,10 +26,12 @@ import '../../../utils/utils.dart';
 class ResignationAdviceScreen extends StatefulWidget {
   dynamic imageFile;
   dynamic comment;
+  dynamic lastworkingDate;
 
-  ResignationAdviceScreen(dynamic imageFile, dynamic comment) {
+  ResignationAdviceScreen(dynamic imageFile, dynamic comment, dynamic lastworkingDate) {
     this.imageFile = imageFile;
     this.comment = comment;
+    this.lastworkingDate = lastworkingDate;
   }
 
   @override
@@ -37,116 +41,24 @@ class ResignationAdviceScreen extends StatefulWidget {
 
 class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
     with SingleTickerProviderStateMixin {
-  List<String> daylist = [
-    'Yesterday',
-    'Today',
-    'Tomorrow',
-    'Day After',
-    'This Friday',
-    'Next Monday',
-  ];
-
-  List<String> typelist = [
-    'Sick',
-    'Rostered Day Off',
-    'Carer\'s',
-    'Annual',
-    'Without Pay',
-    'Bereavement',
-  ];
-
-  List<String> namelist = [
-    'Sick',
-    'Rostered Day Off',
-    'Carer\'s',
-    'Annual',
-    'Without Pay',
-    'Bereavement',
-  ];
-
-  List<String> hourlist = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '6',
-    '8',
-  ];
-  final TextEditingController _commentTextEditingController =
-      TextEditingController();
-
-  List<Color> colorlist = [
-    Color(0xff764AF1),
-    Color(0xff947EC3),
-    Color(0xffF56D91),
-    Color(0xff764AF1),
-    Color(0xff947EC3),
-    Color(0xffF56D91),
-    Color(0xff764AF1),
-    Color(0xff947EC3),
-    Color(0xffF56D91),
-    Color(0xff764AF1),
-    Color(0xff947EC3),
-    Color(0xffF56D91),
-  ];
-
-  var selectDay = 1;
-  var selectType = 0;
-  var selectedHours = '0';
-  var selectDuration;
-
-  String currentDate = '--/--/--';
-  String convertdate = '';
-  String endDate = '--/--/--';
   var managerName = ''.obs;
   final GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
 
   LeaveController _leaveController = Get.find<LeaveController>();
+  final ResignController _resignController = Get.put(ResignController());
 
-  int daycount = 0;
-
-  String TypeID = '';
-
-  String starttime = '--:--:--';
-  String endtime = '--:--:--';
   final ImagePicker imagePicker = ImagePicker();
   XFile? _imageFile;
 
   ByteData? bytes;
 
+  var signaturefile = File('').obs;
+
   @override
   void initState() {
     super.initState();
-    print('advice' + widget.imageFile);
+    print('advice' + widget.imageFile.path);
     _leaveController.GetManagerName(callbackManagerName);
-    currentDate = DateFormat('yyyy-MM-dd')
-        .format(DateTime.now().add(Duration(days: selectDay - 1)));
-    convertdate = DateFormat('yyyy-MM-dd')
-        .format(DateTime.now().add(Duration(days: selectDay - 1)));
-    endDate = DateFormat('yyyy-MM-dd')
-        .format(DateTime.now().add(Duration(days: selectDay - 1)));
-  }
-
-  leaveTypecallback(bool status, Map data) async {
-    if (status == true) {
-    } else {
-      // ToastUtils.setToast(data['message']);
-    }
-  }
-
-  leaveHistorycallback(bool status, Map data) async {
-    if (status == true) {
-      TypeID = _leaveController.leavetypeList[0].id.toString();
-    } else {
-      // ToastUtils.setToast(data['message']);
-    }
-  }
-
-  callback(bool status, Map data) async {
-    if (status == true) {
-    } else {
-      // ToastUtils.setToast(data['message']);
-    }
   }
 
   callbackManagerName(bool status, Map data) async {
@@ -257,7 +169,7 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                         border: Border.all(color: ThemeManager.colorGrey),
                         image: widget.imageFile != null
                             ? DecorationImage(
-                                image: FileImage(File(widget.imageFile)),
+                                image: FileImage(File(widget.imageFile.path)),
                                 fit: BoxFit.fill,
                               )
                             : null),
@@ -335,8 +247,8 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                                     ? ThemeManager.colorGrey
                                     : Colors.white)),
                         child: bytes != null
-                            ? Image.memory(
-                                bytes!.buffer.asUint8List(),
+                            ? Image.file(
+                               File( signaturefile.value.path),
                                 fit: BoxFit.fill,
                               )
                             : null,
@@ -373,7 +285,14 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
                 Bounce(
                   duration: Duration(milliseconds: 110),
                   onPressed: () {
-                    Get.to(ResignationConfirmScreen());
+                    if(bytes!=null) {
+                      _resignController.applyResignation(
+                          context, widget.imageFile, signaturefile.value.path,
+                          widget.lastworkingDate, widget.comment);
+                    }else{
+                      Utils.showErrorToast(context, 'Please write signature');
+                    }
+                    // Get.to(ResignationConfirmScreen());
                   },
                   child: Container(
                     margin: EdgeInsets.only(
@@ -536,6 +455,20 @@ class _ResignationAdviceScreenState extends State<ResignationAdviceScreen>
     final data =
         await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
     bytes = await data.toByteData(format: ui.ImageByteFormat.png);
+    signaturefile.value = await writeToFile(bytes!);
+    print("path>>>>>>>>>>>>>" + signaturefile.value.path);
     setState(() {});
   }
+
+  Future<File> writeToFile(ByteData data) async {
+    final buffer = data.buffer;
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    var filePath = tempPath + '/signature.png';
+    print(filePath); // file_01.tmp is dump file, can be anything
+    return new File(filePath).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+  }
+
+
 }

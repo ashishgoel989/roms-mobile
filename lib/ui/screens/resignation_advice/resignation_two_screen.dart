@@ -65,9 +65,9 @@ class ResignationTwoScreen extends StatelessWidget {
             onTap: () async {
               const url = "tel:+61 987654321";
               if (await canLaunch(url)) {
-              await launch(url);
+                await launch(url);
               } else {
-              throw 'Could not launch $url';
+                throw 'Could not launch $url';
               }
             },
             child: Container(

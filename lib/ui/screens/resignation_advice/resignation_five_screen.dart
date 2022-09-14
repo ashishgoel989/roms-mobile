@@ -149,7 +149,7 @@ class ResignationFiveScreen extends StatelessWidget {
               duration: Duration(milliseconds: 110),
               onPressed: () {
                 if(endDate.value.isNotEmpty) {
-                  Get.to(ResignationAdviceScreen(imageFile, comment));
+                  Get.to(ResignationAdviceScreen(imageFile, comment,endDate.value));
                 }else{
                   Utils.showErrorToast(context, 'Please select last working day');
                 }

@@ -19,8 +19,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  NotificationController _notificationController = Get.find<NotificationController>();
-
+  NotificationController _notificationController =
+      Get.find<NotificationController>();
 
   @override
   void initState() {
@@ -47,21 +47,14 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> navigateToPage() async {
     print(PrefUtils.getUserToken());
     if (PrefUtils.getUserToken().isEmpty) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => Introscreen()),
-          (Route<dynamic> route) => false);
+      Get.offAll(Introscreen());
     } else {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => DashboardScreen()),
-          (Route<dynamic> route) => false);
+      Get.offAll(DashboardScreen());
     }
   }
 
   callback(bool status, Map data) async {
     if (status == true) {
-
     } else {
       // ToastUtils.setToast(data['message']);
     }

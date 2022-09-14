@@ -43,17 +43,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscured = true;
   bool _checkboxListTile = false;
   bool validEmail = false;
-  Map _source = {ConnectivityResult.none: false};
-  final MyConnectivity _connectivity = MyConnectivity.instance;
-
 
   @override
   void initState() {
     super.initState();
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });
     messaging.getToken().then((token) {
       PrefUtils.setFirebaseToken(token!);
       print("token>>>>>>>" + PrefUtils.getFirebaseToken());
@@ -68,19 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String status = "Offline";
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        status = "Offline";
-        break;
-      case ConnectivityResult.mobile:
-        status = "Mobile: Online";
-        break;
-      case ConnectivityResult.wifi:
-        status = "WiFi: Online";
-        break;
-    }
-    print(status);
     Size size = MediaQuery.of(context).size;
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), // Large

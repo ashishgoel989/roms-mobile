@@ -8,14 +8,18 @@ import 'package:rtl/ui/screens/resignation_advice/resignation_five_screen.dart';
 import 'package:rtl/utils/helper/pref_utils.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:path/path.dart' as path;
+import 'package:rtl/utils/utils.dart';
+
 
 import '../../../utils/helper/theme_manager.dart';
 
 class ResignationSelfieScreen extends StatelessWidget {
   final TextEditingController _commentTextEditingController =
-      TextEditingController();
+  TextEditingController();
   final ImagePicker imagePicker = ImagePicker();
   var _imageFile = XFile('').obs;
+  var _profileFile = File('').obs;
   String? comment;
 
   ResignationSelfieScreen(String comment) {
@@ -24,7 +28,9 @@ class ResignationSelfieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -50,20 +56,21 @@ class ResignationSelfieScreen extends StatelessWidget {
             ),
             Spacer(),
             Obx(
-              ()=> Container(
-                width: 200,
-                height: 200,
-                margin: EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: ThemeManager.colorGrey),
-                    image: _imageFile != null
-                        ? DecorationImage(
-                            image: FileImage(File(_imageFile.value.path)),
-                            fit: BoxFit.fill,
-                          )
-                        : null),
-              ),
+                  () =>
+                  Container(
+                    width: 200,
+                    height: 200,
+                    margin: EdgeInsets.only(bottom: 20),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: ThemeManager.colorGrey),
+                        image: _imageFile != null
+                            ? DecorationImage(
+                          image: FileImage(File(_imageFile.value.path)),
+                          fit: BoxFit.fill,
+                        )
+                            : null),
+                  ),
             ),
             Bounce(
               duration: Duration(milliseconds: 110),
@@ -102,8 +109,12 @@ class ResignationSelfieScreen extends StatelessWidget {
       bottomNavigationBar: Bounce(
         duration: Duration(milliseconds: 110),
         onPressed: () {
-          print(_imageFile.value.path);
-          Get.to(ResignationFiveScreen(_imageFile.value.path, comment));
+          print(_profileFile.value.path);
+          if(_profileFile.value.path.isNotEmpty) {
+            Get.to(ResignationFiveScreen(_profileFile.value, comment));
+          }else{
+            Utils.showErrorToast(context, 'Please take selfie');
+          }
         },
         child: Container(
           margin: EdgeInsets.only(right: 30, top: 10, bottom: 20, left: 30),
@@ -133,9 +144,17 @@ class ResignationSelfieScreen extends StatelessWidget {
   }
 
   void captureImages() async {
-
     final selectedImages = await imagePicker.pickImage(
-        source: ImageSource.camera, preferredCameraDevice: CameraDevice.front);
+        source: ImageSource.camera, preferredCameraDevice: CameraDevice.front,imageQuality: 25);
     _imageFile.value = selectedImages!;
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+// Here you can write your code
+      print(_imageFile.value.path);
+      String dir = path.dirname(_imageFile.value.path);
+      String newName = path.join(dir, 'employeeImage.png');
+      _profileFile.value = File(_imageFile.value.path).renameSync(newName);
+      print(_profileFile.value);
+    });
   }
 }
